@@ -34,17 +34,17 @@
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="IMAQ USB.ctl" Type="VI" URL="/&lt;vilib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB.ctl"/>
-				<Item Name="IMAQ AVI Create" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Create"/>
-				<Item Name="AviRefnum.ctl" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/AviRefnum.ctl"/>
-				<Item Name="IMAQ Image Datatype to Image Cluster.vi" Type="VI" URL="/&lt;vilib&gt;/Vision/DatatypeConversion.llb/IMAQ Image Datatype to Image Cluster.vi"/>
-				<Item Name="IMAQ Image.ctl" Type="VI" URL="/&lt;vilib&gt;/Vision/Image Controls.llb/IMAQ Image.ctl"/>
-				<Item Name="IMAQ Image Cluster to Image Datatype.vi" Type="VI" URL="/&lt;vilib&gt;/Vision/DatatypeConversion.llb/IMAQ Image Cluster to Image Datatype.vi"/>
+				<Item Name="IMAQ AVI Create" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Create"/>
+				<Item Name="AviRefnum.ctl" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/AviRefnum.ctl"/>
+				<Item Name="IMAQ Image Datatype to Image Cluster.vi" Type="VI" URL="/&lt;vilib&gt;/vision/DatatypeConversion.llb/IMAQ Image Datatype to Image Cluster.vi"/>
+				<Item Name="IMAQ Image.ctl" Type="VI" URL="/&lt;vilib&gt;/vision/Image Controls.llb/IMAQ Image.ctl"/>
+				<Item Name="IMAQ Image Cluster to Image Datatype.vi" Type="VI" URL="/&lt;vilib&gt;/vision/DatatypeConversion.llb/IMAQ Image Cluster to Image Datatype.vi"/>
 				<Item Name="IMAQ Clear Overlay" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Clear Overlay"/>
 				<Item Name="IMAQ Overlay Line" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Overlay Line"/>
 				<Item Name="IMAQ Overlay Text" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Overlay Text"/>
 				<Item Name="IMAQ Merge Overlay" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Merge Overlay"/>
-				<Item Name="IMAQ AVI Write Frame" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Write Frame"/>
-				<Item Name="IMAQ AVI Close" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Close"/>
+				<Item Name="IMAQ AVI Write Frame" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Write Frame"/>
+				<Item Name="IMAQ AVI Close" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Close"/>
 				<Item Name="General Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler.vi"/>
 				<Item Name="General Error Handler CORE.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler CORE.vi"/>
 				<Item Name="Check Special Tags.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Check Special Tags.vi"/>
@@ -146,7 +146,7 @@
 				<Property Name="App_fileDescription" Type="Str">AeroQuad Configurator Executable
 1.0.0.0
 Copyright ? 2008 AeroQuad</Property>
-				<Property Name="App_fileVersion.build" Type="Int">2</Property>
+				<Property Name="App_fileVersion.build" Type="Int">3</Property>
 				<Property Name="App_fileVersion.major" Type="Int">1</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
 				<Property Name="App_INI_GUID" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
@@ -253,6 +253,51 @@ Copyright ? 2008 AeroQuad</Property>
 				<Property Name="WindowMessage" Type="Str">Any comments and suggestions for improvement are welcome for the AeroQuad quadrocopter effort.  You can contact us at
 info@AeroQuad.info or visit us at www.AeroQuad.info.</Property>
 				<Property Name="WindowTitle" Type="Str">AeroQuad Configurator Installer</Property>
+			</Item>
+			<Item Name="AeroQuad Source Distribution" Type="Source Distribution">
+				<Property Name="Bld_buildSpecName" Type="Str">AeroQuad Source Distribution</Property>
+				<Property Name="Bld_excludedDirectory[0]" Type="Path">vi.lib</Property>
+				<Property Name="Bld_excludedDirectory[0].pathType" Type="Str">relativeToAppDir</Property>
+				<Property Name="Bld_excludedDirectory[1]" Type="Path">resource/objmgr</Property>
+				<Property Name="Bld_excludedDirectory[1].pathType" Type="Str">relativeToAppDir</Property>
+				<Property Name="Bld_excludedDirectory[2]" Type="Path">instr.lib</Property>
+				<Property Name="Bld_excludedDirectory[2].pathType" Type="Str">relativeToAppDir</Property>
+				<Property Name="Bld_excludedDirectory[3]" Type="Path">user.lib</Property>
+				<Property Name="Bld_excludedDirectory[3].pathType" Type="Str">relativeToAppDir</Property>
+				<Property Name="Bld_excludedDirectoryCount" Type="Int">4</Property>
+				<Property Name="Destination[0].destName" Type="Str">Destination Directory</Property>
+				<Property Name="Destination[0].path" Type="Path">../builds/NI_AB_PROJECTNAME/SourceDistribution</Property>
+				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
+				<Property Name="Destination[1].path" Type="Path">../builds/NI_AB_PROJECTNAME/SourceDistribution/data</Property>
+				<Property Name="DestinationCount" Type="Int">2</Property>
+				<Property Name="Source[0].itemID" Type="Str">{F12229DB-BD3B-4A6D-A9A9-EC50C8211ABF}</Property>
+				<Property Name="Source[0].type" Type="Str">Container</Property>
+				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
+				<Property Name="Source[1].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[1].type" Type="Str">VI</Property>
+				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[2].itemID" Type="Ref">/My Computer/CalcPoint.vi</Property>
+				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[2].type" Type="Str">VI</Property>
+				<Property Name="Source[3].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[3].itemID" Type="Ref">/My Computer/PointCoordinates.ctl</Property>
+				<Property Name="Source[3].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[3].type" Type="Str">VI</Property>
+				<Property Name="Source[4].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[4].itemID" Type="Ref">/My Computer/PointCoordinate.ctl</Property>
+				<Property Name="Source[4].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[4].type" Type="Str">VI</Property>
+				<Property Name="Source[5].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[5].itemID" Type="Ref">/My Computer/HUD.lvlib</Property>
+				<Property Name="Source[5].Library.allowMissingMembers" Type="Bool">true</Property>
+				<Property Name="Source[5].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[5].type" Type="Str">Library</Property>
+				<Property Name="Source[6].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[6].itemID" Type="Ref">/My Computer/TransmitterChannel.ctl</Property>
+				<Property Name="Source[6].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[6].type" Type="Str">VI</Property>
+				<Property Name="SourceCount" Type="Int">7</Property>
 			</Item>
 		</Item>
 	</Item>
