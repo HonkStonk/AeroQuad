@@ -146,8 +146,8 @@
 				<Property Name="App_companyName" Type="Str">AeroQuad</Property>
 				<Property Name="App_fileDescription" Type="Str">AeroQuad Configurator Executable
 1.0.0.0
-Copyright ? 2008 AeroQuad</Property>
-				<Property Name="App_fileVersion.build" Type="Int">3</Property>
+Copyright ? 2009 AeroQuad</Property>
+				<Property Name="App_fileVersion.build" Type="Int">4</Property>
 				<Property Name="App_fileVersion.major" Type="Int">1</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
 				<Property Name="App_INI_GUID" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
@@ -167,7 +167,7 @@ Copyright ? 2008 AeroQuad</Property>
 				<Property Name="Destination[2].destName" Type="Str">Destination Directory</Property>
 				<Property Name="Destination[2].path" Type="Path">../Executable</Property>
 				<Property Name="DestinationCount" Type="Int">3</Property>
-				<Property Name="Source[0].itemID" Type="Str">{B4383DE1-EF2F-4B1E-B82D-1F47DC601EB3}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{9CD5859A-E35B-46B7-B6E1-9F551ADFABB7}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
@@ -194,7 +194,11 @@ Copyright ? 2008 AeroQuad</Property>
 				<Property Name="Source[6].itemID" Type="Ref">/My Computer/TransmitterChannel.ctl</Property>
 				<Property Name="Source[6].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[6].type" Type="Str">VI</Property>
-				<Property Name="SourceCount" Type="Int">7</Property>
+				<Property Name="Source[7].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[7].itemID" Type="Ref">/My Computer/WriteEEPROM.vi</Property>
+				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[7].type" Type="Str">VI</Property>
+				<Property Name="SourceCount" Type="Int">8</Property>
 			</Item>
 			<Item Name="AeroQuad Configurator Installer" Type="Installer">
 				<Property Name="arpCompany" Type="Str">AeroQuad</Property>
@@ -242,7 +246,7 @@ Copyright ? 2008 AeroQuad</Property>
 				<Property Name="OSCheck" Type="Int">0</Property>
 				<Property Name="OSCheck_Vista" Type="Bool">false</Property>
 				<Property Name="ProductName" Type="Str">AeroQuad Configurator</Property>
-				<Property Name="ProductVersion" Type="Str">1.0.0</Property>
+				<Property Name="ProductVersion" Type="Str">1.0.1</Property>
 				<Property Name="ReadmeFile" Type="Ref"></Property>
 				<Property Name="ShortcutInfo.Count" Type="Int">1</Property>
 				<Property Name="ShortcutInfo[0].DirTag" Type="Str">{B9E310F1-839C-48B7-8CAE-33000780C26E}</Property>
@@ -271,7 +275,7 @@ info@AeroQuad.info or visit us at www.AeroQuad.info.</Property>
 				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
 				<Property Name="Destination[1].path" Type="Path">../builds/NI_AB_PROJECTNAME/SourceDistribution/data</Property>
 				<Property Name="DestinationCount" Type="Int">2</Property>
-				<Property Name="Source[0].itemID" Type="Str">{F12229DB-BD3B-4A6D-A9A9-EC50C8211ABF}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{9CD5859A-E35B-46B7-B6E1-9F551ADFABB7}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
@@ -298,7 +302,11 @@ info@AeroQuad.info or visit us at www.AeroQuad.info.</Property>
 				<Property Name="Source[6].itemID" Type="Ref">/My Computer/TransmitterChannel.ctl</Property>
 				<Property Name="Source[6].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[6].type" Type="Str">VI</Property>
-				<Property Name="SourceCount" Type="Int">7</Property>
+				<Property Name="Source[7].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[7].itemID" Type="Ref">/My Computer/WriteEEPROM.vi</Property>
+				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[7].type" Type="Str">VI</Property>
+				<Property Name="SourceCount" Type="Int">8</Property>
 			</Item>
 		</Item>
 	</Item>
