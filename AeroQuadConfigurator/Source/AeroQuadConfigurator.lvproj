@@ -16,6 +16,20 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
+		<Item Name="IMAQ" Type="Folder">
+			<Item Name="NIVisSvc.dll" Type="Document" URL="../../../../../../../WINDOWS/system32/NIVisSvc.dll"/>
+			<Item Name="ImaqDirectShowDll.dll" Type="Document" URL="../../../../../../../WINDOWS/system32/ImaqDirectShowDll.dll"/>
+			<Item Name="NIVision.dll" Type="Document" URL="../../../../../../../WINDOWS/system32/NIVision.dll"/>
+			<Item Name="imaqUSB.llb" Type="Document" URL="/&lt;vilib&gt;/imaqUSB/imaqUSB.llb"/>
+			<Item Name="IMAQ Clear Overlay" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Clear Overlay"/>
+			<Item Name="IMAQ Merge Overlay" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Merge Overlay"/>
+			<Item Name="IMAQ Overlay Line" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Overlay Line"/>
+			<Item Name="IMAQ Overlay Text" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Overlay Text"/>
+			<Item Name="Avi1.llb" Type="Document" URL="/&lt;vilib&gt;/vision/Avi1.llb"/>
+			<Item Name="IMAQ Create" Type="VI" URL="/&lt;vilib&gt;/Vision/Basics.llb/IMAQ Create"/>
+			<Item Name="IMAQ Dispose" Type="VI" URL="/&lt;vilib&gt;/Vision/Basics.llb/IMAQ Dispose"/>
+			<Item Name="IMAQ Error" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ Error"/>
+		</Item>
 		<Item Name="AeroQuadConfigurator.vi" Type="VI" URL="../AeroQuadConfigurator.vi"/>
 		<Item Name="CalcPoint.vi" Type="VI" URL="../CalcPoint.vi"/>
 		<Item Name="PointCoordinates.ctl" Type="VI" URL="../PointCoordinates.ctl"/>
@@ -40,12 +54,7 @@
 				<Item Name="IMAQ Image Datatype to Image Cluster.vi" Type="VI" URL="/&lt;vilib&gt;/vision/DatatypeConversion.llb/IMAQ Image Datatype to Image Cluster.vi"/>
 				<Item Name="IMAQ Image.ctl" Type="VI" URL="/&lt;vilib&gt;/vision/Image Controls.llb/IMAQ Image.ctl"/>
 				<Item Name="IMAQ Image Cluster to Image Datatype.vi" Type="VI" URL="/&lt;vilib&gt;/vision/DatatypeConversion.llb/IMAQ Image Cluster to Image Datatype.vi"/>
-				<Item Name="IMAQ Clear Overlay" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Clear Overlay"/>
-				<Item Name="IMAQ Overlay Line" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Overlay Line"/>
-				<Item Name="IMAQ Overlay Text" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Overlay Text"/>
-				<Item Name="IMAQ Merge Overlay" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Merge Overlay"/>
 				<Item Name="IMAQ AVI Write Frame" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Write Frame"/>
-				<Item Name="IMAQ AVI Close" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Close"/>
 				<Item Name="General Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler.vi"/>
 				<Item Name="General Error Handler CORE.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler CORE.vi"/>
 				<Item Name="Check Special Tags.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Check Special Tags.vi"/>
@@ -75,7 +84,6 @@
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
 				<Item Name="GetHelpDir.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/GetHelpDir.vi"/>
 				<Item Name="DialogType.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/DialogType.ctl"/>
-				<Item Name="IMAQ Create" Type="VI" URL="/&lt;vilib&gt;/Vision/Basics.llb/IMAQ Create"/>
 				<Item Name="Image Type" Type="VI" URL="/&lt;vilib&gt;/Vision/Image Controls.llb/Image Type"/>
 				<Item Name="IMAQ ReadFile" Type="VI" URL="/&lt;vilib&gt;/Vision/Files.llb/IMAQ ReadFile"/>
 				<Item Name="Open Config Data.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Open Config Data.vi"/>
@@ -127,6 +135,7 @@
 				<Item Name="Specific Path to Common Path.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Specific Path to Common Path.vi"/>
 				<Item Name="Write Key (U32).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Write Key (U32).vi"/>
 				<Item Name="subTimeDelay.vi" Type="VI" URL="/&lt;vilib&gt;/express/express execution control/TimeDelayBlock.llb/subTimeDelay.vi"/>
+				<Item Name="IMAQ AVI Close" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Close"/>
 			</Item>
 			<Item Name="ImaqDirectShowDll.dll" Type="Document" URL="ImaqDirectShowDll.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
@@ -145,10 +154,11 @@
 				<Property Name="App_autoIncrement" Type="Bool">true</Property>
 				<Property Name="App_companyName" Type="Str">AeroQuad</Property>
 				<Property Name="App_fileDescription" Type="Str">AeroQuad Configurator Executable
-1.0.0.0
+1.1.0.0
 Copyright ? 2009 AeroQuad</Property>
-				<Property Name="App_fileVersion.build" Type="Int">5</Property>
+				<Property Name="App_fileVersion.build" Type="Int">1</Property>
 				<Property Name="App_fileVersion.major" Type="Int">1</Property>
+				<Property Name="App_fileVersion.minor" Type="Int">1</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
 				<Property Name="App_INI_GUID" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
 				<Property Name="App_internalName" Type="Str">AeroQuad Configurator Executable</Property>
@@ -164,15 +174,49 @@ Copyright ? 2009 AeroQuad</Property>
 				<Property Name="Destination[0].type" Type="Str">App</Property>
 				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
 				<Property Name="Destination[1].path" Type="Path">../Executable/data</Property>
-				<Property Name="Destination[2].destName" Type="Str">Destination Directory</Property>
-				<Property Name="Destination[2].path" Type="Path">../Executable</Property>
+				<Property Name="Destination[2].destName" Type="Str">DLL Directory</Property>
+				<Property Name="Destination[2].path" Type="Path">/C/WINDOWS/system32</Property>
+				<Property Name="Destination[2].path.type" Type="Str">&lt;none&gt;</Property>
 				<Property Name="DestinationCount" Type="Int">3</Property>
-				<Property Name="Source[0].itemID" Type="Str">{2333F80D-AC3A-4106-8644-ED7DF33B1BDA}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{EB5EDD2B-C375-4D04-977A-8CE69B55776B}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
 				<Property Name="Source[1].sourceInclusion" Type="Str">TopLevel</Property>
 				<Property Name="Source[1].type" Type="Str">VI</Property>
+				<Property Name="Source[10].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[10].itemID" Type="Ref">/My Computer/IMAQ/IMAQ Merge Overlay</Property>
+				<Property Name="Source[10].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[10].type" Type="Str">VI</Property>
+				<Property Name="Source[11].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[11].itemID" Type="Ref">/My Computer/IMAQ/IMAQ Overlay Line</Property>
+				<Property Name="Source[11].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[11].type" Type="Str">VI</Property>
+				<Property Name="Source[12].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[12].itemID" Type="Ref">/My Computer/IMAQ/IMAQ Overlay Text</Property>
+				<Property Name="Source[12].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[12].type" Type="Str">VI</Property>
+				<Property Name="Source[13].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[13].itemID" Type="Ref">/My Computer/IMAQ/Avi1.llb</Property>
+				<Property Name="Source[13].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[14].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[14].itemID" Type="Ref">/My Computer/IMAQ/IMAQ Create</Property>
+				<Property Name="Source[14].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[14].type" Type="Str">VI</Property>
+				<Property Name="Source[15].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[15].itemID" Type="Ref">/My Computer/IMAQ/IMAQ Dispose</Property>
+				<Property Name="Source[15].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[15].type" Type="Str">VI</Property>
+				<Property Name="Source[16].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[16].itemID" Type="Ref">/My Computer/IMAQ/IMAQ Error</Property>
+				<Property Name="Source[16].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[16].type" Type="Str">VI</Property>
+				<Property Name="Source[17].destinationIndex" Type="Int">1</Property>
+				<Property Name="Source[17].itemID" Type="Ref">/My Computer/IMAQ/NIVisSvc.dll</Property>
+				<Property Name="Source[18].destinationIndex" Type="Int">1</Property>
+				<Property Name="Source[18].itemID" Type="Ref">/My Computer/IMAQ/ImaqDirectShowDll.dll</Property>
+				<Property Name="Source[19].destinationIndex" Type="Int">1</Property>
+				<Property Name="Source[19].itemID" Type="Ref">/My Computer/IMAQ/NIVision.dll</Property>
 				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[2].itemID" Type="Ref">/My Computer/CalcPoint.vi</Property>
 				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
@@ -198,7 +242,14 @@ Copyright ? 2009 AeroQuad</Property>
 				<Property Name="Source[7].itemID" Type="Ref">/My Computer/WriteEEPROM.vi</Property>
 				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[7].type" Type="Str">VI</Property>
-				<Property Name="SourceCount" Type="Int">8</Property>
+				<Property Name="Source[8].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[8].itemID" Type="Ref">/My Computer/IMAQ/imaqUSB.llb</Property>
+				<Property Name="Source[8].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[9].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[9].itemID" Type="Ref">/My Computer/IMAQ/IMAQ Clear Overlay</Property>
+				<Property Name="Source[9].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[9].type" Type="Str">VI</Property>
+				<Property Name="SourceCount" Type="Int">20</Property>
 			</Item>
 			<Item Name="AeroQuad Configurator Installer" Type="Installer">
 				<Property Name="arpCompany" Type="Str">AeroQuad</Property>
@@ -225,7 +276,7 @@ Copyright ? 2009 AeroQuad</Property>
 				<Property Name="DistPartsInfo[1].ProductID" Type="Str">{6E14AD54-2574-4DE6-81F0-2D4185B9371F}</Property>
 				<Property Name="DistPartsInfo[1].ProductName" Type="Str">NI-VISA Runtime 4.4</Property>
 				<Property Name="DistPartsInfo[1].UpgradeCode" Type="Str">{8627993A-3F66-483C-A562-0D3BA3F267B1}</Property>
-				<Property Name="FileInfo.Count" Type="Int">3</Property>
+				<Property Name="FileInfo.Count" Type="Int">8</Property>
 				<Property Name="FileInfo[0].DirTag" Type="Str">{23CD4F4C-2B05-4D82-8801-72DFF4B9C171}</Property>
 				<Property Name="FileInfo[0].FileName" Type="Str">AeroQuadConfigurator.exe</Property>
 				<Property Name="FileInfo[0].FileTag" Type="Str">{66C02D92-29AD-43F8-A6C3-B835B0C6FAEA}</Property>
@@ -241,12 +292,37 @@ Copyright ? 2009 AeroQuad</Property>
 				<Property Name="FileInfo[2].FileTag" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
 				<Property Name="FileInfo[2].Type" Type="Int">3</Property>
 				<Property Name="FileInfo[2].TypeID" Type="Ref">/My Computer/Build Specifications/AeroQuad Configurator Executable</Property>
+				<Property Name="FileInfo[3].DirTag" Type="Str">{1ECFADB7-8B3B-4CC9-86EB-E36A3F56CCAD}</Property>
+				<Property Name="FileInfo[3].FileName" Type="Str">imaqUSB.llb</Property>
+				<Property Name="FileInfo[3].FileTag" Type="Ref">/My Computer/IMAQ/imaqUSB.llb</Property>
+				<Property Name="FileInfo[3].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[3].TypeID" Type="Ref">/My Computer/Build Specifications/AeroQuad Configurator Executable</Property>
+				<Property Name="FileInfo[4].DirTag" Type="Str">{1ECFADB7-8B3B-4CC9-86EB-E36A3F56CCAD}</Property>
+				<Property Name="FileInfo[4].FileName" Type="Str">Avi1.llb</Property>
+				<Property Name="FileInfo[4].FileTag" Type="Ref">/My Computer/IMAQ/Avi1.llb</Property>
+				<Property Name="FileInfo[4].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[4].TypeID" Type="Ref">/My Computer/Build Specifications/AeroQuad Configurator Executable</Property>
+				<Property Name="FileInfo[5].DirTag" Type="Str">{D2272923-C63E-4A06-9729-85B1AD1CFB2A}</Property>
+				<Property Name="FileInfo[5].FileName" Type="Str">NIVisSvc.dll</Property>
+				<Property Name="FileInfo[5].FileTag" Type="Ref">/My Computer/IMAQ/NIVisSvc.dll</Property>
+				<Property Name="FileInfo[5].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[5].TypeID" Type="Ref">/My Computer/Build Specifications/Vision DLL</Property>
+				<Property Name="FileInfo[6].DirTag" Type="Str">{D2272923-C63E-4A06-9729-85B1AD1CFB2A}</Property>
+				<Property Name="FileInfo[6].FileName" Type="Str">ImaqDirectShowDll.dll</Property>
+				<Property Name="FileInfo[6].FileTag" Type="Ref">/My Computer/IMAQ/ImaqDirectShowDll.dll</Property>
+				<Property Name="FileInfo[6].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[6].TypeID" Type="Ref">/My Computer/Build Specifications/Vision DLL</Property>
+				<Property Name="FileInfo[7].DirTag" Type="Str">{D2272923-C63E-4A06-9729-85B1AD1CFB2A}</Property>
+				<Property Name="FileInfo[7].FileName" Type="Str">NIVision.dll</Property>
+				<Property Name="FileInfo[7].FileTag" Type="Ref">/My Computer/IMAQ/NIVision.dll</Property>
+				<Property Name="FileInfo[7].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[7].TypeID" Type="Ref">/My Computer/Build Specifications/Vision DLL</Property>
 				<Property Name="InstSpecVersion" Type="Str">8608001</Property>
 				<Property Name="LicenseFile" Type="Ref"></Property>
 				<Property Name="OSCheck" Type="Int">0</Property>
 				<Property Name="OSCheck_Vista" Type="Bool">false</Property>
 				<Property Name="ProductName" Type="Str">AeroQuad Configurator</Property>
-				<Property Name="ProductVersion" Type="Str">1.0.3</Property>
+				<Property Name="ProductVersion" Type="Str">1.1.1</Property>
 				<Property Name="ReadmeFile" Type="Ref"></Property>
 				<Property Name="ShortcutInfo.Count" Type="Int">1</Property>
 				<Property Name="ShortcutInfo[0].DirTag" Type="Str">{B9E310F1-839C-48B7-8CAE-33000780C26E}</Property>
@@ -307,6 +383,35 @@ info@AeroQuad.info or visit us at www.AeroQuad.info.</Property>
 				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[7].type" Type="Str">VI</Property>
 				<Property Name="SourceCount" Type="Int">8</Property>
+			</Item>
+			<Item Name="Vision DLL" Type="Source Distribution">
+				<Property Name="Bld_buildSpecName" Type="Str">Vision DLL</Property>
+				<Property Name="Bld_excludedDirectory[0]" Type="Path">vi.lib</Property>
+				<Property Name="Bld_excludedDirectory[0].pathType" Type="Str">relativeToAppDir</Property>
+				<Property Name="Bld_excludedDirectory[1]" Type="Path">resource/objmgr</Property>
+				<Property Name="Bld_excludedDirectory[1].pathType" Type="Str">relativeToAppDir</Property>
+				<Property Name="Bld_excludedDirectory[2]" Type="Path">instr.lib</Property>
+				<Property Name="Bld_excludedDirectory[2].pathType" Type="Str">relativeToAppDir</Property>
+				<Property Name="Bld_excludedDirectory[3]" Type="Path">user.lib</Property>
+				<Property Name="Bld_excludedDirectory[3].pathType" Type="Str">relativeToAppDir</Property>
+				<Property Name="Bld_excludedDirectoryCount" Type="Int">4</Property>
+				<Property Name="Destination[0].destName" Type="Str">Destination Directory</Property>
+				<Property Name="Destination[0].path" Type="Path">../Executable/data</Property>
+				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
+				<Property Name="Destination[1].path" Type="Path">../Executable/data/data</Property>
+				<Property Name="DestinationCount" Type="Int">2</Property>
+				<Property Name="Source[0].itemID" Type="Str">{EC4D0BA1-A1BF-4E8F-B905-087F3B960D20}</Property>
+				<Property Name="Source[0].type" Type="Str">Container</Property>
+				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/IMAQ/NIVisSvc.dll</Property>
+				<Property Name="Source[1].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[2].itemID" Type="Ref">/My Computer/IMAQ/ImaqDirectShowDll.dll</Property>
+				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[3].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[3].itemID" Type="Ref">/My Computer/IMAQ/NIVision.dll</Property>
+				<Property Name="Source[3].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="SourceCount" Type="Int">4</Property>
 			</Item>
 		</Item>
 	</Item>
