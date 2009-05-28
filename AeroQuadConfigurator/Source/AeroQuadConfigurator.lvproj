@@ -25,7 +25,7 @@
 			<Item Name="IMAQ Merge Overlay" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Merge Overlay"/>
 			<Item Name="IMAQ Overlay Line" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Overlay Line"/>
 			<Item Name="IMAQ Overlay Text" Type="VI" URL="/&lt;vilib&gt;/Vision/Overlay.llb/IMAQ Overlay Text"/>
-			<Item Name="Avi1.llb" Type="Document" URL="/&lt;vilib&gt;/vision/Avi1.llb"/>
+			<Item Name="Avi1.llb" Type="Document" URL="/&lt;vilib&gt;/Vision/Avi1.llb"/>
 			<Item Name="IMAQ Create" Type="VI" URL="/&lt;vilib&gt;/Vision/Basics.llb/IMAQ Create"/>
 			<Item Name="IMAQ Dispose" Type="VI" URL="/&lt;vilib&gt;/Vision/Basics.llb/IMAQ Dispose"/>
 			<Item Name="IMAQ Error" Type="VI" URL="/&lt;vilib&gt;/vision/Basics.llb/IMAQ Error"/>
@@ -49,12 +49,12 @@
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="IMAQ USB.ctl" Type="VI" URL="/&lt;vilib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB.ctl"/>
-				<Item Name="IMAQ AVI Create" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Create"/>
-				<Item Name="AviRefnum.ctl" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/AviRefnum.ctl"/>
-				<Item Name="IMAQ Image Datatype to Image Cluster.vi" Type="VI" URL="/&lt;vilib&gt;/vision/DatatypeConversion.llb/IMAQ Image Datatype to Image Cluster.vi"/>
-				<Item Name="IMAQ Image.ctl" Type="VI" URL="/&lt;vilib&gt;/vision/Image Controls.llb/IMAQ Image.ctl"/>
-				<Item Name="IMAQ Image Cluster to Image Datatype.vi" Type="VI" URL="/&lt;vilib&gt;/vision/DatatypeConversion.llb/IMAQ Image Cluster to Image Datatype.vi"/>
-				<Item Name="IMAQ AVI Write Frame" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Write Frame"/>
+				<Item Name="IMAQ AVI Create" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Create"/>
+				<Item Name="AviRefnum.ctl" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/AviRefnum.ctl"/>
+				<Item Name="IMAQ Image Datatype to Image Cluster.vi" Type="VI" URL="/&lt;vilib&gt;/Vision/DatatypeConversion.llb/IMAQ Image Datatype to Image Cluster.vi"/>
+				<Item Name="IMAQ Image.ctl" Type="VI" URL="/&lt;vilib&gt;/Vision/Image Controls.llb/IMAQ Image.ctl"/>
+				<Item Name="IMAQ Image Cluster to Image Datatype.vi" Type="VI" URL="/&lt;vilib&gt;/Vision/DatatypeConversion.llb/IMAQ Image Cluster to Image Datatype.vi"/>
+				<Item Name="IMAQ AVI Write Frame" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Write Frame"/>
 				<Item Name="General Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler.vi"/>
 				<Item Name="General Error Handler CORE.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler CORE.vi"/>
 				<Item Name="Check Special Tags.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Check Special Tags.vi"/>
@@ -135,7 +135,7 @@
 				<Item Name="Specific Path to Common Path.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Specific Path to Common Path.vi"/>
 				<Item Name="Write Key (U32).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Write Key (U32).vi"/>
 				<Item Name="subTimeDelay.vi" Type="VI" URL="/&lt;vilib&gt;/express/express execution control/TimeDelayBlock.llb/subTimeDelay.vi"/>
-				<Item Name="IMAQ AVI Close" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Close"/>
+				<Item Name="IMAQ AVI Close" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Close"/>
 			</Item>
 			<Item Name="ImaqDirectShowDll.dll" Type="Document" URL="ImaqDirectShowDll.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
@@ -146,6 +146,8 @@
 			<Item Name="NIVision.dll" Type="Document" URL="NIVision.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
+			<Item Name="visarc" Type="Document" URL="../../../../../../../Program Files/National Instruments/LabVIEW 8.6/resource/visarc"/>
+			<Item Name="XDNodeRunTimeDep.lvlib" Type="Library" URL="/&lt;vilib&gt;/Platform/TimedLoop/XDataNode/XDNodeRunTimeDep.lvlib"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="AeroQuad Configurator Executable" Type="EXE">
