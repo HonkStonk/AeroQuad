@@ -107,7 +107,6 @@
 				<Item Name="Config Data Get Key Value.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Config Data Get Key Value.vi"/>
 				<Item Name="Parse Stored String.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Parse Stored String.vi"/>
 				<Item Name="Get Next Character.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Get Next Character.vi"/>
-				<Item Name="Get Key Names.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Get Key Names.vi"/>
 				<Item Name="Read Key (Boolean).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Read Key (Boolean).vi"/>
 				<Item Name="Read Key (Double).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Read Key (Double).vi"/>
 				<Item Name="VISA Configure Serial Port (Instr).vi" Type="VI" URL="/&lt;vilib&gt;/Instr/_visa.llb/VISA Configure Serial Port (Instr).vi"/>
@@ -156,7 +155,7 @@
 				<Property Name="App_fileDescription" Type="Str">AeroQuad Configurator Executable
 1.1.0.0
 Copyright ? 2009 AeroQuad</Property>
-				<Property Name="App_fileVersion.build" Type="Int">1</Property>
+				<Property Name="App_fileVersion.build" Type="Int">2</Property>
 				<Property Name="App_fileVersion.major" Type="Int">1</Property>
 				<Property Name="App_fileVersion.minor" Type="Int">1</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
@@ -322,7 +321,7 @@ Copyright ? 2009 AeroQuad</Property>
 				<Property Name="OSCheck" Type="Int">0</Property>
 				<Property Name="OSCheck_Vista" Type="Bool">false</Property>
 				<Property Name="ProductName" Type="Str">AeroQuad Configurator</Property>
-				<Property Name="ProductVersion" Type="Str">1.1.1</Property>
+				<Property Name="ProductVersion" Type="Str">1.1.2</Property>
 				<Property Name="ReadmeFile" Type="Ref"></Property>
 				<Property Name="ShortcutInfo.Count" Type="Int">1</Property>
 				<Property Name="ShortcutInfo[0].DirTag" Type="Str">{B9E310F1-839C-48B7-8CAE-33000780C26E}</Property>
