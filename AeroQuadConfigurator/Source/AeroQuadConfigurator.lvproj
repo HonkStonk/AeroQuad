@@ -146,8 +146,6 @@
 			<Item Name="NIVision.dll" Type="Document" URL="NIVision.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
-			<Item Name="visarc" Type="Document" URL="../../../../../../../Program Files/National Instruments/LabVIEW 8.6/resource/visarc"/>
-			<Item Name="XDNodeRunTimeDep.lvlib" Type="Library" URL="/&lt;vilib&gt;/Platform/TimedLoop/XDataNode/XDNodeRunTimeDep.lvlib"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="AeroQuad Configurator Executable" Type="EXE">
