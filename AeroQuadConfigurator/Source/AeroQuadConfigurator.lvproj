@@ -39,22 +39,19 @@
 		<Item Name="WriteEEPROM.vi" Type="VI" URL="../WriteEEPROM.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="user.lib" Type="Folder">
-				<Item Name="IMAQ USB Init.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB Init.vi"/>
 				<Item Name="IMAQ USB PropertyPage.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB PropertyPage.vi"/>
-				<Item Name="IMAQ USB Grab Setup.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB Grab Setup.vi"/>
 				<Item Name="IMAQ USB Grab Acquire.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB Grab Acquire.vi"/>
+				<Item Name="IMAQ USB Init.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB Init.vi"/>
+				<Item Name="IMAQ USB Grab Setup.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB Grab Setup.vi"/>
 				<Item Name="IMAQ USB Stop.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB Stop.vi"/>
 				<Item Name="IMAQ USB Close.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB Close.vi"/>
 				<Item Name="IMAQ USB Enumerate Cameras.vi" Type="VI" URL="/&lt;userlib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB Enumerate Cameras.vi"/>
 			</Item>
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="IMAQ USB.ctl" Type="VI" URL="/&lt;vilib&gt;/imaqUSB/imaqUSB.llb/IMAQ USB.ctl"/>
-				<Item Name="IMAQ AVI Create" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Create"/>
-				<Item Name="AviRefnum.ctl" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/AviRefnum.ctl"/>
-				<Item Name="IMAQ Image Datatype to Image Cluster.vi" Type="VI" URL="/&lt;vilib&gt;/Vision/DatatypeConversion.llb/IMAQ Image Datatype to Image Cluster.vi"/>
-				<Item Name="IMAQ Image.ctl" Type="VI" URL="/&lt;vilib&gt;/Vision/Image Controls.llb/IMAQ Image.ctl"/>
-				<Item Name="IMAQ Image Cluster to Image Datatype.vi" Type="VI" URL="/&lt;vilib&gt;/Vision/DatatypeConversion.llb/IMAQ Image Cluster to Image Datatype.vi"/>
-				<Item Name="IMAQ AVI Write Frame" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Write Frame"/>
+				<Item Name="IMAQ Image Datatype to Image Cluster.vi" Type="VI" URL="/&lt;vilib&gt;/vision/DatatypeConversion.llb/IMAQ Image Datatype to Image Cluster.vi"/>
+				<Item Name="IMAQ Image.ctl" Type="VI" URL="/&lt;vilib&gt;/vision/Image Controls.llb/IMAQ Image.ctl"/>
+				<Item Name="IMAQ Image Cluster to Image Datatype.vi" Type="VI" URL="/&lt;vilib&gt;/vision/DatatypeConversion.llb/IMAQ Image Cluster to Image Datatype.vi"/>
 				<Item Name="General Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler.vi"/>
 				<Item Name="General Error Handler CORE.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler CORE.vi"/>
 				<Item Name="Check Special Tags.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Check Special Tags.vi"/>
@@ -85,7 +82,6 @@
 				<Item Name="GetHelpDir.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/GetHelpDir.vi"/>
 				<Item Name="DialogType.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/DialogType.ctl"/>
 				<Item Name="Image Type" Type="VI" URL="/&lt;vilib&gt;/Vision/Image Controls.llb/Image Type"/>
-				<Item Name="IMAQ ReadFile" Type="VI" URL="/&lt;vilib&gt;/Vision/Files.llb/IMAQ ReadFile"/>
 				<Item Name="Open Config Data.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Open Config Data.vi"/>
 				<Item Name="Config Data Open Reference.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Config Data Open Reference.vi"/>
 				<Item Name="Config Data Registry.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Config Data Registry.vi"/>
@@ -134,9 +130,6 @@
 				<Item Name="Specific Path to Common Path.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Specific Path to Common Path.vi"/>
 				<Item Name="Write Key (U32).vi" Type="VI" URL="/&lt;vilib&gt;/Utility/config.llb/Write Key (U32).vi"/>
 				<Item Name="subTimeDelay.vi" Type="VI" URL="/&lt;vilib&gt;/express/express execution control/TimeDelayBlock.llb/subTimeDelay.vi"/>
-				<Item Name="IMAQ AVI Close" Type="VI" URL="/&lt;vilib&gt;/Vision/Avi1.llb/IMAQ AVI Close"/>
-				<Item Name="subFile Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/FileDialogBlock.llb/subFile Dialog.vi"/>
-				<Item Name="ex_CorrectErrorChain.vi" Type="VI" URL="/&lt;vilib&gt;/express/express shared/ex_CorrectErrorChain.vi"/>
 				<Item Name="TDMS - File Viewer.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/tdmsutil.llb/TDMS - File Viewer.vi"/>
 				<Item Name="status.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/tdmsutil.llb/status.vi"/>
 				<Item Name="fileViewerConfigData.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/tdmsutil.llb/fileViewerConfigData.ctl"/>
@@ -155,6 +148,13 @@
 				<Item Name="configureNumberOfValues.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/tdmsutil.llb/configureNumberOfValues.vi"/>
 				<Item Name="panelResize.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/tdmsutil.llb/panelResize.vi"/>
 				<Item Name="LVRectTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVRectTypeDef.ctl"/>
+				<Item Name="IMAQ AVI Create" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Create"/>
+				<Item Name="AviRefnum.ctl" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/AviRefnum.ctl"/>
+				<Item Name="IMAQ AVI Write Frame" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Write Frame"/>
+				<Item Name="IMAQ AVI Close" Type="VI" URL="/&lt;vilib&gt;/vision/Avi1.llb/IMAQ AVI Close"/>
+				<Item Name="IMAQ ReadFile" Type="VI" URL="/&lt;vilib&gt;/Vision/Files.llb/IMAQ ReadFile"/>
+				<Item Name="subFile Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/FileDialogBlock.llb/subFile Dialog.vi"/>
+				<Item Name="ex_CorrectErrorChain.vi" Type="VI" URL="/&lt;vilib&gt;/express/express shared/ex_CorrectErrorChain.vi"/>
 			</Item>
 			<Item Name="ImaqDirectShowDll.dll" Type="Document" URL="ImaqDirectShowDll.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
