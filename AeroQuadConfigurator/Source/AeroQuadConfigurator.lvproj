@@ -13,6 +13,7 @@
 		<Item Name="AeroQuadConfigurator.vi" Type="VI" URL="../AeroQuadConfigurator.vi"/>
 		<Item Name="WriteEEPROM.vi" Type="VI" URL="../WriteEEPROM.vi"/>
 		<Item Name="DataViewer.vi" Type="VI" URL="../DataViewer.vi"/>
+		<Item Name="ReconnectDialog.vi" Type="VI" URL="../ReconnectDialog.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="General Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/General Error Handler.vi"/>
@@ -119,6 +120,7 @@
 				<Item Name="NI_AALPro.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AALPro.lvlib"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="../../../../../../../Program Files/National Instruments/LabVIEW 8.6/resource/lvanlys.dll"/>
+			<Item Name="visarc" Type="Document" URL="../../../../../../../Program Files/National Instruments/LabVIEW 8.6/resource/visarc"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="AeroQuad Configurator Executable" Type="EXE">
