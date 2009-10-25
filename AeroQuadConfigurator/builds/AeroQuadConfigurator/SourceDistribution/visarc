@@ -384,7 +384,7 @@ On VXI Instr sessions, if this property is set to FALSE, the END bit terminates 
     "Serial Settings:Wire Mode"
     iW enum {Unknown=-1, RS485/Wire4=0, RS485/Wire2-EchoDTR=1, RS485/Wire2-CtrlDTR=2, RS485/Wire2-Auto=3, RS232/DTE=128, RS232/DCE=129, RS232/AUTO=130} readwrite 00000000 3FFF01BF
     // const: VI_ATTR_ASRL_WIRE_MODE
-    "Specifies the current wire/transceiver mode. For RS-485 hardware, this property is valid only with the RS-485 serial driver developed by National Instruments. For RS-232 hardware, the values RS232/DCE and RS232/AUTO are valid only with RS-232 serial drivers developed by National Instruments and documented to support this feature with the corresponding National Instruments hardware. When this feature is not supported, RS232/DTE is the only valid value."
+    "Specifies the current wire/transceiver mode. For RS485 hardware, this property is valid only with the RS485 serial driver developed by National Instruments. For RS232 hardware, the values RS232/DCE and RS232/AUTO are valid only with RS232 serial drivers developed by National Instruments and documented to support this feature with the corresponding National Instruments hardware. When this feature is not supported, RS232/DTE is the only valid value."
   // STOP ATTRIBUTE
   attribute: "Break State"
     "Serial Settings:Modem Line Settings:Break State"
@@ -1993,7 +1993,7 @@ On VXI Instr sessions, if this property is set to FALSE, the END bit terminates 
     "Serial Settings:Wire Mode"
     iW enum {Unknown=-1, RS485/Wire4=0, RS485/Wire2-EchoDTR=1, RS485/Wire2-CtrlDTR=2, RS485/Wire2-Auto=3, RS232/DTE=128, RS232/DCE=129, RS232/AUTO=130} readwrite 00000000 3FFF01BF
     // const: VI_ATTR_ASRL_WIRE_MODE
-    "Specifies the current wire/transceiver mode. For RS-485 hardware, this property is valid only with the RS-485 serial driver developed by National Instruments. For RS-232 hardware, the values RS232/DCE and RS232/AUTO are valid only with RS-232 serial drivers developed by National Instruments and documented to support this feature with the corresponding National Instruments hardware. When this feature is not supported, RS232/DTE is the only valid value."
+    "Specifies the current wire/transceiver mode. For RS485 hardware, this property is valid only with the RS485 serial driver developed by National Instruments. For RS232 hardware, the values RS232/DCE and RS232/AUTO are valid only with RS232 serial drivers developed by National Instruments and documented to support this feature with the corresponding National Instruments hardware. When this feature is not supported, RS232/DTE is the only valid value."
   // STOP ATTRIBUTE
   attribute: "Break State"
     "Serial Settings:Modem Line Settings:Break State"
