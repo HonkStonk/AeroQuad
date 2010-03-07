@@ -86,6 +86,7 @@
 		</Item>
 		<Item Name="AeroQuadConfigurator.vi" Type="VI" URL="../AeroQuadConfigurator.vi"/>
 		<Item Name="AeroQuadConfigurator.ini" Type="Document" URL="../AeroQuadConfigurator.ini"/>
+		<Item Name="Config-Tools.ico" Type="Document" URL="../Icon/Config-Tools.ico"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Error Code Database.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Error Code Database.vi"/>
@@ -149,62 +150,116 @@
 				<Item Name="NI_AALPro.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AALPro.lvlib"/>
 				<Item Name="Simple Error Handler.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Simple Error Handler.vi"/>
 				<Item Name="NI_AALBase.lvlib" Type="Library" URL="/&lt;vilib&gt;/Analysis/NI_AALBase.lvlib"/>
+				<Item Name="subFile Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/express/express input/FileDialogBlock.llb/subFile Dialog.vi"/>
+				<Item Name="ex_CorrectErrorChain.vi" Type="VI" URL="/&lt;vilib&gt;/express/express shared/ex_CorrectErrorChain.vi"/>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="../../../../../../../../Program Files/National Instruments/LabVIEW 2009/resource/lvanlys.dll"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
-			<Item Name="AeroQuad Configurator Executable" Type="EXE">
+			<Item Name="Executable" Type="EXE">
 				<Property Name="App_applicationGUID" Type="Str">{66C02D92-29AD-43F8-A6C3-B835B0C6FAEA}</Property>
 				<Property Name="App_applicationName" Type="Str">AeroQuadConfigurator.exe</Property>
 				<Property Name="App_autoIncrement" Type="Bool">true</Property>
 				<Property Name="App_companyName" Type="Str">AeroQuad</Property>
-				<Property Name="App_fileDescription" Type="Str">AeroQuad Configurator Executable
-2.0.0.0
-Copyright 2009 AeroQuad</Property>
-				<Property Name="App_fileVersion.build" Type="Int">2</Property>
+				<Property Name="App_fileDescription" Type="Str">Executable
+2.2.0.0
+Copyright 2010 AeroQuad</Property>
+				<Property Name="App_fileVersion.build" Type="Int">1</Property>
 				<Property Name="App_fileVersion.major" Type="Int">2</Property>
+				<Property Name="App_fileVersion.minor" Type="Int">2</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
 				<Property Name="App_INI_GUID" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
-				<Property Name="App_internalName" Type="Str">AeroQuad Configurator Executable</Property>
-				<Property Name="App_legalCopyright" Type="Str">Copyright 2009 AeroQuad</Property>
-				<Property Name="App_productName" Type="Str">AeroQuad Configurator Executable</Property>
-				<Property Name="Bld_buildSpecName" Type="Str">AeroQuad Configurator Executable</Property>
-				<Property Name="Bld_defaultLanguage" Type="Str">ChineseS</Property>
+				<Property Name="App_INI_itemID" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
+				<Property Name="App_internalName" Type="Str">Executable</Property>
+				<Property Name="App_legalCopyright" Type="Str">Copyright 2010 AeroQuad</Property>
+				<Property Name="App_productName" Type="Str">Executable</Property>
+				<Property Name="Bld_buildSpecName" Type="Str">Executable</Property>
 				<Property Name="Bld_excludeLibraryItems" Type="Bool">true</Property>
 				<Property Name="Bld_excludePolymorphicVIs" Type="Bool">true</Property>
 				<Property Name="Bld_excludeTypedefs" Type="Bool">true</Property>
 				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
 				<Property Name="Destination[0].destName" Type="Str">AeroQuadConfigurator.app</Property>
-				<Property Name="Destination[0].path" Type="Path">../Executable/AeroQuadConfigurator.exe</Property>
+				<Property Name="Destination[0].path" Type="Path">../Executable/NI_AB_PROJECTNAME.exe</Property>
 				<Property Name="Destination[0].type" Type="Str">App</Property>
 				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
-				<Property Name="Destination[1].path" Type="Path">../Executable/AeroQuadConfigurator.app/Support</Property>
+				<Property Name="Destination[1].path" Type="Path">../Executable/data</Property>
 				<Property Name="Destination[2].destName" Type="Str">DLL Directory</Property>
 				<Property Name="Destination[2].path" Type="Path">../Executable</Property>
 				<Property Name="DestinationCount" Type="Int">3</Property>
-				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/Icon/IM.icns</Property>
-				<Property Name="Source[0].itemID" Type="Str">{40684499-06FD-474C-98DB-F84E7BA7B5B3}</Property>
+				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/Config-Tools.ico</Property>
+				<Property Name="Source[0].itemID" Type="Str">{4544504E-981F-4406-865B-4D95730EFBC4}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[1].itemID" Type="Ref">/My Computer/Dialog</Property>
-				<Property Name="Source[1].type" Type="Str">Container</Property>
-				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[2].itemID" Type="Ref">/My Computer/Utilities</Property>
-				<Property Name="Source[2].type" Type="Str">Container</Property>
-				<Property Name="Source[3].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[3].itemID" Type="Ref">/My Computer/Utilities/TDMS</Property>
-				<Property Name="Source[3].type" Type="Str">Container</Property>
-				<Property Name="Source[4].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[4].itemID" Type="Ref">/My Computer/Utilities/TDMS/_G TDMS 8x</Property>
-				<Property Name="Source[4].type" Type="Str">Container</Property>
-				<Property Name="Source[5].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[5].itemID" Type="Ref">/My Computer/Icon</Property>
-				<Property Name="Source[5].type" Type="Str">Container</Property>
-				<Property Name="Source[6].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[6].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
-				<Property Name="Source[6].sourceInclusion" Type="Str">TopLevel</Property>
-				<Property Name="Source[6].type" Type="Str">VI</Property>
-				<Property Name="SourceCount" Type="Int">7</Property>
+				<Property Name="Source[1].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
+				<Property Name="Source[1].sourceInclusion" Type="Str">TopLevel</Property>
+				<Property Name="Source[1].type" Type="Str">VI</Property>
+				<Property Name="Source[2].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
+				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="SourceCount" Type="Int">3</Property>
+			</Item>
+			<Item Name="Installer" Type="Installer">
+				<Property Name="arpCompany" Type="Str">Carancho Engineering LLC</Property>
+				<Property Name="arpURL" Type="Str">http://www.AeroQuad.com</Property>
+				<Property Name="BldInfo.Count" Type="Int">1</Property>
+				<Property Name="BldInfo[0].Dir" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
+				<Property Name="BldInfo[0].Tag" Type="Ref">/My Computer/Build Specifications/Executable</Property>
+				<Property Name="BuildLabel" Type="Str">Installer</Property>
+				<Property Name="BuildLocation" Type="Path">../../builds/AeroQuadConfigurator/Installer</Property>
+				<Property Name="DirInfo.Count" Type="Int">2</Property>
+				<Property Name="DirInfo.DefaultDir" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
+				<Property Name="DirInfo[0].DirName" Type="Str">AeroQuadConfigurator</Property>
+				<Property Name="DirInfo[0].DirTag" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
+				<Property Name="DirInfo[0].ParentTag" Type="Str">{3912416A-D2E5-411B-AFEE-B63654D690C0}</Property>
+				<Property Name="DirInfo[1].DirName" Type="Str">data</Property>
+				<Property Name="DirInfo[1].DirTag" Type="Str">{41D76EAD-01B6-44A8-A571-C2D7BE7C0911}</Property>
+				<Property Name="DirInfo[1].ParentTag" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
+				<Property Name="DistID" Type="Str">{AC943C01-8EA8-4BFF-A46F-CC5E452DF24E}</Property>
+				<Property Name="DistParts.Count" Type="Int">2</Property>
+				<Property Name="DistPartsInfo[0].FlavorID" Type="Str">DefaultFull</Property>
+				<Property Name="DistPartsInfo[0].ProductID" Type="Str">{61912EB3-0D1B-4EDB-AD88-E96A3B851403}</Property>
+				<Property Name="DistPartsInfo[0].ProductName" Type="Str">NI LabVIEW Run-Time Engine 2009</Property>
+				<Property Name="DistPartsInfo[0].UpgradeCode" Type="Str">{1DA01FF3-1E36-4A14-802B-D195819E159B}</Property>
+				<Property Name="DistPartsInfo[1].FlavorID" Type="Str">_deployment_</Property>
+				<Property Name="DistPartsInfo[1].ProductID" Type="Str">{D6FC9FA9-3386-409A-8D62-EE026CA721D1}</Property>
+				<Property Name="DistPartsInfo[1].ProductName" Type="Str">NI-VISA Runtime 4.5</Property>
+				<Property Name="DistPartsInfo[1].UpgradeCode" Type="Str">{8627993A-3F66-483C-A562-0D3BA3F267B1}</Property>
+				<Property Name="FileInfo.Count" Type="Int">4</Property>
+				<Property Name="FileInfo[0].DirTag" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
+				<Property Name="FileInfo[0].FileName" Type="Str">AeroQuadConfigurator.exe</Property>
+				<Property Name="FileInfo[0].FileTag" Type="Str">{66C02D92-29AD-43F8-A6C3-B835B0C6FAEA}</Property>
+				<Property Name="FileInfo[0].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[0].TypeID" Type="Ref">/My Computer/Build Specifications/Executable</Property>
+				<Property Name="FileInfo[1].DirTag" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
+				<Property Name="FileInfo[1].FileName" Type="Str">AeroQuadConfigurator.aliases</Property>
+				<Property Name="FileInfo[1].FileTag" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
+				<Property Name="FileInfo[1].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[1].TypeID" Type="Ref">/My Computer/Build Specifications/Executable</Property>
+				<Property Name="FileInfo[2].DirTag" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
+				<Property Name="FileInfo[2].FileName" Type="Str">AeroQuadConfigurator.ini</Property>
+				<Property Name="FileInfo[2].FileTag" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
+				<Property Name="FileInfo[2].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[2].TypeID" Type="Ref">/My Computer/Build Specifications/Executable</Property>
+				<Property Name="FileInfo[3].DirTag" Type="Str">{41D76EAD-01B6-44A8-A571-C2D7BE7C0911}</Property>
+				<Property Name="FileInfo[3].FileName" Type="Str">AeroQuadConfigurator.ini</Property>
+				<Property Name="FileInfo[3].FileTag" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
+				<Property Name="FileInfo[3].Type" Type="Int">3</Property>
+				<Property Name="FileInfo[3].TypeID" Type="Ref">/My Computer/Build Specifications/Executable</Property>
+				<Property Name="InstSpecVersion" Type="Str">9008024</Property>
+				<Property Name="LicenseFile" Type="Ref"></Property>
+				<Property Name="OSCheck" Type="Int">0</Property>
+				<Property Name="OSCheck_Vista" Type="Bool">false</Property>
+				<Property Name="ProductName" Type="Str">AeroQuad Configurator</Property>
+				<Property Name="ProductVersion" Type="Str">2.2.0</Property>
+				<Property Name="ReadmeFile" Type="Ref"></Property>
+				<Property Name="ShortcutInfo.Count" Type="Int">1</Property>
+				<Property Name="ShortcutInfo[0].DirTag" Type="Str">{B9E310F1-839C-48B7-8CAE-33000780C26E}</Property>
+				<Property Name="ShortcutInfo[0].FileTag" Type="Str">{66C02D92-29AD-43F8-A6C3-B835B0C6FAEA}</Property>
+				<Property Name="ShortcutInfo[0].FileTagDir" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
+				<Property Name="ShortcutInfo[0].Name" Type="Str">AeroQuad Configurator</Property>
+				<Property Name="ShortcutInfo[0].SubDir" Type="Str">AeroQuad Configurator</Property>
+				<Property Name="UpgradeCode" Type="Str">{24029CB6-D54A-4D61-8023-884E5516E281}</Property>
+				<Property Name="WindowMessage" Type="Str">Thanks for using the AeroQuad Configurator.  The Configurator is used to setup your AeroQuad.  If you have any questions or suggestions for improvement for the Configurator, please post them at http://forum.AeroQuad.info</Property>
+				<Property Name="WindowTitle" Type="Str">AeroQuad Configurator</Property>
 			</Item>
 		</Item>
 	</Item>
