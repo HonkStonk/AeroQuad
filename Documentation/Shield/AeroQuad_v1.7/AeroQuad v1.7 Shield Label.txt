@@ -1,0 +1,5 @@
+AeroQuad v1.7 Shield
+www.AeroQuad.info
+
+R1 = 330 Ohm (orange,orange,brown,gold)
+R2 = 4.7 kOhm (yellow, purple,red,gold)
