@@ -21,7 +21,6 @@
 		</Item>
 		<Item Name="AeroQuadConfigurator.vi" Type="VI" URL="../AeroQuadConfigurator.vi"/>
 		<Item Name="AeroQuadConfigurator.ini" Type="Document" URL="../AeroQuadConfigurator.ini"/>
-		<Item Name="AeroQuad.ini" Type="Document" URL="../AeroQuad.ini"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Error Code Database.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Error Code Database.vi"/>
@@ -136,7 +135,7 @@
 				<Property Name="App_fileDescription" Type="Str">Executable
 2.2.0.0
 Copyright 2010 AeroQuad</Property>
-				<Property Name="App_fileVersion.build" Type="Int">3</Property>
+				<Property Name="App_fileVersion.build" Type="Int">4</Property>
 				<Property Name="App_fileVersion.major" Type="Int">2</Property>
 				<Property Name="App_fileVersion.minor" Type="Int">2</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
@@ -168,7 +167,7 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="Source[2].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
 				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[3].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[3].itemID" Type="Ref">/My Computer/AeroQuad.ini</Property>
+				<Property Name="Source[3].itemID" Type="Ref"></Property>
 				<Property Name="Source[3].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="SourceCount" Type="Int">4</Property>
 			</Item>
