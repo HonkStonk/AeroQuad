@@ -131,19 +131,20 @@
 				<Property Name="App_applicationGUID" Type="Str">{66C02D92-29AD-43F8-A6C3-B835B0C6FAEA}</Property>
 				<Property Name="App_applicationName" Type="Str">AeroQuadConfigurator.exe</Property>
 				<Property Name="App_autoIncrement" Type="Bool">true</Property>
-				<Property Name="App_companyName" Type="Str">AeroQuad</Property>
+				<Property Name="App_companyName" Type="Str">Carancho Engineering LLC</Property>
 				<Property Name="App_fileDescription" Type="Str">Executable
-2.2.0.0
+2.2.1.0
 Copyright 2010 AeroQuad</Property>
-				<Property Name="App_fileVersion.build" Type="Int">4</Property>
+				<Property Name="App_fileVersion.build" Type="Int">1</Property>
 				<Property Name="App_fileVersion.major" Type="Int">2</Property>
 				<Property Name="App_fileVersion.minor" Type="Int">2</Property>
+				<Property Name="App_fileVersion.patch" Type="Int">1</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
 				<Property Name="App_INI_GUID" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
 				<Property Name="App_INI_itemID" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
 				<Property Name="App_internalName" Type="Str">Executable</Property>
 				<Property Name="App_legalCopyright" Type="Str">Copyright 2010 AeroQuad</Property>
-				<Property Name="App_productName" Type="Str">Executable</Property>
+				<Property Name="App_productName" Type="Str">AeroQuad Configurator</Property>
 				<Property Name="Bld_buildSpecName" Type="Str">Executable</Property>
 				<Property Name="Bld_excludeLibraryItems" Type="Bool">true</Property>
 				<Property Name="Bld_excludePolymorphicVIs" Type="Bool">true</Property>
@@ -158,7 +159,7 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="Destination[2].path" Type="Path">../Executable</Property>
 				<Property Name="DestinationCount" Type="Int">3</Property>
 				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/Icon/Config-Tools.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{109B255A-F35C-4443-BAE6-20973D17DC21}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{0C6A40D3-451D-442F-893C-E50957DD2390}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
@@ -166,14 +167,12 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="Source[1].type" Type="Str">VI</Property>
 				<Property Name="Source[2].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
 				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
-				<Property Name="Source[3].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[3].itemID" Type="Ref"></Property>
-				<Property Name="Source[3].sourceInclusion" Type="Str">Include</Property>
-				<Property Name="SourceCount" Type="Int">4</Property>
+				<Property Name="SourceCount" Type="Int">3</Property>
 			</Item>
 			<Item Name="Installer" Type="Installer">
 				<Property Name="arpCompany" Type="Str">Carancho Engineering LLC</Property>
 				<Property Name="arpURL" Type="Str">http://www.AeroQuad.com</Property>
+				<Property Name="AutoIncrement" Type="Bool">true</Property>
 				<Property Name="BldInfo.Count" Type="Int">1</Property>
 				<Property Name="BldInfo[0].Dir" Type="Str">{911FD540-AAC1-4ACE-952C-14E573DC1E9B}</Property>
 				<Property Name="BldInfo[0].Tag" Type="Ref">/My Computer/Build Specifications/Executable</Property>
@@ -190,8 +189,8 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="DistID" Type="Str">{AC943C01-8EA8-4BFF-A46F-CC5E452DF24E}</Property>
 				<Property Name="DistParts.Count" Type="Int">2</Property>
 				<Property Name="DistPartsInfo[0].FlavorID" Type="Str">DefaultFull</Property>
-				<Property Name="DistPartsInfo[0].ProductID" Type="Str">{61912EB3-0D1B-4EDB-AD88-E96A3B851403}</Property>
-				<Property Name="DistPartsInfo[0].ProductName" Type="Str">NI LabVIEW Run-Time Engine 2009</Property>
+				<Property Name="DistPartsInfo[0].ProductID" Type="Str">{7312C1D1-70C8-400E-9CAF-AF1DD2763269}</Property>
+				<Property Name="DistPartsInfo[0].ProductName" Type="Str">NI LabVIEW Run-Time Engine 2009 SP1</Property>
 				<Property Name="DistPartsInfo[0].UpgradeCode" Type="Str">{1DA01FF3-1E36-4A14-802B-D195819E159B}</Property>
 				<Property Name="DistPartsInfo[1].FlavorID" Type="Str">_deployment_</Property>
 				<Property Name="DistPartsInfo[1].ProductID" Type="Str">{D6FC9FA9-3386-409A-8D62-EE026CA721D1}</Property>
@@ -218,12 +217,12 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="FileInfo[3].FileTag" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
 				<Property Name="FileInfo[3].Type" Type="Int">3</Property>
 				<Property Name="FileInfo[3].TypeID" Type="Ref">/My Computer/Build Specifications/Executable</Property>
-				<Property Name="InstSpecVersion" Type="Str">9008024</Property>
+				<Property Name="InstSpecVersion" Type="Str">9018011</Property>
 				<Property Name="LicenseFile" Type="Ref"></Property>
 				<Property Name="OSCheck" Type="Int">0</Property>
 				<Property Name="OSCheck_Vista" Type="Bool">false</Property>
 				<Property Name="ProductName" Type="Str">AeroQuad Configurator</Property>
-				<Property Name="ProductVersion" Type="Str">2.2.0</Property>
+				<Property Name="ProductVersion" Type="Str">2.2.2</Property>
 				<Property Name="ReadmeFile" Type="Ref"></Property>
 				<Property Name="ShortcutInfo.Count" Type="Int">1</Property>
 				<Property Name="ShortcutInfo[0].DirTag" Type="Str">{B9E310F1-839C-48B7-8CAE-33000780C26E}</Property>
