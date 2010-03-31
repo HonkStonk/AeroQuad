@@ -1545,13 +1545,13 @@
 				<Item Name="panelResize.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/tdmsutil.llb/panelResize.vi"/>
 				<Item Name="LVRectTypeDef.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/miscctls.llb/LVRectTypeDef.ctl"/>
 			</Item>
-			<Item Name="lvanlys.dll" Type="Document" URL="../../../../../../../Program Files/National Instruments/LabVIEW 2009/resource/lvanlys.dll"/>
 			<Item Name="Advapi32.dll" Type="Document" URL="Advapi32.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
 			<Item Name="kernel32.dll" Type="Document" URL="kernel32.dll">
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
+			<Item Name="lvanlys.dll" Type="Document" URL="../../../../../../../Program Files/National Instruments/LabVIEW 2009/resource/lvanlys.dll"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
 			<Item Name="Executable" Type="EXE">
@@ -1593,14 +1593,14 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="VersionInfoFileType" Type="Int">1</Property>
 				<Property Name="VersionInfoFileVersionBuild" Type="Int">1</Property>
 				<Property Name="VersionInfoFileVersionMajor" Type="Int">2</Property>
-				<Property Name="VersionInfoFileVersionMinor" Type="Int">2</Property>
-				<Property Name="VersionInfoFileVersionPatch" Type="Int">1</Property>
+				<Property Name="VersionInfoFileVersionMinor" Type="Int">3</Property>
 				<Property Name="VersionInfoInternalName" Type="Str">Executable</Property>
 				<Property Name="VersionInfoLegalCopyright" Type="Str">Copyright 2010 AeroQuad</Property>
 				<Property Name="VersionInfoProductName" Type="Str">AeroQuad Configurator</Property>
 			</Item>
 			<Item Name="Installer" Type="Installer">
 				<Property Name="arpCompany" Type="Str">Carancho Engineering LLC</Property>
+				<Property Name="arpContact" Type="Str">Ted Carancho</Property>
 				<Property Name="arpURL" Type="Str">http://www.AeroQuad.com</Property>
 				<Property Name="AutoIncrement" Type="Bool">true</Property>
 				<Property Name="BuildLabel" Type="Str">Installer</Property>
@@ -1649,7 +1649,7 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="OSCheck" Type="Int">0</Property>
 				<Property Name="OSCheck_Vista" Type="Bool">false</Property>
 				<Property Name="ProductName" Type="Str">AeroQuad Configurator</Property>
-				<Property Name="ProductVersion" Type="Str">2.2.2</Property>
+				<Property Name="ProductVersion" Type="Str">2.3.1</Property>
 				<Property Name="ReadmeFile" Type="Ref"></Property>
 				<Property Name="ShortcutInfo.Count" Type="Int">1</Property>
 				<Property Name="ShortcutInfo[0].DirTag" Type="Str">{B9E310F1-839C-48B7-8CAE-33000780C26E}</Property>
