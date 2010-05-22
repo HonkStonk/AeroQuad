@@ -125,6 +125,7 @@
 				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
 			<Item Name="lvanlys.dll" Type="Document" URL="../../../../../../../../Program Files/National Instruments/LabVIEW 2009/resource/lvanlys.dll"/>
+			<Item Name="visarc" Type="Document" URL="../../../../../../../../Program Files/National Instruments/LabVIEW 2009/resource/visarc"/>
 			<Item Name="_LaunchHelp.vi" Type="VI" URL="/&lt;helpdir&gt;/_LaunchHelp.vi"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build">
@@ -134,11 +135,12 @@
 				<Property Name="App_autoIncrement" Type="Bool">true</Property>
 				<Property Name="App_companyName" Type="Str">Carancho Engineering LLC</Property>
 				<Property Name="App_fileDescription" Type="Str">Executable
-2.2.1.0
+2.3.1.0
 Copyright 2010 AeroQuad</Property>
 				<Property Name="App_fileVersion.build" Type="Int">1</Property>
 				<Property Name="App_fileVersion.major" Type="Int">2</Property>
 				<Property Name="App_fileVersion.minor" Type="Int">3</Property>
+				<Property Name="App_fileVersion.patch" Type="Int">1</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
 				<Property Name="App_INI_GUID" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
 				<Property Name="App_INI_itemID" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
@@ -159,7 +161,7 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="Destination[2].path" Type="Path">../Executable</Property>
 				<Property Name="DestinationCount" Type="Int">3</Property>
 				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/Icon/Config-Tools.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{B9197BB1-4517-462C-A679-92D5B4DECC22}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{6DAD1DC2-968C-42FD-90F3-C559AFE0314B}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
@@ -223,7 +225,7 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="OSCheck" Type="Int">0</Property>
 				<Property Name="OSCheck_Vista" Type="Bool">false</Property>
 				<Property Name="ProductName" Type="Str">AeroQuad Configurator</Property>
-				<Property Name="ProductVersion" Type="Str">2.3.1</Property>
+				<Property Name="ProductVersion" Type="Str">2.3.2</Property>
 				<Property Name="ReadmeFile" Type="Ref"></Property>
 				<Property Name="ShortcutInfo.Count" Type="Int">1</Property>
 				<Property Name="ShortcutInfo[0].DirTag" Type="Str">{B9E310F1-839C-48B7-8CAE-33000780C26E}</Property>
@@ -232,7 +234,7 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="ShortcutInfo[0].Name" Type="Str">AeroQuad Configurator</Property>
 				<Property Name="ShortcutInfo[0].SubDir" Type="Str">AeroQuad Configurator</Property>
 				<Property Name="UpgradeCode" Type="Str">{24029CB6-D54A-4D61-8023-884E5516E281}</Property>
-				<Property Name="WindowMessage" Type="Str">Thanks for using the AeroQuad Configurator.  The Configurator is used to setup your AeroQuad.  If you have any questions or suggestions for improvement for the Configurator, please post them at http://forum.AeroQuad.info</Property>
+				<Property Name="WindowMessage" Type="Str">Thanks for using the AeroQuad Configurator.  The Configurator is used to setup your AeroQuad.  If you have any questions or suggestions for improvement for the Configurator, please post them at http://AeroQuad.com/forum.php</Property>
 				<Property Name="WindowTitle" Type="Str">AeroQuad Configurator</Property>
 			</Item>
 		</Item>
