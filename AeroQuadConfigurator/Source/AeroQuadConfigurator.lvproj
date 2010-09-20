@@ -132,10 +132,10 @@
 				<Property Name="App_applicationName" Type="Str">AeroQuadConfigurator.exe</Property>
 				<Property Name="App_companyName" Type="Str">Carancho Engineering LLC</Property>
 				<Property Name="App_fileDescription" Type="Str">Executable
-2.4.0.0
+2.5.0.0
 Copyright 2010 AeroQuad</Property>
 				<Property Name="App_fileVersion.major" Type="Int">2</Property>
-				<Property Name="App_fileVersion.minor" Type="Int">4</Property>
+				<Property Name="App_fileVersion.minor" Type="Int">5</Property>
 				<Property Name="App_INI_aliasGUID" Type="Str">{0E512C75-3384-479B-B8B3-5B0BF1B031D9}</Property>
 				<Property Name="App_INI_GUID" Type="Str">{95AB525D-9CC0-48EA-84D7-D36AB922FE00}</Property>
 				<Property Name="App_INI_itemID" Type="Ref">/My Computer/AeroQuadConfigurator.ini</Property>
@@ -156,7 +156,7 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="Destination[2].path" Type="Path">../Executable</Property>
 				<Property Name="DestinationCount" Type="Int">3</Property>
 				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/Icon/Config-Tools.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{5EE36208-4557-4864-90BB-58BA06635DC6}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{C848D100-4BAC-4A05-9845-9D5C7CA4F4EE}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/AeroQuadConfigurator.vi</Property>
@@ -220,7 +220,7 @@ Copyright 2010 AeroQuad</Property>
 				<Property Name="OSCheck" Type="Int">0</Property>
 				<Property Name="OSCheck_Vista" Type="Bool">false</Property>
 				<Property Name="ProductName" Type="Str">AeroQuad Configurator</Property>
-				<Property Name="ProductVersion" Type="Str">2.4.10</Property>
+				<Property Name="ProductVersion" Type="Str">2.5.3</Property>
 				<Property Name="ReadmeFile" Type="Ref"></Property>
 				<Property Name="ShortcutInfo.Count" Type="Int">1</Property>
 				<Property Name="ShortcutInfo[0].DirTag" Type="Str">{B9E310F1-839C-48B7-8CAE-33000780C26E}</Property>
