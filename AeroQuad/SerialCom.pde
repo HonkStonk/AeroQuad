@@ -89,14 +89,19 @@ void readSerialCommand() {
       levelOff = readFloatSerial();
       break;
     case 'I': // Receiver altitude hold PID
-      PID[ALTITUDE].P = readFloatSerial();
-      PID[ALTITUDE].I = readFloatSerial();
-      PID[ALTITUDE].D = readFloatSerial();
-      PID[ALTITUDE].lastPosition = 0;
-      PID[ALTITUDE].integratedError = 0;
-      minThrottleAdjust = readFloatSerial();
-      maxThrottleAdjust = readFloatSerial();
-      altitude.setSmoothFactor(readFloatSerial());
+      #ifdef AltitudeHold
+        PID[ALTITUDE].P = readFloatSerial();
+        PID[ALTITUDE].I = readFloatSerial();
+        PID[ALTITUDE].D = readFloatSerial();
+        PID[ALTITUDE].lastPosition = 0;
+        PID[ALTITUDE].integratedError = 0;
+        minThrottleAdjust = readFloatSerial();
+        maxThrottleAdjust = readFloatSerial();
+        altitude.setSmoothFactor(readFloatSerial());
+        PID[ZDAMPENING].P = readFloatSerial();
+        PID[ZDAMPENING].I = readFloatSerial();
+        PID[ZDAMPENING].D = readFloatSerial();
+      #endif
       break;
     case 'K': // Receive data filtering values
       gyro.setSmoothFactor(readFloatSerial());
@@ -185,17 +190,11 @@ void sendSerialTelemetry() {
   update = 0;
   switch (queryType) {
   case '=': // Reserved debug command to view any variable from Serial Monitor
-    /*Serial.print(accel.getData(ROLL));
-    comma();
-    Serial.print(accel.getData(PITCH));
-    comma();
-    Serial.print(accel.getData(ZAXIS));
+    Serial.print(accel.getZaxis());
     comma();
     Serial.print(accel.getOneG());
     comma();
-    Serial.print(accel.getData(ZAXIS) - accel.getOneG());
-    comma();*/
-    Serial.print(accel.getZaxis());
+    Serial.print(zDampening);
     comma();
     Serial.print(throttleAdjust);
     Serial.println();
@@ -267,18 +266,44 @@ void sendSerialTelemetry() {
     Serial.println(levelOff);
     queryType = 'X';
     break;
-  case 'J': // Spare
-    Serial.print(PID[ALTITUDE].P);
-    comma();
-    Serial.print(PID[ALTITUDE].I);
-    comma();
-    Serial.print(PID[ALTITUDE].D);
-    comma();
-    Serial.print(minThrottleAdjust);
-    comma();
-    Serial.print(maxThrottleAdjust);
-    comma();
-    Serial.println(altitude.getSmoothFactor());
+  case 'J': // Altitude Hold
+    #ifdef AltitudeHold
+      Serial.print(PID[ALTITUDE].P);
+      comma();
+      Serial.print(PID[ALTITUDE].I);
+      comma();
+      Serial.print(PID[ALTITUDE].D);
+      comma();
+      Serial.print(minThrottleAdjust);
+      comma();
+      Serial.print(maxThrottleAdjust);
+      comma();
+      Serial.print(altitude.getSmoothFactor());
+      comma();
+      Serial.print(PID[ZDAMPENING].P);
+      comma();
+      Serial.print(PID[ZDAMPENING].I);
+      comma();
+      Serial.println(PID[ZDAMPENING].D);
+    #else
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.println('0');
+    #endif
     queryType = 'X';
     break;
   case 'L': // Send data filtering values
