@@ -167,3 +167,187 @@ void updateControls() {
   }
 }
 
+// ***************************************************
+// Serial communication with CHR-6DM on Mega Serial 1
+// BAUD on Serial1: 115200 (using Arduino0021)
+// Broadcast setting: 100Hz (conf. setting 73)
+// Active Channels (in order): YAW, PITCH, ROLL, ACCEL_Z
+// Coding by Lokling, Spaghetti by Honk
+// ***************************************************
+
+#ifdef ExternalAHRS
+
+float CHR_yawClean, CHR_pitchClean, CHR_rollClean, CHR_accel_zClean, CHR_accelZ_Zero, Current_Vertical_Speed, rawCHR_accel_z, zeroedAccelerationCHR, CHR_pitchRAW, CHR_rollRAW, CHRzeroPitch, CHRzeroRoll, filteredCHR_accel_z;
+double angleFactor;
+int CHR_yawWord, CHR_pitchWord, CHR_rollWord, CHR_accel_zWord;
+
+//#define COVARZ 2.5F
+
+#define CHR_MESSAGE_LENGTH 16 //in bytes
+
+//byte 1 contains 's'
+//byte 2 contains 'n'
+//byte 3 contains 'p'
+//byte 4 contains PT, packet type
+//byte 5 contains N (the number of data bytes to expect)
+//FIRST DATA BYTE IS BYTE NUMBER 6
+//byte 6 and 7 contains info about active channels
+//byte 8 and 9 contains YAW
+//byte 10 and 11 contains PITCH
+//byte 12 and 13 contains ROLL
+//byte 14 and 15 contains ACCEL_Z
+//byte 16 and 17 contains CHK_SUM (N+6/N+7)
+
+#define CHR_YAW_FACTOR 0.0109863F //from datasheet
+#define CHR_PITCH_FACTOR 0.0109863F
+#define CHR_ROLL_FACTOR 0.0109863F
+#define CHR_ACCEL_Z_FACTOR 0.106812F
+
+void calibrateCHR6DManlge() {
+CHRzeroPitch = CHR_pitchRAW;
+CHRzeroRoll = CHR_rollRAW;
+}
+
+void zeroCHR6DMaccelerometer() { //call of this assumes quad is not in any movement
+CHR_accelZ_Zero = 0;
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z;
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  delay(10);
+  CHR_accelZ_Zero += rawCHR_accel_z; 
+  
+  CHR_accelZ_Zero *= 0.1;
+  
+  Current_Vertical_Speed = 0;
+}
+
+bool readDataPacket(){
+
+  //FIRST DATA BYTE IS BYTE NUMBER 6
+    //byte 6 and 7 contains info about active channels
+    //byte 8 and 9 contains YAW
+    //byte 10 and 11 contains PITCH
+    //byte 12 and 13 contains ROLL
+    //byte 14 and 15 contains ACCEL_Z
+    //byte 16 and 17 contains CHK_SUM (N+6/N+7) //N is expected to be 10
+
+  //YAW
+  int yaw1 = (int)Serial1.read();
+  int yaw2 = (int)Serial1.read();
+  if (yaw1==-1 || yaw2==-1) return false;
+  int yawValue =  yaw1<<8;
+  yawValue|= yaw2;
+
+
+  //PITCH
+    int pitch1 = (int)Serial1.read();
+    int pitch2 = (int)Serial1.read();
+    if (pitch1==-1 || pitch2==-1) return false;
+    int pitchValue =  pitch1<<8;
+    pitchValue|= pitch2;
+
+  //ROLL
+    int roll1 = (int)Serial1.read();
+    int roll2 = (int)Serial1.read();
+    if (roll1==-1 || roll2==-1) return false;
+    int rollValue =  roll1<<8;
+    rollValue|= roll2;
+
+  //Accel Z
+    int z1 = (int)Serial1.read();
+    int z2 = (int)Serial1.read();
+    if (z1==-1 || z2==-1) return false;
+    int zValue =  z1<<8;
+    zValue|= z2;
+
+    //Checksum
+    int checksum1 = (int)Serial1.read();
+    int checksum2 = (int)Serial1.read();
+    if (checksum1==-1 || checksum2==-1) return false;
+    int checksumValue =  checksum1<<8;
+    checksumValue|= checksum2;
+
+    // We read the whole packet without issues, now copy values to globals
+
+    // Raw values
+    CHR_yawWord = yawValue;
+    CHR_pitchWord = pitchValue;
+    CHR_rollWord = rollValue;
+    CHR_accel_zWord = zValue;
+
+
+    // Scaled values
+          CHR_yawClean = (CHR_yawWord * CHR_YAW_FACTOR);
+          CHR_pitchRAW = (CHR_pitchWord * CHR_PITCH_FACTOR); //RAW
+          CHR_rollRAW = (CHR_rollWord * CHR_ROLL_FACTOR); //RAW
+          rawCHR_accel_z = (CHR_accel_zWord * CHR_ACCEL_Z_FACTOR); //I get the -500 milliG or something
+    
+    CHR_pitchClean = CHR_pitchRAW - CHRzeroPitch; // CHR_pitchRAW is the read in -5 or something CHRzeroPitch is that too, the offset...
+    CHR_rollClean = CHR_rollRAW - CHRzeroRoll;
+   
+    filteredCHR_accel_z = 0.5*(smooth(rawCHR_accel_z,  filteredCHR_accel_z, 0.1)); 
+    //angleFactor = (((cos(radians(CHR_rollClean)))) * (cos(radians(CHR_pitchClean)))); //I get the gravity vector, 1.0 if board level, if both 45 deg tilt, 0.5*0.5 = 0.25
+    
+          //CHR_accel_zClean = (rawCHR_accel_z / angleFactor);//get true milliG from applying the gravity vector
+
+    return true;
+}
+
+
+bool syncToHeader(){
+  // Bail out if theres not two full packets in buffer to ensure we can read one full, not updating the sensor reading globals
+  // - it might copy in garbage from the buffer, ie  a previous halfread buffer
+  if (Serial1.available() < 17*2 ) return false; 
+
+  // Check for each char at a time,
+  // so that if we read the last byte of a packet next loop will start at beginnin of next packet
+
+  //byte 1 contains 's'
+  //byte 2 contains 'n'
+  //byte 3 contains 'p'
+  //byte 4 contains PT, packet type
+  //byte 5 contains N (the number of data bytes to expect)
+   
+
+  if (Serial1.read() != 's') return false;
+  if (Serial1.read() != 'n') return false;
+  if (Serial1.read() != 'p') return false;
+  if (Serial1.read() != 0xB7) return false; // byte 4 element 3 (PT_BYTE)
+  if (Serial1.read() != 0x0A) return false; // byte 5 element 4 (N_BYTE) expect 10 dec checks out!
+  if (Serial1.read() != 0xE0) return false; // byte6(0xE0) means yaw pitch roll(11100000) and accel (00000010)
+  if (Serial1.read() != 0x02) return false;  // byte7(0x02)
+  return true; // Yay - we've read a full header and can move on.
+}
+
+bool readCHR6DM() {
+
+
+    if (syncToHeader()==false) return false;
+
+    bool wasSuccessFullRead = readDataPacket();
+
+    // At this time, if we have a successfully read packet, we can afford to flush the input buffer discarding its contents if needed to keep up:
+    if (wasSuccessFullRead){
+        Serial1.flush();
+    }
+
+    return wasSuccessFullRead;
+
+}
+
+#endif

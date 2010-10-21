@@ -38,7 +38,9 @@ void readPilotCommands() {
       gyro.calibrate(); // defined in Gyro.h
       accel.calibrate(); // defined in Accel.h
       zeroIntegralError();
-      motors.pulseMotors(3);
+      calibrateCHR6DManlge();
+      zeroCHR6DMaccelerometer();      
+      ledsOFF(); ledCW(); ledsON();//motors.pulseMotors(3);
       #ifdef ArduCopter
         zero_ArduCopter_ADC();
       #endif
@@ -97,12 +99,12 @@ void readPilotCommands() {
   
   #ifdef AltitudeHold
     // Check if altitude hold is enabled
-    if (receiver.getRaw(AUX) < 1400) {
+    //if (receiver.getRaw(AUX) < 1400) {
       // return to preset altitude or land?
-    }
-    else if (receiver.getRaw(AUX) < 1700) {
+    //}
+         if (receiver.getRaw(AUX) < 1500) {
       if (storeAltitude == ON) {
-        holdAltitude = altitude.getData();
+        holdAltitude = mergedBAROalt;  
         PID[ALTITUDE].integratedError = 0;
         storeAltitude = OFF;
       }

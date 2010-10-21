@@ -195,6 +195,19 @@ void sendSerialTelemetry() {
     Serial.print(receiver.getData(THROTTLE));
     comma();
     Serial.print(motors.getMotorCommand(RIGHT));*/
+    //Serial.print(rawCHR_accel_z);
+    //comma();
+    //Serial.print(CHR_accelZ_Zero);
+    //comma();
+    Serial.print(accel.getData(ZAXIS)-105);//  filtered //goes wrong way for regulation!
+    comma();
+    //Serial.print(accel.getFlightData(ZAXIS));//  unfiltered
+    //comma();
+    Serial.print(filteredCHR_accel_z + 49.3); //filteredCHR_accel_z , rawCHR_accel_z //is zero'd and goes right way for regulation!
+    comma();
+    Serial.print((filteredCHR_accel_z + 49.3) - (accel.getData(ZAXIS)-105)); //going down: plus minus minus, going up: minus minus plus THIS IS THE REGULATION TERM!!!!!!!!!!!!!!!
+    comma();
+    Serial.println(throttleAdjust); //now this is 2 baro's and 2 accels!!!!!! :)
     //queryType = 'X';
     break;
   case 'B': // Send roll and pitch gyro PID values
@@ -309,16 +322,16 @@ void sendSerialTelemetry() {
       comma();
     }
     for (axis = ROLL; axis < LASTAXIS; axis++) {
-      Serial.print(accel.getData(axis));
+      Serial.print(accel.getData(axis));//  ZAXIS
       comma();
     }
     for (axis = ROLL; axis < YAW; axis++) {
       Serial.print(levelAdjust[axis]);
       comma();
     }
-    Serial.print(flightAngle.getData(ROLL));
+    Serial.print(CHR_rollClean); //CHR_rollClean flightAngle.getData(ROLL)
     comma();
-    Serial.print(flightAngle.getData(PITCH));
+    Serial.print(CHR_pitchClean); //CHR_pitchClean flightAngle.getData(PITCH)
     Serial.println();
     break;
   case 'R': // Send raw sensor data
@@ -364,7 +377,7 @@ void sendSerialTelemetry() {
       Serial.print(1000);
     #ifdef HeadingMagHold
       comma();
-      Serial.print(compass.getAbsoluteHeading());
+      Serial.print(CHR_yawClean); //CHR_yawClean compass.getAbsoluteHeading()
     #endif
     #ifdef AltitudeHold
       comma();
@@ -501,3 +514,4 @@ void printInt(int data) {
   Serial.print(msb, BYTE);
   Serial.print(lsb, BYTE);
 }
+

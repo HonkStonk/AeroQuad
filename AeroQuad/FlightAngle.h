@@ -415,8 +415,8 @@ public:
       Ki_ROLLPITCH = 0.00000015;
     #endif
     #ifdef AeroQuadMega_Wii
-      Kp_ROLLPITCH = 0.060;
-      Ki_ROLLPITCH = 0.0000005;
+      Kp_ROLLPITCH = 0.11; //HONK men dubbling då? 0.22 och 0.001503
+      Ki_ROLLPITCH = 0.0007515; //0.0000005; Kp/Kp factor = 146.2821
     #endif
     #if !defined(ArduCopter) & !defined(AeroQuadMega_Wii)
       Kp_ROLLPITCH = 0.010;

@@ -34,8 +34,8 @@ void flightControl(void) {
  
   if (flightMode == STABLE) {
     // Stable Mode
-    levelAdjust[ROLL] = (receiver.getAngle(ROLL) - flightAngle.getData(ROLL)) * PID[LEVELROLL].P;
-    levelAdjust[PITCH] = (receiver.getAngle(PITCH) + flightAngle.getData(PITCH)) * PID[LEVELPITCH].P;
+    levelAdjust[ROLL] = (receiver.getAngle(ROLL) - CHR_rollClean) * PID[LEVELROLL].P; // CHR_rollClean flightAngle.getData(ROLL)
+    levelAdjust[PITCH] = (receiver.getAngle(PITCH) + CHR_pitchClean) * PID[LEVELPITCH].P; // CHR_pitchClean flightAngle.getData(PITCH)
     // Check if pilot commands are not in hover, don't auto trim
     if ((abs(receiver.getTrimData(ROLL)) > levelOff) || (abs(receiver.getTrimData(PITCH)) > levelOff)) {
       zeroIntegralError();
@@ -44,8 +44,8 @@ void flightControl(void) {
       #endif
     }
     else {
-      PID[LEVELROLL].integratedError = constrain(PID[LEVELROLL].integratedError + (((receiver.getAngle(ROLL) - flightAngle.getData(ROLL)) * G_Dt) * PID[LEVELROLL].I), -levelLimit, levelLimit);
-      PID[LEVELPITCH].integratedError = constrain(PID[LEVELPITCH].integratedError + (((receiver.getAngle(PITCH) + flightAngle.getData(PITCH)) * G_Dt) * PID[LEVELROLL].I), -levelLimit, levelLimit);
+      PID[LEVELROLL].integratedError = constrain(PID[LEVELROLL].integratedError + (((receiver.getAngle(ROLL) - CHR_rollClean) * G_Dt) * PID[LEVELROLL].I), -levelLimit, levelLimit); // CHR flightAngle.getData(ROLL)
+      PID[LEVELPITCH].integratedError = constrain(PID[LEVELPITCH].integratedError + (((receiver.getAngle(PITCH) + CHR_pitchClean) * G_Dt) * PID[LEVELROLL].I), -levelLimit, levelLimit); // CHR flightAngle.getData(PITCH)
       #if defined(AeroQuad_v18) || defined(AeroQuadMega_v2)
         digitalWrite(LED2PIN, HIGH);
       #endif
@@ -56,10 +56,10 @@ void flightControl(void) {
     
   // ***************************** Update Yaw ***************************
   if (headingHoldConfig == ON) {
-    gyro.calculateHeading();
+    //gyro.calculateHeading(); fubar that :P
 
     #ifdef HeadingMagHold
-      heading = compass.getHeading();
+      heading = CHR_yawClean; // CHR CHR_yawClean compass.getHeading();
     #else
       heading = gyro.getHeading();
     #endif
@@ -96,10 +96,17 @@ void flightControl(void) {
     
   // ****************************** Altitude Adjust *************************
   #ifdef AltitudeHold
-    if (altitudeHold == ON)
-      throttleAdjust = constrain(updatePID(holdAltitude, altitude.getData(), &PID[ALTITUDE]), minThrottleAdjust, maxThrottleAdjust);
-    else
+    if (altitudeHold == ON) {
+     //zeroedAccelerationCHR = rawCHR_accel_z - CHR_accelZ_Zero; //now the order is: quad going down = acceleration positive, quad goes up = acceleration negative, finished to get into motor commands just multiply it in
+    // (accel.getData(ZAXIS)-105) //this is 0 when steady, negative when moving down, positive when moving up
+    // (filteredCHR_accel_z + 545) //
+    //(filteredCHR_accel_z + 49.3) - (accel.getData(ZAXIS)-105);
+      throttleAdjust = constrain(updatePID(holdAltitude, mergedBAROalt, &PID[ALTITUDE]), minThrottleAdjust, maxThrottleAdjust) + constrain(((filteredCHR_accel_z + 49.3) - (accel.getData(ZAXIS)-105)),-50,50); //two baro's and 2 accels!!! :)
+    }
+    else {
       throttleAdjust = 0;
+     // Current_Vertical_Speed = 0;
+    }
   #endif
 
   // *********************** Calculate Motor Commands **********************
@@ -112,10 +119,10 @@ void flightControl(void) {
     #endif
     #ifdef XConfig
       // Front = Front/Right, Back = Left/Rear, Left = Front/Left, Right = Right/Rear 
-      motors.setMotorCommand(FRONT, receiver.getData(THROTTLE) - motors.getMotorAxisCommand(PITCH) + motors.getMotorAxisCommand(ROLL) - motors.getMotorAxisCommand(YAW) + throttleAdjust);
-      motors.setMotorCommand(RIGHT, receiver.getData(THROTTLE) - motors.getMotorAxisCommand(PITCH) - motors.getMotorAxisCommand(ROLL) + motors.getMotorAxisCommand(YAW) + throttleAdjust);
-      motors.setMotorCommand(LEFT, receiver.getData(THROTTLE) + motors.getMotorAxisCommand(PITCH) + motors.getMotorAxisCommand(ROLL) + motors.getMotorAxisCommand(YAW) + throttleAdjust);
-      motors.setMotorCommand(REAR, receiver.getData(THROTTLE) + motors.getMotorAxisCommand(PITCH) - motors.getMotorAxisCommand(ROLL) - motors.getMotorAxisCommand(YAW) + throttleAdjust);
+      motors.setMotorCommand(FRONT, ((((receiver.getData(THROTTLE) + throttleAdjust)*0.70)+300) - motors.getMotorAxisCommand(PITCH) + motors.getMotorAxisCommand(ROLL) - motors.getMotorAxisCommand(YAW))); 
+      motors.setMotorCommand(RIGHT, ((((receiver.getData(THROTTLE) + throttleAdjust)*0.70)+300) - motors.getMotorAxisCommand(PITCH) - motors.getMotorAxisCommand(ROLL) + motors.getMotorAxisCommand(YAW)));
+      motors.setMotorCommand(LEFT, ((((receiver.getData(THROTTLE) + throttleAdjust)*0.70)+300) + motors.getMotorAxisCommand(PITCH) + motors.getMotorAxisCommand(ROLL) + motors.getMotorAxisCommand(YAW)));
+      motors.setMotorCommand(REAR, ((((receiver.getData(THROTTLE) + throttleAdjust)*0.70)+300) + motors.getMotorAxisCommand(PITCH) - motors.getMotorAxisCommand(ROLL) - motors.getMotorAxisCommand(YAW)));
     #endif
     #ifdef MultipilotI2C
       // if using Mixertable need only Throttle MotorAxixCommand Roll,Pitch,Yaw Yet set

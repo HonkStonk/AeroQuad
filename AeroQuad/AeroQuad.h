@@ -26,7 +26,7 @@
 // Flight Software Version
 #define VERSION 2.1
 
-#define BAUD 115200
+#define BAUD 115200l
 #define LEDPIN 13
 #define ON 1
 #define OFF 0
@@ -160,8 +160,8 @@ float angleDeg(byte axis);
 // Camera stabilization variables
 // Note: stabilization camera software is still under development
 #ifdef Camera
-  #define ROLLCAMERAPIN 8
-  #define PITCHCAMERAPIN 13
+  #define ROLLCAMERAPIN 6
+  #define PITCHCAMERAPIN 7
   // map +/-90 degrees to 1000-2000
   float mCamera = 5.556;
   float bCamera = 1500;
@@ -181,17 +181,68 @@ byte armed = OFF;
 byte safetyCheck = OFF;
 byte update = 0;
 
+// Batmon
+#define BATMONPIN 0
+#define BATTOADFACTOR 0.012988F //A/D bit * 0.012988 if aref is 3.3V and 3S lipo is divided 10k/3k3 to GND
+#define RL_LED 60 //61 is FL
+#define RR_LED 58 
+#define FR_LED 59 
+#define FL_LED 61 
+#define BATLOWLEVEL 10
+#define LEDDELAY 200
+
+void ledCW(void){ 
+  digitalWrite(RL_LED, HIGH);
+  delay(LEDDELAY);
+  digitalWrite(RL_LED, LOW);
+  digitalWrite(RR_LED, HIGH);
+  delay(LEDDELAY);
+  digitalWrite(RR_LED, LOW);
+  digitalWrite(FR_LED, HIGH);
+  delay(LEDDELAY);
+  digitalWrite(FR_LED, LOW);
+  digitalWrite(FL_LED, HIGH);
+  delay(LEDDELAY);
+  digitalWrite(FL_LED, LOW); 
+};
+void ledsON(void){
+  digitalWrite(RL_LED, HIGH);
+  digitalWrite(RR_LED, HIGH);
+  digitalWrite(FR_LED, HIGH);
+  digitalWrite(FL_LED, HIGH); 
+};
+void ledsOFF(void){
+  digitalWrite(RL_LED, LOW);
+  digitalWrite(RR_LED, LOW);
+  digitalWrite(FR_LED, LOW);
+  digitalWrite(FL_LED, LOW); 
+};
+void toggleLEDs(void){
+ byte ledState;
+     if (ledState == LOW) ledState = HIGH;
+     else ledState = LOW;
+     digitalWrite(RL_LED, ledState);
+     digitalWrite(RR_LED, ledState);
+     digitalWrite(FR_LED, ledState);
+     digitalWrite(FL_LED, ledState); 
+};
+float batMonVoltage = 0;
+void checkBattery (void){
+  batMonVoltage = analogRead(BATMONPIN) * BATTOADFACTOR;
+}
 /**************************************************************/
 /******************* Loop timing parameters *******************/
 /**************************************************************/
 #define RECEIVERLOOPTIME 20
-#define TELEMETRYLOOPTIME 100
+#define TELEMETRYLOOPTIME 50 //should be 100
 #define FASTTELEMETRYTIME 10
 #define CONTROLLOOPTIME 2
 #define CAMERALOOPTIME 20
 #define AILOOPTIME 2
 #define COMPASSLOOPTIME 100
 #define ALTITUDELOOPTIME 26
+#define EXTERNALAHRSLOOPTIME 10 //we read it in 100Hz since it comes in in 100Hz
+#define BATMONLOOPTIME 1000
 
 float AIdT = AILOOPTIME / 1000.0;
 float controldT = CONTROLLOOPTIME / 1000.0;
@@ -209,6 +260,8 @@ unsigned long fastTelemetryTime = 0;
 unsigned long autoZeroGyroTime = 0;
 unsigned long compassTime = 25;
 unsigned long altitudeTime = 0;
+unsigned long externalAHRStime = 5; //make offset to telemetryTime
+unsigned long batMonTime = 0;
 
 /**************************************************************/
 /********************** Debug Parameters **********************/
