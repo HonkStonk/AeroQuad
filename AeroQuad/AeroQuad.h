@@ -213,7 +213,7 @@ byte update = 0;
 /******************* Loop timing parameters *******************/
 /**************************************************************/
 #define RECEIVERLOOPTIME 20
-#define TELEMETRYLOOPTIME 100
+#define TELEMETRYLOOPTIME 50
 #define FASTTELEMETRYTIME 10
 #define CONTROLLOOPTIME 2
 #define CAMERALOOPTIME 20
