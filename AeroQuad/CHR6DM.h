@@ -207,40 +207,54 @@ public:
     Packet readPacket()  {
 
         if (!syncToHeader()){
+            //Serial.println("Not synced to header");
             return Packet(NO_DATA_PACKET,1);
         }
 
 
-        int packetType =  Serial1.read() ;
-        int dataBytes  =  Serial1.read() ;
+        int packetType =  blockingRead();
+        int dataBytes  =  blockingRead();
 
         int calculatedChecksum = HEADER_CHECKSUM + packetType + dataBytes;
 
         int  length = dataBytes+1;
-        int* buffer = new int[length]; //TODO deaalloc
+        int buffer[length]; 
         buffer[0] = packetType;
 
         for (int i = 1; i <= dataBytes ;i++ ){
-            buffer[i] = Serial1.read() ;
+            buffer[i] = blockingRead() ;
             calculatedChecksum+=buffer[i];
         }
 
-        int high =  Serial1.read();
-        int low =   Serial1.read();
+        int high =  blockingRead();
+        int low =   blockingRead();
 
         int packetChecksum = bytesToSignedShort(high,low);
 
         if (calculatedChecksum!=packetChecksum) {
+            //Serial.print("Bad checksum ");Serial.print(" calculated="); Serial.print(calculatedChecksum);Serial.print(" actual="); Serial.println(packetChecksum);
             return Packet(FAILED_CHECKSUM_PACKET,1);
         }
 
         return Packet(buffer,length);
 
     }
+    
+    int blockingRead(){
+        int read=-1;
+
+         long starttime = millis();
+         while(read==-1 && (millis()-starttime)<100){
+            read = Serial1.read();
+            //Serial.println(read);
+         }
+
+         return read;
+    }
 
     bool syncToHeader()  {
         while (Serial1.available()>0){
-            if (Serial1.read()==PACKET_HEADER[0] && Serial1.read()==PACKET_HEADER[1] && Serial1.read()==PACKET_HEADER[2] ) return true;
+            if (blockingRead()==PACKET_HEADER[0] && blockingRead()==PACKET_HEADER[1] && blockingRead()==PACKET_HEADER[2] ) return true;
         }
 
         return false;
@@ -251,8 +265,9 @@ public:
         sendPacket(RESET_TO_FACTORY);
     }
 
-     void setActiveChannels(int channels)  {
+     bool setActiveChannels(int channels)  {
         sendPacket(SET_ACTIVE_CHANNELS,(int[]){channels},1);
+        return waitForAck(1000);
     }
 
 
@@ -287,19 +302,30 @@ public:
 
      bool requestAndReadPacket() {
         sendPacket(GET_DATA);
-        return waitFor(SENSOR_DATA, 1000);
-    }
+        return waitFor(SENSOR_DATA, 100);
+     }
 
 
      bool waitFor(int command,int timeout) {
-        long startTime = millis();
-        while(millis()-startTime<timeout){
+
+       long startTime = millis();
+        while((millis()-startTime)<timeout){
             Packet packet  = readPacket();
-            if (packet.buffer[0]==command){
-                return decodePacket(packet);
+
+            if (packet.buffer[0]>1){
+                bool result = decodePacket(packet);
+
+                if (packet.buffer[0]==command){
+                    return result;
+                } /*else {
+                    Serial.println("Didnt get the expected.. looping");
+                }
+                */
             }
+
         }
 
+        //Serial.println("Timed out !");
         return false;
     }
 
@@ -345,13 +371,29 @@ public:
 
                 if (index!=packet.lenght){
                     //TODO - Raise error
+                    Serial.println("Recevied pad length packet!");
                 }
 
 
                 return true;}
             case STATUS_REPORT:
+                 Serial.println("Received status report");
                  return true;
+            case BAD_CHECKSUM:
+                 Serial.println("CHR6DM reported bad checksum!");
+                 return true;
+            case NO_DATA:
+            case FAILED_CHECKSUM:
+                 return false;
+            case COMMAND_COMPLETE:
+                Serial.println("COMMAND_COMPLETE");
+                return true;
+            case COMMAND_FAILED:
+                Serial.println("COMMAND_FAILED");
+                return false;
             default:
+                Serial.print("Received unknown packet ");
+                Serial.println(packet.buffer[0]);
                 return false;
 
         }
@@ -364,32 +406,33 @@ public:
     }
 
     int bytesToSignedShort(int high, int low) {
-        return (short)((high & 0xFF) << 8) | (low & 0xFF);
+        return word(high,low);
     }
 
     bool setListenMode() {
         sendPacket(SET_SILENT_MODE);
-        if (waitForAck(1000)){
-            return true;
-        } else {
-            return false;
-        }
+        return waitForAck(10000);
     }
 
     bool waitForAck(int timeout) {
 
         long startTime = millis();
         while(millis()-startTime<timeout){
-            switch(readPacket().buffer[0]){
+        int command=readPacket().buffer[0];
+            switch(command){
                 case COMMAND_COMPLETE :
                     return true;
                 case COMMAND_FAILED:
-                    return false;
-                //default:
-                  // skipping unexpected packet type in wait for ack.
+                    break;
+                case NO_DATA:
+                    break;
+                default:
+                  //Serial.print("Unexcepted packet, waiting for ack:"); Serial.println(command);
+                  break;
             }
         }
 
+        //Serial.println("Timed out!");
         return false;
     }
 
