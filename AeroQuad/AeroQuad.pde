@@ -34,11 +34,11 @@
 //#define AeroQuad_Wii        // Arduino 2009 with Wii Sensors and AeroQuad Shield v1.x
 //#define AeroQuadMega_v1     // Arduino Mega with AeroQuad Shield v1.7 and below
 //#define AeroQuadMega_v2     // Arduino Mega with AeroQuad Shield v2.x
-#define AeroQuadMega_Wii    // Arduino Mega with Wii Sensors and AeroQuad Shield v2.x
+//#define AeroQuadMega_Wii    // Arduino Mega with Wii Sensors and AeroQuad Shield v2.x
 //#define ArduCopter          // ArduPilot Mega (APM) with APM Sensor Board
 //#define Multipilot          // Multipilot board with Lys344 and ADXL 610 Gyro (needs debug)
 //#define MultipilotI2C       // Active Multipilot I2C and Mixertable (needs debug)
-
+#define AeroQuadMega_CHR6DM
 /****************************************************************************
  *********************** Define Flight Configuration ************************
  ****************************************************************************/
@@ -152,6 +152,15 @@
   FlightAngle_DCM flightAngle;
 #endif
 
+#ifdef AeroQuadMega_CHR6DM
+  Accel_CHR6DM accel;
+  Gyro_CHR6DM gyro;
+  Receiver_AeroQuadMega receiver;
+  Motors_PWM motors;
+  #include "FlightAngle.h"
+  FlightAngle_DCM flightAngle;
+#endif
+
 #ifdef Multipilot
   Accel_AeroQuad_v1 accel;
   Gyro_AeroQuad_v1 gyro;
@@ -207,6 +216,7 @@
 // ************************************************************
 void setup() {
   Serial.begin(BAUD);
+  Serial1.begin(BAUD);
   pinMode(LEDPIN, OUTPUT);
   digitalWrite(LEDPIN, LOW);
   
@@ -217,7 +227,7 @@ void setup() {
     digitalWrite(LED3PIN, LOW);
   #endif
   
-  #if defined(AeroQuad_v18) || defined(AeroQuadMega_v2) || defined(AeroQuad_Wii) || defined(AeroQuadMega_Wii)
+  #if defined(AeroQuad_v18) || defined(AeroQuadMega_v2) || defined(AeroQuad_Wii) || defined(AeroQuadMega_Wii) || defined(AeroQuadMega_CHR6DM)
     Wire.begin();
   #endif
   #if defined(AeroQuad_v18) || defined(AeroQuadMega_v2)
@@ -280,6 +290,14 @@ void setup() {
     accel.invert(ZAXIS);
     gyro.invert(PITCH);
   #endif
+
+  #ifdef AeroQuadMega_CHR6DM
+      accel.invert(ROLL);
+      accel.invert(PITCH);
+      accel.invert(ZAXIS);
+      gyro.invert(PITCH);
+  #endif
+
   #ifdef Multipilot
     accel.invert(PITCH);
     gyro.invert(ROLL);

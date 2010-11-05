@@ -414,6 +414,73 @@ public:
 };
 
 /******************************************************/
+/****************** CH6DM Accelerometer *****************/
+/******************************************************/
+class Accel_CHR6DM : public Accel {
+private:
+
+
+public:
+  Accel_CHR6DM() : Accel(){
+    accelScaleFactor = 0;
+  }
+
+  void initialize(void) {
+    smoothFactor = readFloat(ACCSMOOTH_ADR);
+    accelZero[ROLL] = readFloat(LEVELROLLCAL_ADR);
+    accelZero[PITCH] = readFloat(LEVELPITCHCAL_ADR);
+    accelZero[ZAXIS] = readFloat(LEVELZCAL_ADR);
+    accelOneG = readFloat(ACCEL1G_ADR);
+  }
+
+  void measure(void) {
+      accelADC[XAXIS] = chr6dm.data.ax - accelZero[XAXIS];
+      accelADC[YAXIS] = chr6dm.data.ay - accelZero[YAXIS];
+      accelADC[ZAXIS] = chr6dm.data.az - accelZero[ZAXIS];
+
+      accelData[XAXIS] = smooth(accelADC[XAXIS], accelData[XAXIS], smoothFactor);
+      accelData[YAXIS] = smooth(accelADC[YAXIS], accelData[YAXIS], smoothFactor);
+      accelData[ZAXIS] = smooth(accelADC[ZAXIS], accelData[ZAXIS], smoothFactor);
+  }
+
+  const int getFlightData(byte axis) {
+    return getRaw(axis);
+  }
+
+  // Allows user to zero accelerometers on command
+  void calibrate(void) {
+
+   int zeroXreads[FINDZERO];
+   int zeroYreads[FINDZERO];
+   int zeroZreads[FINDZERO];
+
+
+    for (int i=0; i<FINDZERO; i++) {
+        chr6dm.requestAndReadPacket();
+        zeroXreads[i] = chr6dm.data.ax;
+        zeroYreads[i] = chr6dm.data.ay;
+        zeroZreads[i] = chr6dm.data.az;
+    }
+
+
+    accelZero[XAXIS] = findMode(zeroXreads, FINDZERO);
+    accelZero[YAXIS] = findMode(zeroYreads, FINDZERO);
+    accelZero[ZAXIS] = findMode(zeroZreads, FINDZERO);
+
+    // store accel value that represents 1g
+    accelOneG = accelZero[ZAXIS];
+    // replace with estimated Z axis 0g value
+    accelZero[ZAXIS] = (accelZero[ROLL] + accelZero[PITCH]) / 2;
+
+    writeFloat(accelOneG, ACCEL1G_ADR);
+    writeFloat(accelZero[XAXIS], LEVELROLLCAL_ADR);
+    writeFloat(accelZero[YAXIS], LEVELPITCHCAL_ADR);
+    writeFloat(accelZero[ZAXIS], LEVELZCAL_ADR);
+  }
+};
+
+
+/******************************************************/
 /************* MultiPilot Accelerometer ***************/
 /******************************************************/
 class Accel_Multipilot : public Accel {

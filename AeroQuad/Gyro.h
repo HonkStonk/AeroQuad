@@ -436,6 +436,63 @@ public:
 };
 
 /******************************************************/
+/********************** CHR6DM Gyro **********************/
+/******************************************************/
+class Gyro_CHR6DM : public Gyro {
+
+public:
+  Gyro_CHR6DM() : Gyro() {
+    gyroFullScaleOutput = 0;
+    gyroScaleFactor = 0;
+  }
+
+  void initialize(void) {
+    smoothFactor = readFloat(GYROSMOOTH_ADR);
+    gyroZero[ROLL] = readFloat(GYRO_ROLL_ZERO_ADR);
+    gyroZero[PITCH] = readFloat(GYRO_PITCH_ZERO_ADR);
+    gyroZero[ZAXIS] = readFloat(GYRO_YAW_ZERO_ADR);
+    initCHR6DM();
+  }
+
+  void measure(void) {
+    readCHR6DM();
+    gyroADC[ROLL] = chr6dm.data.gx - gyroZero[ROLL];
+    gyroADC[PITCH] = chr6dm.data.gy - gyroZero[PITCH];
+    gyroADC[YAW] = chr6dm.data.gz - gyroZero[YAW];
+
+    gyroData[ROLL] = smooth(gyroADC[ROLL], gyroData[ROLL], smoothFactor);
+    gyroData[PITCH] = smooth(gyroADC[PITCH], gyroData[PITCH], smoothFactor);
+    gyroData[YAW] = smooth(gyroADC[YAW], gyroData[YAW], smoothFactor);
+  }
+
+  const int getFlightData(byte axis) {
+    return getRaw(axis);
+  }
+
+  void calibrate() {
+
+    int zeroXreads[FINDZERO];
+    int zeroYreads[FINDZERO];
+    int zeroZreads[FINDZERO];
+
+    for (int i=0; i<FINDZERO; i++) {
+        readCHR6DM();
+        zeroXreads[i] = chr6dm.data.gx;
+        zeroYreads[i] = chr6dm.data.gy;
+        zeroZreads[i] = chr6dm.data.gz;
+    }
+
+    gyroZero[XAXIS] = findMode(zeroXreads, FINDZERO);
+    gyroZero[YAXIS] = findMode(zeroYreads, FINDZERO);
+    gyroZero[ZAXIS] = findMode(zeroZreads, FINDZERO);
+
+    writeFloat(gyroZero[ROLL], GYRO_ROLL_ZERO_ADR);
+    writeFloat(gyroZero[PITCH], GYRO_PITCH_ZERO_ADR);
+    writeFloat(gyroZero[YAW], GYRO_YAW_ZERO_ADR);
+  }
+};
+
+/******************************************************/
 /******************* Multipilot Gyro ******************/
 /******************************************************/
 class Gyro_Multipilot : public Gyro {

@@ -490,6 +490,8 @@ void sendSerialTelemetry() {
       Serial.print('7');
     #elif defined(MultipilotI2C)
       Serial.print('8');
+    #elif defined(AeroQuadMega_CHR6DM)
+          Serial.print('5');
     #endif
     comma();
     // Determine which motor flight configuration for Configurator GUI

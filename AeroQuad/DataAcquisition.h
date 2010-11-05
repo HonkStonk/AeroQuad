@@ -167,3 +167,19 @@ void updateControls() {
   }
 }
 
+#ifdef AeroQuadMega_CHR6DM
+    #include "CHR6DM.h"
+    CHR6DM chr6dm;
+
+    void initCHR6DM(){
+        Serial1.begin(115200);
+        chr6dm.resetToFactory();
+        chr6dm.setListenMode();
+        chr6dm.setActiveChannels(CHANNEL_ALL_MASK);
+    }
+
+    void readCHR6DM(){
+        chr6dm.requestAndReadPacket();
+    }
+#endif
+
