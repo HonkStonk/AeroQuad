@@ -2,7 +2,7 @@
 // Usage: define a global var such as  "CHR6DM chr6 ;" in Aeroquad.pde
 // Values can then be read such as chr6.data.pitch and so on
 
-
+#define DEFAULT_TIMEOUT 10
 
 
 
@@ -195,7 +195,7 @@ public:
 
   void EKFReset() {
     sendPacket(EKF_RESET);
-    waitForAck(1000);
+    waitForAck(DEFAULT_TIMEOUT);
   }
 
   void writeToFlash() {
@@ -267,7 +267,7 @@ public:
 
      bool setActiveChannels(int channels)  {
         sendPacket(SET_ACTIVE_CHANNELS,(int[]){channels},1);
-        return waitForAck(1000);
+        return waitForAck(DEFAULT_TIMEOUT);
     }
 
 
@@ -300,9 +300,17 @@ public:
 
     }
 
-     bool requestAndReadPacket() {
+    bool requestPacket(){
         sendPacket(GET_DATA);
-        return waitFor(SENSOR_DATA, 100);
+    }
+
+    bool waitForAndReadPacket(){
+        waitFor(SENSOR_DATA, DEFAULT_TIMEOUT);
+    }
+
+     bool requestAndReadPacket() {
+        requestPacket();
+        return waitForAndReadPacket();
      }
 
 
@@ -402,7 +410,7 @@ public:
 
      bool selfTest(){
         sendPacket(SELF_TEST);
-        return waitFor(STATUS_REPORT,1000);
+        return waitFor(STATUS_REPORT,DEFAULT_TIMEOUT);
     }
 
     int bytesToSignedShort(int high, int low) {
@@ -411,7 +419,7 @@ public:
 
     bool setListenMode() {
         sendPacket(SET_SILENT_MODE);
-        return waitForAck(10000);
+        return waitForAck(DEFAULT_TIMEOUT);
     }
 
     bool waitForAck(int timeout) {

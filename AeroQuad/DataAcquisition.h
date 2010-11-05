@@ -176,10 +176,12 @@ void updateControls() {
         chr6dm.resetToFactory();
         chr6dm.setListenMode();
         chr6dm.setActiveChannels(CHANNEL_ALL_MASK);
+        chr6dm.requestPacket();
     }
 
     void readCHR6DM(){
-        chr6dm.requestAndReadPacket();
+        chr6dm.waitForAndReadPacket();
+        chr6dm.requestPacket();
     }
 #endif
 
