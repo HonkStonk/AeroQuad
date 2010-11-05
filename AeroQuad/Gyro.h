@@ -460,9 +460,9 @@ public:
     gyroADC[PITCH] = chr6dm.data.gy - gyroZero[PITCH];
     gyroADC[YAW] = chr6dm.data.gz - gyroZero[YAW];
 
-    gyroData[ROLL] = smooth(gyroADC[ROLL], gyroData[ROLL], smoothFactor);
-    gyroData[PITCH] = smooth(gyroADC[PITCH], gyroData[PITCH], smoothFactor);
-    gyroData[YAW] = smooth(gyroADC[YAW], gyroData[YAW], smoothFactor);
+    //gyroData[ROLL] = smooth(gyroADC[ROLL], gyroData[ROLL], smoothFactor);
+    //gyroData[PITCH] = smooth(gyroADC[PITCH], gyroData[PITCH], smoothFactor);
+    //gyroData[YAW] = smooth(gyroADC[YAW], gyroData[YAW], smoothFactor);
   }
 
   const int getFlightData(byte axis) {

@@ -634,3 +634,31 @@ public:
   }
 };
 
+
+
+// ***********************************************************************
+// ********************* CHR6DM "null" Filter ***************************
+// ***********************************************************************
+
+class FlightAngle_CHR6DM : public FlightAngle {
+private:
+
+public:
+  FlightAngle_CHR6DM() : FlightAngle() {
+  }
+
+  // ***********************************************************
+  // Define all the virtual functions declared in the main class
+  // ***********************************************************
+  void initialize(void) {}
+
+  void calculate(void) {
+   
+    angle[ROLL]  =  chr6dm.data.roll;
+    angle[PITCH] =  chr6dm.data.pitch;
+  }
+
+  float getGyroAngle(byte axis) {
+    //gyroAngle[axis] += gyro.rateDegPerSec(axis) * G_Dt;
+  }
+};

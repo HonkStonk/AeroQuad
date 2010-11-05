@@ -158,7 +158,7 @@
   Receiver_AeroQuadMega receiver;
   Motors_PWM motors;
   #include "FlightAngle.h"
-  FlightAngle_DCM flightAngle;
+  FlightAngle_CHR6DM flightAngle;
 #endif
 
 #ifdef Multipilot
@@ -292,10 +292,10 @@ void setup() {
   #endif
 
   #ifdef AeroQuadMega_CHR6DM
-      accel.invert(ROLL);
-      accel.invert(PITCH);
-      accel.invert(ZAXIS);
-      gyro.invert(PITCH);
+      //accel.invert(ROLL);
+      //accel.invert(PITCH);
+      //accel.invert(ZAXIS);
+      //gyro.invert(PITCH);
   #endif
 
   #ifdef Multipilot
