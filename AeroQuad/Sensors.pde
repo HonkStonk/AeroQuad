@@ -27,7 +27,7 @@ void readSensors(void) {
   accel.measure(); // defined in Accel.h
  
  // ********************* Read Slower Sensors *******************
- #if defined(HeadingMagHold)
+ #if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM)
    if (currentTime > (compassTime + COMPASSLOOPTIME)) { // 10Hz
      compass.measure(); // defined in compass.h
      compassTime = currentTime;

@@ -159,6 +159,8 @@
   Motors_PWM motors;
   #include "FlightAngle.h"
   FlightAngle_CHR6DM flightAngle;
+  #include "Compass.h"
+  Compass_CHR6DM compass;
 #endif
 
 #ifdef Multipilot
@@ -307,7 +309,7 @@ void setup() {
   flightAngle.initialize(); // defined in FlightAngle.h
 
   // Optional Sensors
-  #ifdef HeadingMagHold
+  #if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM)
     compass.initialize();
     setHeading = compass.getHeading();
   #endif

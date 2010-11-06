@@ -397,7 +397,7 @@ void sendSerialTelemetry() {
       Serial.print(2000);
     if (flightMode == ACRO)
       Serial.print(1000);
-    #ifdef HeadingMagHold
+    #if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM)
       comma();
       Serial.print(compass.getAbsoluteHeading());
     #else

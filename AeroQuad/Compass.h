@@ -134,3 +134,30 @@ public:
     else absoluteHeading = heading;
   }
 };
+
+// ***********************************************************************
+// ************************ HMC5843 Subclass *****************************
+// ***********************************************************************
+class Compass_CHR6DM : public Compass {
+
+private:
+public:
+  Compass_CHR6DM() : Compass(){
+
+  }
+
+  // ***********************************************************
+  // Define all the virtual functions declared in the main class
+  // ***********************************************************
+  void initialize(void) {
+  }
+
+  void measure(void) {
+    heading = chr6dm.data.yaw;
+
+    // Change from +/-180 to 0-360
+    if (heading < 0) absoluteHeading = 360 + heading;
+    else absoluteHeading = heading;
+  }
+};
+
