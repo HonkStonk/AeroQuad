@@ -25,8 +25,8 @@ public:
   float smoothFactor;
   int gyroChannel[3];
   int gyroData[3];
-  int gyroZero[3];
-  int gyroADC[3];
+  float gyroZero[3];
+  float gyroADC[3];
   byte rollChannel, pitchChannel, yawChannel;
   int sign[3];
   float rawHeading, gyroHeading;
@@ -456,9 +456,9 @@ public:
 
   void measure(void) {
     readCHR6DM();
-    gyroADC[ROLL] = chr6dm.data.gx - gyroZero[ROLL];
-    gyroADC[PITCH] = chr6dm.data.gy - gyroZero[PITCH];
-    gyroADC[YAW] = chr6dm.data.gz - gyroZero[YAW];
+    gyroADC[ROLL] = chr6dm.data.rollRate - gyroZero[ROLL]; //gx yawRate
+    gyroADC[PITCH] = chr6dm.data.pitchRate - gyroZero[PITCH]; //gy pitchRate
+    gyroADC[YAW] = chr6dm.data.yawRate - gyroZero[ZAXIS]; //gz rollRate
 
     //gyroData[ROLL] = smooth(gyroADC[ROLL], gyroData[ROLL], smoothFactor);
     //gyroData[PITCH] = smooth(gyroADC[PITCH], gyroData[PITCH], smoothFactor);
@@ -471,15 +471,15 @@ public:
 
   void calibrate() {
 
-    int zeroXreads[FINDZERO];
-    int zeroYreads[FINDZERO];
-    int zeroZreads[FINDZERO];
+    float zeroXreads[FINDZERO];
+    float zeroYreads[FINDZERO];
+    float zeroZreads[FINDZERO];
 
     for (int i=0; i<FINDZERO; i++) {
         readCHR6DM();
-        zeroXreads[i] = chr6dm.data.gx;
-        zeroYreads[i] = chr6dm.data.gy;
-        zeroZreads[i] = chr6dm.data.gz;
+        zeroXreads[i] = chr6dm.data.rollRate;
+        zeroYreads[i] = chr6dm.data.pitchRate;
+        zeroZreads[i] = chr6dm.data.yawRate;
     }
 
     gyroZero[XAXIS] = findMode(zeroXreads, FINDZERO);

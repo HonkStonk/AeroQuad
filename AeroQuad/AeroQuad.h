@@ -65,7 +65,7 @@ struct PIDdata {
   float P, I, D;
   float lastPosition;
   float integratedError;
-  float windupGuard; // Thinking about having individual wind up guards for each PID
+  //float windupGuard; // Thinking about having individual wind up guards for each PID
 } PID[10];
 // This struct above declares the variable PID[] to hold each of the PID values for various functions
 // The following constants are declared in AeroQuad.h
@@ -150,12 +150,10 @@ float commandedYaw = 0;
 #define TEMPERATURE 0
 #define PRESSURE 1
 int throttleAdjust = 0;
-int throttle = 1000;
 int minThrottleAdjust = -50;
 int maxThrottleAdjust = 50;
-float holdAltitude = 0.0;
-int holdThrottle = 1000;
-float zDampening = 0.0;
+float holdAltitude;
+float zDampening;
 byte storeAltitude = OFF;
 byte altitudeHold = OFF;
 
@@ -221,7 +219,7 @@ byte update = 0;
 #define CAMERALOOPTIME 20
 #define AILOOPTIME 2
 #define COMPASSLOOPTIME 100
-#define ALTITUDELOOPTIME 100
+#define ALTITUDELOOPTIME 26
 
 float AIdT = AILOOPTIME / 1000.0;
 float controldT = CONTROLLOOPTIME / 1000.0;
@@ -238,7 +236,7 @@ unsigned long cameraTime = 10;
 unsigned long fastTelemetryTime = 0;
 unsigned long autoZeroGyroTime = 0;
 unsigned long compassTime = 25;
-unsigned long altitudeTime = 26;
+unsigned long altitudeTime = 0;
 
 /**************************************************************/
 /********************** Debug Parameters **********************/
@@ -338,16 +336,8 @@ byte testSignal = LOW;
 #define ZDAMP_PGAIN_ADR 284
 #define ZDAMP_IGAIN_ADR 288
 #define ZDAMP_DGAIN_ADR 292
-#define ALTITUDE_WINDUP_ADR 296
-#define MAGXRANGE_ADR 300
-#define MAGXOFFSET_ADR 304
-#define MAGYRANGE_ADR 308
-#define MAGYOFFSET_ADR 312
-#define MAGZRANGE_ADR 316
-#define MAGZOFFSET_ADR 320
 
-
-int findMode(int *data, int arraySize); // defined in Sensors.pde
+float findMode(float *data, int arraySize); // defined in Sensors.pde
 float arctan2(float y, float x); // defined in Sensors.pde
 float readFloat(int address); // defined in DataStorage.h
 void writeFloat(float value, int address); // defined in DataStorage.h

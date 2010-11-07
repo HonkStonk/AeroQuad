@@ -201,7 +201,7 @@ public:
     // each loop, since it's slow to measure pressure
     if (select == PRESSURE) {
       rawPressure = readRawPressure();
-      if (pressureCount == 1) {
+      if (pressureCount == 3) {
         requestRawTemperature();
         pressureCount = 0;
        select = TEMPERATURE;

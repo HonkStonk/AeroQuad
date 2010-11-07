@@ -415,7 +415,7 @@ public:
       Ki_ROLLPITCH = 0.00000015;
     #endif
     #ifdef AeroQuadMega_Wii
-      Kp_ROLLPITCH = 0.11; //HONK men dubbling då? 0.22 och 0.001503
+      Kp_ROLLPITCH = 0.11; //HONK men dubbling dï¿½? 0.22 och 0.001503
       Ki_ROLLPITCH = 0.0007515; //0.0000005; Kp/Kp factor = 146.2821
     #endif
     #ifdef AeroQuadMega_v1
@@ -643,6 +643,9 @@ public:
 class FlightAngle_CHR6DM : public FlightAngle {
 private:
 
+float zeroRoll;
+float zeroPitch;
+
 public:
   FlightAngle_CHR6DM() : FlightAngle() {
   }
@@ -654,8 +657,13 @@ public:
 
   void calculate(void) {
    
-    angle[ROLL]  =  chr6dm.data.roll;
-    angle[PITCH] =  chr6dm.data.pitch;
+    angle[ROLL]  =  chr6dm.data.roll - zeroRoll;
+    angle[PITCH] =  chr6dm.data.pitch - zeroPitch;
+  }
+  
+   void calibrate(void) {
+    zeroRoll = chr6dm.data.roll;
+    zeroPitch = chr6dm.data.pitch;
   }
 
   float getGyroAngle(byte axis) {

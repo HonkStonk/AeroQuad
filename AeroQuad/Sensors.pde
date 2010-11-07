@@ -67,7 +67,7 @@ float arctan2(float y, float x) {
 
 // Used for sensor calibration
 // The mode of a set of numbers returns the value that occurs most frequently
-int findMode(int *data, int arraySize) {
+float findMode(float *data, int arraySize) {
   boolean done = 0;
   byte i;
   int temp, maxData, frequency, maxFrequency;

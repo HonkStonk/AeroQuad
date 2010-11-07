@@ -24,9 +24,9 @@ public:
   float smoothFactor;
   float rawAltitude;
   int accelChannel[3];
-  int accelZero[3];
+  float accelZero[3];
   int accelData[3];
-  int accelADC[3];
+  float accelADC[3];
   int sign[3];
   int accelOneG, zAxis;
   byte rollChannel, pitchChannel, zAxisChannel;
@@ -202,9 +202,9 @@ private:
 public:
   Accel_AeroQuadMega_v2() : Accel(){
     accelAddress = 0x40; // page 54 and 61 of datasheet
-    // Accelerometer value if BMA180 setup for 1.0G
+    // Accelerometer value if BMA180 setup for 1.5G
     // Page 27 of datasheet = 0.00013g/LSB
-    accelScaleFactor = 0.00013;    
+    accelScaleFactor = 0.00019;    
   }
   
   void initialize(void) {
@@ -244,8 +244,8 @@ public:
     data[0] = readByteI2C(accelAddress);
     //Serial.println(data[0], HEX);
     data[0] &= 0xF1;
-    //data[0] |= 1<<1;
-    updateRegisterI2C(accelAddress, 0x35, data[0]); // set range to +/-1.0g (value = xxxx000x)
+    data[0] |= 1<<1;
+    updateRegisterI2C(accelAddress, 0x35, data[0]); // set range to +/-1.5g (value = xxxx001x)
     //sendByteI2C(accelAddress, 0x35); // register offset_lsb1 (bits 1-3)
     //data[0] = readByteI2C(accelAddress);
     //Serial.println(data[0], HEX);    
@@ -450,9 +450,9 @@ public:
   // Allows user to zero accelerometers on command
   void calibrate(void) {
 
-   int zeroXreads[FINDZERO];
-   int zeroYreads[FINDZERO];
-   int zeroZreads[FINDZERO];
+   float zeroXreads[FINDZERO];
+   float zeroYreads[FINDZERO];
+   float zeroZreads[FINDZERO];
 
 
     for (int i=0; i<FINDZERO; i++) {

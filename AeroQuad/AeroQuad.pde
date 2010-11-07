@@ -219,6 +219,7 @@
 void setup() {
   Serial.begin(BAUD);
   Serial1.begin(BAUD);
+  PORTD = B00000100;
   pinMode(LEDPIN, OUTPUT);
   digitalWrite(LEDPIN, LOW);
   
@@ -253,7 +254,7 @@ void setup() {
   // insert it into the gyro class because it executes first
   gyro.initialize(); // defined in Gyro.h
   accel.initialize(); // defined in Accel.h
-  
+  flightAngle.calibrate(); //defined in FlightAngle.pde
   // Calibrate sensors
   gyro.autoZero(); // defined in Gyro.h
   zeroIntegralError();
@@ -297,7 +298,7 @@ void setup() {
       //accel.invert(ROLL);
       //accel.invert(PITCH);
       //accel.invert(ZAXIS);
-      //gyro.invert(PITCH);
+      gyro.invert(PITCH);
   #endif
 
   #ifdef Multipilot
