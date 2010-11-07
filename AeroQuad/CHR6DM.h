@@ -379,29 +379,29 @@ public:
 
                 if (index!=packet.lenght){
                     //TODO - Raise error
-                    Serial.println("Recevied pad length packet!");
+                    //Serial.println("Recevied pad length packet!");
                 }
 
 
                 return true;}
             case STATUS_REPORT:
-                 Serial.println("Received status report");
+                 //Serial.println("Received status report");
                  return true;
             case BAD_CHECKSUM:
-                 Serial.println("CHR6DM reported bad checksum!");
+                 //Serial.println("CHR6DM reported bad checksum!");
                  return true;
             case NO_DATA:
             case FAILED_CHECKSUM:
                  return false;
             case COMMAND_COMPLETE:
-                Serial.println("COMMAND_COMPLETE");
+                //Serial.println("COMMAND_COMPLETE");
                 return true;
             case COMMAND_FAILED:
-                Serial.println("COMMAND_FAILED");
+                //Serial.println("COMMAND_FAILED");
                 return false;
             default:
-                Serial.print("Received unknown packet ");
-                Serial.println(packet.buffer[0]);
+                //Serial.print("Received unknown packet ");
+                //Serial.println(packet.buffer[0]);
                 return false;
 
         }
