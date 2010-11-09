@@ -206,11 +206,7 @@ void sendSerialTelemetry() {
     comma();
     Serial.print(holdAltitude);
     comma();
-    #ifdef AltitudeHold
-    Serial.print(altitude.getData());
-    #else
-    Serial.print(-1);
-    #endif
+    //Serial.print(altitude.getData());
     comma();
     Serial.print(throttleAdjust);
     Serial.println();
@@ -223,8 +219,6 @@ void sendSerialTelemetry() {
     comma();
     Serial.print(PID[ROLL].D);
     comma();
-    Serial.print(PID[ALTITUDE].windupGuard);
- 	comma();
     Serial.print(PID[PITCH].P);
     comma();
     Serial.print(PID[PITCH].I);
@@ -291,6 +285,8 @@ void sendSerialTelemetry() {
       Serial.print(PID[ALTITUDE].I);
       comma();
       Serial.print(PID[ALTITUDE].D);
+      comma();
+      Serial.print(PID[ALTITUDE].windupGuard);
       comma();
       Serial.print(minThrottleAdjust);
       comma();
@@ -375,13 +371,13 @@ void sendSerialTelemetry() {
     Serial.println();
     break;
   case 'R': // Raw magnetometer data
- 	#ifdef HeadingMagHold
+    #ifdef HeadingMagHold
       Serial.print(compass.getRawData(XAXIS));
       comma();
       Serial.print(compass.getRawData(YAXIS));
       comma();
       Serial.println(compass.getRawData(ZAXIS));
- 	#endif
+    #endif
     break;
   case 'S': // Send all flight data
     Serial.print(deltaTime);
@@ -410,7 +406,7 @@ void sendSerialTelemetry() {
       Serial.print(2000);
     if (flightMode == ACRO)
       Serial.print(1000);
-    #if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM)
+    #ifdef HeadingMagHold
       comma();
       Serial.print(compass.getAbsoluteHeading());
     #else
@@ -526,17 +522,17 @@ void sendSerialTelemetry() {
     break;
   case 'g': // Send magnetometer cal values
     #ifdef HeadingMagHold
-      Serial.print(compass.getRange(XAXIS));
+      Serial.print(compass.getRange(XAXIS), 2);
       comma();
-      Serial.print(compass.getOffset(XAXIS));
+      Serial.print(compass.getOffset(XAXIS), 2);
       comma();
-      Serial.print(compass.getRange(YAXIS));
+      Serial.print(compass.getRange(YAXIS), 2);
       comma();
-      Serial.print(compass.getOffset(YAXIS));
+      Serial.print(compass.getOffset(YAXIS), 2);
       comma();
-      Serial.print(compass.getRange(ZAXIS));
+      Serial.print(compass.getRange(ZAXIS), 2);
       comma();
-      Serial.println(compass.getOffset(ZAXIS));
+      Serial.println(compass.getOffset(ZAXIS), 2);
     #endif
     queryType = 'X';
     break;
