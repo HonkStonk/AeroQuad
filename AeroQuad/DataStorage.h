@@ -67,9 +67,26 @@ void initializeEEPROM(void) {
   PID[LEVELGYROPITCH].P = 1.2;
   PID[LEVELGYROPITCH].I = 0.0;
   PID[LEVELGYROPITCH].D = -14.0;
-  PID[ALTITUDE].P = 0.0;
-  PID[ALTITUDE].I = 0.0;
-  PID[ALTITUDE].D = 0.0;
+  #ifdef AltitudeHold
+    PID[ALTITUDE].P = 25.0;
+    PID[ALTITUDE].I = 0.0;
+    PID[ALTITUDE].D = 0.0;
+    PID[ALTITUDE].windupGuard = 25.0;
+    PID[ZDAMPENING].P = 0.0;
+    PID[ZDAMPENING].I = 0.0;
+    PID[ZDAMPENING].D = 0.0;
+    minThrottleAdjust = -50.0;
+    maxThrottleAdjust = 500.0;
+    altitude.setSmoothFactor(0.1);
+  #endif
+  #ifdef HeadingMagHold
+    compass.setRange(XAXIS, 1);
+    compass.setOffset(XAXIS, 0);
+    compass.setRange(YAXIS, 1);
+    compass.setOffset(YAXIS, 0);
+    compass.setRange(ZAXIS, 1);
+    compass.setOffset(ZAXIS, 0);
+  #endif
   windupGuard = 1000.0;
   receiver.setXmitFactor(0.60);  
   levelLimit = 500.0;
@@ -92,13 +109,14 @@ void initializeEEPROM(void) {
   flightMode = ACRO;
   headingHoldConfig = OFF;
   minAcro = 1300;
-  aref = 5.0; // Use 2.8 if you are using an AeroQuad Shield < v1.7
+  aref = 5.0; // Use 3.0 if using a v1.7 shield or use 2.8 for an AeroQuad Shield < v1.7
 }
 
 void readEEPROM(void) {
   PID[ROLL].P = readFloat(PGAIN_ADR);
   PID[ROLL].I = readFloat(IGAIN_ADR);
   PID[ROLL].D = readFloat(DGAIN_ADR);
+  PID[ALTITUDE].windupGuard = readFloat(ALTITUDE_WINDUP_ADR);
   PID[ROLL].lastPosition = 0;
   PID[ROLL].integratedError = 0;
   
@@ -144,35 +162,41 @@ void readEEPROM(void) {
   PID[LEVELGYROPITCH].lastPosition = 0;
   PID[LEVELGYROPITCH].integratedError = 0;
   
-  PID[ALTITUDE].P = readFloat(ALTITUDE_PGAIN_ADR);
-  PID[ALTITUDE].I = readFloat(ALTITUDE_IGAIN_ADR);
-  PID[ALTITUDE].D = readFloat(ALTITUDE_DGAIN_ADR);
-  PID[ALTITUDE].lastPosition = 0;
-  PID[ALTITUDE].integratedError = 0;
+  #ifdef AltitudeHold
+    PID[ALTITUDE].P = readFloat(ALTITUDE_PGAIN_ADR);
+    PID[ALTITUDE].I = readFloat(ALTITUDE_IGAIN_ADR);
+    PID[ALTITUDE].D = readFloat(ALTITUDE_DGAIN_ADR);
+    PID[ALTITUDE].lastPosition = 0;
+    PID[ALTITUDE].integratedError = 0;
+    PID[ZDAMPENING].P = readFloat(ZDAMP_PGAIN_ADR);
+    PID[ZDAMPENING].I = readFloat(ZDAMP_IGAIN_ADR);
+    PID[ZDAMPENING].D = readFloat(ZDAMP_DGAIN_ADR);
+    PID[ZDAMPENING].lastPosition = 0;
+    PID[ZDAMPENING].integratedError = 0;
+    minThrottleAdjust = readFloat(ALTITUDE_MIN_THROTTLE_ADR);
+    maxThrottleAdjust = readFloat(ALTITUDE_MAX_THROTTLE_ADR);
+    altitude.setSmoothFactor(readFloat(ALTITUDE_SMOOTH_ADR));
+  #endif
 
-  receiver.setTransmitterSlope(THROTTLE, THROTTLESCALE_ADR);
-  receiver.setTransmitterOffset(THROTTLE, THROTTLEOFFSET_ADR);
-  receiver.setTransmitterSlope(ROLL, ROLLSCALE_ADR);
-  receiver.setTransmitterOffset(ROLL, ROLLOFFSET_ADR);
-  receiver.setTransmitterSlope(PITCH, PITCHSCALE_ADR);
-  receiver.setTransmitterOffset(PITCH, PITCHOFFSET_ADR);
-  receiver.setTransmitterSlope(YAW, YAWSCALE_ADR);
-  receiver.setTransmitterOffset(YAW, YAWOFFSET_ADR);
-  receiver.setTransmitterSlope(MODE, MODESCALE_ADR);
-  receiver.setTransmitterOffset(MODE, MODEOFFSET_ADR);
-  receiver.setTransmitterSlope(AUX, AUXSCALE_ADR);
-  receiver.setTransmitterOffset(AUX, AUXOFFSET_ADR);
+  #ifdef HeadingMagHold
+    compass.setRange(XAXIS, readFloat(MAGXRANGE_ADR));
+    compass.setOffset(XAXIS, readFloat(MAGXOFFSET_ADR));
+    compass.setRange(YAXIS, readFloat(MAGYRANGE_ADR));
+    compass.setOffset(YAXIS, readFloat(MAGYOFFSET_ADR));
+    compass.setRange(ZAXIS, readFloat(MAGZRANGE_ADR));
+    compass.setOffset(ZAXIS, readFloat(MAGZOFFSET_ADR));
+  #endif
 
   windupGuard = readFloat(WINDUPGUARD_ADR);
   levelLimit = readFloat(LEVELLIMIT_ADR);
   levelOff = readFloat(LEVELOFF_ADR);
-  receiver.setXmitFactor(XMITFACTOR_ADR);
   timeConstant = readFloat(FILTERTERM_ADR);
   smoothHeading = readFloat(HEADINGSMOOTH_ADR);
   aref = readFloat(AREF_ADR);
   flightMode = readFloat(FLIGHTMODE_ADR);
   headingHoldConfig = readFloat(HEADINGHOLD_ADR);
   minAcro = readFloat(MINACRO_ADR);
+  accel.setOneG(readFloat(ACCEL1G_ADR));
 }
 
 void writeEEPROM(void){
@@ -201,9 +225,26 @@ void writeEEPROM(void){
   writeFloat(PID[LEVELGYROPITCH].P, LEVEL_GYRO_PITCH_PGAIN_ADR);
   writeFloat(PID[LEVELGYROPITCH].I, LEVEL_GYRO_PITCH_IGAIN_ADR);
   writeFloat(PID[LEVELGYROPITCH].D, LEVEL_GYRO_PITCH_DGAIN_ADR);
-  writeFloat(PID[ALTITUDE].P, ALTITUDE_PGAIN_ADR);
-  writeFloat(PID[ALTITUDE].I, ALTITUDE_IGAIN_ADR);
-  writeFloat(PID[ALTITUDE].D, ALTITUDE_DGAIN_ADR);
+  #ifdef AltitudeHold
+    writeFloat(PID[ALTITUDE].P, ALTITUDE_PGAIN_ADR);
+    writeFloat(PID[ALTITUDE].I, ALTITUDE_IGAIN_ADR);
+    writeFloat(PID[ALTITUDE].D, ALTITUDE_DGAIN_ADR);
+    writeFloat(PID[ALTITUDE].windupGuard, ALTITUDE_WINDUP_ADR);
+    writeFloat(PID[ZDAMPENING].P, ZDAMP_PGAIN_ADR);
+    writeFloat(PID[ZDAMPENING].I, ZDAMP_IGAIN_ADR);
+    writeFloat(PID[ZDAMPENING].D, ZDAMP_DGAIN_ADR);
+    writeFloat(minThrottleAdjust, ALTITUDE_MIN_THROTTLE_ADR);
+    writeFloat(maxThrottleAdjust, ALTITUDE_MAX_THROTTLE_ADR);
+    writeFloat(altitude.getSmoothFactor(), ALTITUDE_SMOOTH_ADR);
+  #endif
+  #ifdef HeadingMagHold
+    writeFloat(compass.getRange(XAXIS), MAGXRANGE_ADR);
+    writeFloat(compass.getOffset(XAXIS), MAGXOFFSET_ADR);
+    writeFloat(compass.getRange(YAXIS), MAGYRANGE_ADR);
+    writeFloat(compass.getOffset(YAXIS), MAGYOFFSET_ADR);
+    writeFloat(compass.getRange(ZAXIS), MAGZRANGE_ADR);
+    writeFloat(compass.getOffset(ZAXIS), MAGZOFFSET_ADR);
+  #endif
   writeFloat(windupGuard, WINDUPGUARD_ADR);  
   writeFloat(levelLimit, LEVELLIMIT_ADR);   
   writeFloat(levelOff, LEVELOFF_ADR); 
@@ -234,5 +275,6 @@ void writeEEPROM(void){
   writeFloat(flightMode, FLIGHTMODE_ADR);
   writeFloat(headingHoldConfig, HEADINGHOLD_ADR);
   writeFloat(minAcro, MINACRO_ADR);
+  writeFloat(accel.getOneG(), ACCEL1G_ADR);
   sei(); // Restart interrupts
 }

@@ -26,7 +26,7 @@
 // Flight Software Version
 #define VERSION 2.1
 
-#define BAUD 115200l
+#define BAUD 115200
 #define LEDPIN 13
 #define ON 1
 #define OFF 0
@@ -58,6 +58,23 @@
 #define LEVELGYROROLL 6
 #define LEVELGYROPITCH 7
 #define ALTITUDE 8
+#define ZDAMPENING 9
+
+// PID Variables
+struct PIDdata {
+  float P, I, D;
+  float lastPosition;
+  float integratedError;
+  float windupGuard; // Thinking about having individual wind up guards for each PID
+} PID[10];
+// This struct above declares the variable PID[] to hold each of the PID values for various functions
+// The following constants are declared in AeroQuad.h
+// ROLL = 0, PITCH = 1, YAW = 2 (used for Arcobatic Mode, gyros only)
+// ROLLLEVEL = 3, PITCHLEVEL = 4, LEVELGYROROLL = 6, LEVELGYROPITCH = 7 (used for Stable Mode, accels + gyros)
+// HEADING = 5 (used for heading hold)
+// ALTITUDE = 8 (used for altitude hold)
+// ZDAMPENING = 9 (used in altitude hold to dampen vertical accelerations)
+float windupGuard; // Read in from EEPROM
 
 // Smoothing filter parameters
 #define GYRO 0
@@ -128,6 +145,19 @@ float relativeHeading = 0; // current heading the quad is set to (set point)
 float absoluteHeading = 0;;
 float setHeading = 0;
 float commandedYaw = 0;
+
+// Altitude Hold
+#define TEMPERATURE 0
+#define PRESSURE 1
+int throttleAdjust = 0;
+int throttle = 1000;
+int minThrottleAdjust = -50;
+int maxThrottleAdjust = 50;
+float holdAltitude = 0.0;
+int holdThrottle = 1000;
+float zDampening = 0.0;
+byte storeAltitude = OFF;
+byte altitudeHold = OFF;
 
 // Receiver variables
 #define TIMEOUT 25000
@@ -234,15 +264,13 @@ void checkBattery (void){
 /******************* Loop timing parameters *******************/
 /**************************************************************/
 #define RECEIVERLOOPTIME 20
-#define TELEMETRYLOOPTIME 50 //should be 100
+#define TELEMETRYLOOPTIME 50
 #define FASTTELEMETRYTIME 10
 #define CONTROLLOOPTIME 2
 #define CAMERALOOPTIME 20
 #define AILOOPTIME 2
 #define COMPASSLOOPTIME 100
-#define ALTITUDELOOPTIME 26
-#define EXTERNALAHRSLOOPTIME 10 //we read it in 100Hz since it comes in in 100Hz
-#define BATMONLOOPTIME 1000
+#define ALTITUDELOOPTIME 100
 
 float AIdT = AILOOPTIME / 1000.0;
 float controldT = CONTROLLOOPTIME / 1000.0;
@@ -355,8 +383,22 @@ byte testSignal = LOW;
 #define ALTITUDE_PGAIN_ADR 260
 #define ALTITUDE_IGAIN_ADR 264
 #define ALTITUDE_DGAIN_ADR 268
+#define ALTITUDE_MAX_THROTTLE_ADR 272
+#define ALTITUDE_MIN_THROTTLE_ADR 276
+#define ALTITUDE_SMOOTH_ADR  280
+#define ZDAMP_PGAIN_ADR 284
+#define ZDAMP_IGAIN_ADR 288
+#define ZDAMP_DGAIN_ADR 292
+#define ALTITUDE_WINDUP_ADR 296
+#define MAGXRANGE_ADR 300
+#define MAGXOFFSET_ADR 304
+#define MAGYRANGE_ADR 308
+#define MAGYOFFSET_ADR 312
+#define MAGZRANGE_ADR 316
+#define MAGZOFFSET_ADR 320
 
-int findMode(int *data, int arraySize); // defined in Sensors.pde
+
+float findMode(float *data, int arraySize); // defined in Sensors.pde
 float arctan2(float y, float x); // defined in Sensors.pde
 float readFloat(int address); // defined in DataStorage.h
 void writeFloat(float value, int address); // defined in DataStorage.h

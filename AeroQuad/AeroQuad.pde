@@ -22,8 +22,6 @@
    Before flight, select the different user options for your AeroQuad below
    Also, consult the ReadMe.mht file for additional details
    If you need additional assitance go to http://AeroQuad.com/forum
-   
-   CHR-6DM added as ExternalAHRS by lokling/Honk
 *****************************************************************************/
 
 /****************************************************************************
@@ -36,11 +34,11 @@
 //#define AeroQuad_Wii        // Arduino 2009 with Wii Sensors and AeroQuad Shield v1.x
 //#define AeroQuadMega_v1     // Arduino Mega with AeroQuad Shield v1.7 and below
 //#define AeroQuadMega_v2     // Arduino Mega with AeroQuad Shield v2.x
-#define AeroQuadMega_Wii    // Arduino Mega with Wii Sensors and AeroQuad Shield v2.x
+//#define AeroQuadMega_Wii    // Arduino Mega with Wii Sensors and AeroQuad Shield v2.x
 //#define ArduCopter          // ArduPilot Mega (APM) with APM Sensor Board
 //#define Multipilot          // Multipilot board with Lys344 and ADXL 610 Gyro (needs debug)
 //#define MultipilotI2C       // Active Multipilot I2C and Mixertable (needs debug)
-
+#define AeroQuadMega_CHR6DM
 /****************************************************************************
  *********************** Define Flight Configuration ************************
  ****************************************************************************/
@@ -65,10 +63,8 @@
 //#define Camera
 
 // Optional Sensors
-#define HeadingMagHold // Enables HMC5843 Magnetometer //change so where this is, replace with ExternalAHRS
-#define AltitudeHold // Enables BMP085 Barometer //HONK must be here
-#define ExternalAHRS // Enables CHR-6DM serial AHRS to stream YAW PITCH ROLL ACCEL_Z in SI units
-//#define BatteryMonitor //Enables battery voltage measuring on Ain0
+//#define HeadingMagHold // Enables HMC5843 Magnetometer
+//#define AltitudeHold // Enables BMP083 Barometer
 
 /****************************************************************************
  ********************* End of User Definition Section ***********************
@@ -76,7 +72,6 @@
 
 #include <EEPROM.h>
 //#include <Servo.h>
-#include <SPI.h>
 #include <Wire.h>
 #include "AeroQuad.h"
 #include "I2C.h"
@@ -94,7 +89,6 @@
   Gyro_AeroQuad_v1 gyro;
   Receiver_AeroQuad receiver;
   Motors_PWM motors;
-  #include "DataStorage.h"
   #include "FlightAngle.h"
   FlightAngle_CompFilter flightAngle;
   //FlightAngle_MultiWii flightAngle;
@@ -105,18 +99,18 @@
   Gyro_AeroQuadMega_v2 gyro;
   Receiver_AeroQuad receiver;
   Motors_PWM motors;
-  #include "DataStorage.h"
   #include "FlightAngle.h"
   FlightAngle_CompFilter flightAngle;
   //FlightAngle_DCM flightAngle;
 #endif
 
-#ifdef AeroQuadMega_v1 
+#ifdef AeroQuadMega_v1
+  // Special thanks to Wilafau for fixes for this setup
+  // http://aeroquad.com/showthread.php?991-AeroQuad-Flight-Software-v2.0&p=11466&viewfull=1#post11466
   Receiver_AeroQuadMega receiver;
   Accel_AeroQuad_v1 accel;
   Gyro_AeroQuad_v1 gyro;
   Motors_PWM motors;
-  #include "DataStorage.h"
   #include "FlightAngle.h"
   FlightAngle_DCM flightAngle;
 #endif
@@ -126,7 +120,6 @@
   Motors_PWM motors;
   Accel_AeroQuadMega_v2 accel;
   Gyro_AeroQuadMega_v2 gyro;
-  #include "DataStorage.h"
   #include "FlightAngle.h"
   FlightAngle_DCM flightAngle;
 #endif
@@ -136,7 +129,6 @@
   Accel_ArduCopter accel;
   Receiver_ArduCopter receiver;
   Motors_ArduCopter motors;
-  #include "DataStorage.h"
   #include "FlightAngle.h"
   FlightAngle_DCM flightAngle;
 #endif
@@ -146,12 +138,8 @@
   Gyro_Wii gyro;
   Receiver_AeroQuad receiver;
   Motors_PWM motors;
-  #include "DataStorage.h"
   #include "FlightAngle.h"
   FlightAngle_CompFilter flightAngle;
-  #ifdef BatteryMonitor
-   #include "BatteryBuzzer.h"
-  #endif
   //FlightAngle_DCM flightAngle;
 #endif
 
@@ -160,12 +148,19 @@
   Gyro_Wii gyro;
   Receiver_AeroQuadMega receiver;
   Motors_PWM motors;
-  #include "DataStorage.h"
   #include "FlightAngle.h"
-  #ifdef BatteryMonitor
-   #include "BatteryBuzzer.h"
-  #endif
   FlightAngle_DCM flightAngle;
+#endif
+
+#ifdef AeroQuadMega_CHR6DM
+  Accel_CHR6DM accel;
+  Gyro_CHR6DM gyro;
+  Receiver_AeroQuadMega receiver;
+  Motors_PWM motors;
+  #include "FlightAngle.h"
+  FlightAngle_CHR6DM flightAngle;
+  #include "Compass.h"
+  Compass_CHR6DM compass;
 #endif
 
 #ifdef Multipilot
@@ -175,7 +170,6 @@
   Motors_PWM motors;
   //#define PRINT_MIXERTABLE
   //#define TELEMETRY_DEBUG
-  #include "DataStorage.h"
   #include "FlightAngle.h"
   FlightAngle_DCM flightAngle;
 #endif
@@ -187,14 +181,12 @@
   Motors_I2C motors;
   //#define PRINT_MIXERTABLE
   //#define TELEMETRY_DEBUG
-  #include "DataStorage.h"
   #include "FlightAngle.h"
   FlightAngle_DCM flightAngle;
 #endif
 
-// Optional Sensors
-// Current defined for the AeroQuad v2.0 Shield
-// Defined separately in case other configurations want to incorporate these sensors
+// Optional Sensors, currently defined for the AeroQuad v2.0 Shield
+// Defined here in case other configurations want to incorporate these sensors
 #ifdef HeadingMagHold
   #include "Compass.h"
   Compass_AeroQuad_v2 compass; // HMC5843
@@ -204,10 +196,13 @@
   Altitude_AeroQuad_v2 altitude;  //BMP085
 #endif
 
+// Include this last as it contains objects from above declarations
+#include "DataStorage.h"
+
 // Angle Estimation Objects
 // Class definition for angle estimation found in FlightAngle.h
 // Use only one of the following variable declarations
-// Insert into the appropriate #idef's above
+// Insert into the appropriate #ifdef's above
 //#include "FlightAngle.h"
 //FlightAngle_CompFilter flightAngle; // Use this for Complementary Filter
 //FlightAngle_KalmanFilter flightAngle; // Use this for Kalman Filter
@@ -222,34 +217,11 @@
 // ********************** Setup AeroQuad **********************
 // ************************************************************
 void setup() {
-#ifdef ExternalAHRS
   Serial.begin(BAUD);
-  //delay(50);
-  Serial.flush();
-  //delay(50);
   Serial1.begin(BAUD);
-  //delay(50);
-  Serial1.flush();
-  //delay(50);
-#endif
-#ifndef ExternalAHRS
-  Serial.begin(BAUD);
-#endif
+  PORTD = B00000100;
   pinMode(LEDPIN, OUTPUT);
   digitalWrite(LEDPIN, LOW);
-  
-  pinMode(RL_LED, OUTPUT);
-  digitalWrite(RL_LED, LOW);
-  pinMode(RR_LED, OUTPUT);
-  digitalWrite(RR_LED, LOW);
-  pinMode(FR_LED, OUTPUT);
-  digitalWrite(FR_LED, LOW);
-  pinMode(FL_LED, OUTPUT);  
-  digitalWrite(FL_LED, LOW);
-  
-  analogReference(EXTERNAL);
-  
-  pinMode(EOCPIN, INPUT);
   
   #if defined(AeroQuad_v18) || defined(AeroQuadMega_v2)
     pinMode(LED2PIN, OUTPUT);
@@ -258,19 +230,17 @@ void setup() {
     digitalWrite(LED3PIN, LOW);
   #endif
   
-  #if defined(AeroQuad_v18) || defined(AeroQuadMega_v2) || defined(AeroQuad_Wii) || defined(AeroQuadMega_Wii)
+  #if defined(AeroQuad_v18) || defined(AeroQuadMega_v2) || defined(AeroQuad_Wii) || defined(AeroQuadMega_Wii) || defined(AeroQuadMega_CHR6DM)
     Wire.begin();
   #endif
   #if defined(AeroQuad_v18) || defined(AeroQuadMega_v2)
     // Recommendation from Mgros to increase I2C speed
     // http://aeroquad.com/showthread.php?991-AeroQuad-Flight-Software-v2.0&p=11262&viewfull=1#post11262
-    TWBR = 12; // Need to figure out a way to disable this for Wii sensors
+    TWBR = 12;
   #endif
 
   // Read user values from EEPROM
   readEEPROM(); // defined in DataStorage.h
-  
-  ledCW();ledCW();ledCW;ledsON();
   
   // Configure motors
   motors.initialize(); // defined in Motors.h
@@ -284,7 +254,7 @@ void setup() {
   // insert it into the gyro class because it executes first
   gyro.initialize(); // defined in Gyro.h
   accel.initialize(); // defined in Accel.h
-  
+  flightAngle.calibrate(); //defined in FlightAngle.pde
   // Calibrate sensors
   gyro.autoZero(); // defined in Gyro.h
   zeroIntegralError();
@@ -319,9 +289,18 @@ void setup() {
   #endif
   #ifdef AeroQuadMega_Wii
     accel.invert(ROLL);
+    accel.invert(PITCH);
+    accel.invert(ZAXIS);
     gyro.invert(PITCH);
-    //gyro.invert(YAW);
   #endif
+
+  #ifdef AeroQuadMega_CHR6DM
+      //accel.invert(ROLL);
+      //accel.invert(PITCH);
+      //accel.invert(ZAXIS);
+      gyro.invert(PITCH);
+  #endif
+
   #ifdef Multipilot
     accel.invert(PITCH);
     gyro.invert(ROLL);
@@ -331,18 +310,12 @@ void setup() {
   flightAngle.initialize(); // defined in FlightAngle.h
 
   // Optional Sensors
-  #ifdef HeadingMagHold
-    readCHR6DM();
-    setHeading = CHR_yawClean; //superHonk
+  #if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM)
+    compass.initialize();
+    setHeading = compass.getHeading();
   #endif
   #ifdef AltitudeHold
     altitude.initialize();
-    initializeSCP1000();
-  #endif
-  #ifdef ExternalAHRS
-    readCHR6DM();
-  zeroCHR6DMaccelerometer();
-  calibrateCHR6DManlge();
   #endif
     
   // Camera stabilization setup
@@ -399,8 +372,8 @@ void loop () {
 #ifdef Camera // Experimental, not fully implemented yet
   // Command camera stabilization servos (requires #include <servo.h>)
   if ((currentTime > (cameraTime + CAMERALOOPTIME)) && (cameraLoop == ON)) { // 50Hz
-    rollCamera.write((mCamera * CHR_rollClean) + bCamera);
-    pitchCamera.write((mCamera * CHR_pitchClean) + bCamera);
+    rollCamera.write((mCamera * flightAngle.get(ROLL)) + bCamera);
+    pitchCamera.write((mCamera * flightAngle.get(PITCH)) + bCamera);
     cameraTime = currentTime;
   }
 #endif

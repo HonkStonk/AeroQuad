@@ -89,11 +89,20 @@ void readSerialCommand() {
       levelOff = readFloatSerial();
       break;
     case 'I': // Receiver altitude hold PID
-      PID[ALTITUDE].P = readFloatSerial();
-      PID[ALTITUDE].I = readFloatSerial();
-      PID[ALTITUDE].D = readFloatSerial();
-      PID[ALTITUDE].lastPosition = 0;
-      PID[ALTITUDE].integratedError = 0;    
+      #ifdef AltitudeHold
+        PID[ALTITUDE].P = readFloatSerial();
+        PID[ALTITUDE].I = readFloatSerial();
+        PID[ALTITUDE].D = readFloatSerial();
+        PID[ALTITUDE].windupGuard = readFloatSerial();
+        PID[ALTITUDE].lastPosition = 0;
+        PID[ALTITUDE].integratedError = 0;
+        minThrottleAdjust = readFloatSerial();
+        maxThrottleAdjust = readFloatSerial();
+        altitude.setSmoothFactor(readFloatSerial());
+        PID[ZDAMPENING].P = readFloatSerial();
+        PID[ZDAMPENING].I = readFloatSerial();
+        PID[ZDAMPENING].D = readFloatSerial();
+      #endif
       break;
     case 'K': // Receive data filtering values
       gyro.setSmoothFactor(readFloatSerial());
@@ -163,12 +172,23 @@ void readSerialCommand() {
       break;
     case 'b': // calibrate gyros
       gyro.calibrate();
+      flightAngle.calibrate();
       break;
     case 'c': // calibrate accels
       accel.calibrate();
       break;
     case 'd': // send aref
       aref = readFloatSerial();
+      break;
+    case 'f': // calibrate magnetometer
+      #ifdef HeadingMagHold
+      compass.setRange(XAXIS, readFloatSerial());
+      compass.setOffset(XAXIS, readFloatSerial());
+      compass.setRange(YAXIS, readFloatSerial());
+      compass.setOffset(YAXIS, readFloatSerial());
+      compass.setRange(ZAXIS, readFloatSerial());
+      compass.setOffset(ZAXIS, readFloatSerial());
+      #endif
       break;
     }
   digitalWrite(LEDPIN, HIGH);
@@ -182,32 +202,14 @@ void sendSerialTelemetry() {
   update = 0;
   switch (queryType) {
   case '=': // Reserved debug command to view any variable from Serial Monitor
-    /*Serial.print(altitudeHold,DEC);
-    comma();
-    Serial.print(storeAltitude,DEC);
+    Serial.print(accel.getZaxis());
     comma();
     Serial.print(holdAltitude);
     comma();
+    //Serial.print(altitude.getData());
+    comma();
     Serial.print(throttleAdjust);
-    comma();
-    Serial.print(altitude.getData());
-    comma();
-    Serial.print(receiver.getData(THROTTLE));
-    comma();
-    Serial.print(motors.getMotorCommand(RIGHT));*/
-    //Serial.print(rawCHR_accel_z);
-    //comma();
-    //Serial.print(CHR_accelZ_Zero);
-    //comma();
-    Serial.print(accel.getData(ZAXIS)-105);//  filtered //goes wrong way for regulation!
-    comma();
-    //Serial.print(accel.getFlightData(ZAXIS));//  unfiltered
-    //comma();
-    Serial.print(filteredCHR_accel_z + 49.3); //filteredCHR_accel_z , rawCHR_accel_z //is zero'd and goes right way for regulation!
-    comma();
-    Serial.print((filteredCHR_accel_z + 49.3) - (accel.getData(ZAXIS)-105)); //going down: plus minus minus, going up: minus minus plus THIS IS THE REGULATION TERM!!!!!!!!!!!!!!!
-    comma();
-    Serial.println(throttleAdjust); //now this is 2 baro's and 2 accels!!!!!! :)
+    Serial.println();
     //queryType = 'X';
     break;
   case 'B': // Send roll and pitch gyro PID values
@@ -276,12 +278,46 @@ void sendSerialTelemetry() {
     Serial.println(levelOff);
     queryType = 'X';
     break;
-  case 'J': // Spare
-    Serial.print(PID[ALTITUDE].P);
-    comma();
-    Serial.print(PID[ALTITUDE].I);
-    comma();
-    Serial.println(PID[ALTITUDE].D);
+  case 'J': // Altitude Hold
+    #ifdef AltitudeHold
+      Serial.print(PID[ALTITUDE].P);
+      comma();
+      Serial.print(PID[ALTITUDE].I);
+      comma();
+      Serial.print(PID[ALTITUDE].D);
+      comma();
+      Serial.print(PID[ALTITUDE].windupGuard);
+      comma();
+      Serial.print(minThrottleAdjust);
+      comma();
+      Serial.print(maxThrottleAdjust);
+      comma();
+      Serial.print(altitude.getSmoothFactor());
+      comma();
+      Serial.print(PID[ZDAMPENING].P);
+      comma();
+      Serial.print(PID[ZDAMPENING].I);
+      comma();
+      Serial.println(PID[ZDAMPENING].D);
+    #else
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.println('0');
+    #endif
     queryType = 'X';
     break;
   case 'L': // Send data filtering values
@@ -322,31 +358,26 @@ void sendSerialTelemetry() {
       comma();
     }
     for (axis = ROLL; axis < LASTAXIS; axis++) {
-      Serial.print(accel.getData(axis));//  ZAXIS
+      Serial.print(accel.getData(axis));
       comma();
     }
     for (axis = ROLL; axis < YAW; axis++) {
       Serial.print(levelAdjust[axis]);
       comma();
     }
-    Serial.print(CHR_rollClean); //CHR_rollClean flightAngle.getData(ROLL)
+    Serial.print(flightAngle.getData(ROLL));
     comma();
-    Serial.print(CHR_pitchClean); //CHR_pitchClean flightAngle.getData(PITCH)
+    Serial.print(flightAngle.getData(PITCH));
     Serial.println();
     break;
-  case 'R': // Send raw sensor data
-    /*Serial.print(analogRead(ROLLRATEPIN));
-    comma();
-    Serial.print(analogRead(PITCHRATEPIN));
-    comma();
-    Serial.print(analogRead(YAWRATEPIN));
-    comma();
-    Serial.print(analogRead(ROLLACCELPIN));
-    comma();
-    Serial.print(analogRead(PITCHACCELPIN));
-    comma();
-    Serial.println(analogRead(ZACCELPIN));*/
-    //queryType = 'X';
+  case 'R': // Raw magnetometer data
+    #ifdef HeadingMagHold
+      Serial.print(compass.getRawData(XAXIS));
+      comma();
+      Serial.print(compass.getRawData(YAXIS));
+      comma();
+      Serial.println(compass.getRawData(ZAXIS));
+    #endif
     break;
   case 'S': // Send all flight data
     Serial.print(deltaTime);
@@ -377,11 +408,21 @@ void sendSerialTelemetry() {
       Serial.print(1000);
     #ifdef HeadingMagHold
       comma();
-      Serial.print(CHR_yawClean); //CHR_yawClean compass.getAbsoluteHeading()
+      Serial.print(compass.getAbsoluteHeading());
+    #else
+      comma();
+      Serial.print('0');
     #endif
     #ifdef AltitudeHold
       comma();
       Serial.print(altitude.getData());
+      comma();
+      Serial.print(altitudeHold, DEC);
+    #else
+      comma();
+      Serial.print('0');
+      comma();
+      Serial.print('0');
     #endif
     Serial.println();
     break;
@@ -458,6 +499,8 @@ void sendSerialTelemetry() {
       Serial.print('7');
     #elif defined(MultipilotI2C)
       Serial.print('8');
+    #elif defined(AeroQuadMega_CHR6DM)
+          Serial.print('5');
     #endif
     comma();
     // Determine which motor flight configuration for Configurator GUI
@@ -475,6 +518,22 @@ void sendSerialTelemetry() {
     break;  
   case 'e': // Send AREF value
     Serial.println(aref);
+    queryType = 'X';
+    break;
+  case 'g': // Send magnetometer cal values
+    #ifdef HeadingMagHold
+      Serial.print(compass.getRange(XAXIS), 2);
+      comma();
+      Serial.print(compass.getOffset(XAXIS), 2);
+      comma();
+      Serial.print(compass.getRange(YAXIS), 2);
+      comma();
+      Serial.print(compass.getOffset(YAXIS), 2);
+      comma();
+      Serial.print(compass.getRange(ZAXIS), 2);
+      comma();
+      Serial.println(compass.getOffset(ZAXIS), 2);
+    #endif
     queryType = 'X';
     break;
   }
@@ -514,4 +573,3 @@ void printInt(int data) {
   Serial.print(msb, BYTE);
   Serial.print(lsb, BYTE);
 }
-

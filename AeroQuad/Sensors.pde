@@ -27,41 +27,18 @@ void readSensors(void) {
   accel.measure(); // defined in Accel.h
  
  // ********************* Read Slower Sensors *******************
- #if defined(HeadingMagHold)
-   //if (currentTime > (compassTime + COMPASSLOOPTIME)) { // 10Hz //hehe I still want it defined but not read it
-   //  compass.measure(); // defined in compass.h                   //since I have a AHRS thing in 100Hz now
-  //   compassTime = currentTime;
-  // }
- #endif
- #if defined(AltitudeHold)
-   if(digitalRead(EOCPIN) == HIGH) {
-     altitude.measure();
-     filteredBMP = smooth(pressureBMP, filteredBMP, smoothFactorBMP);
-     mergeBMPandSCP();
-     //Serial.println(mergedBAROalt);
- }   
- if(digitalRead(DRDY) == HIGH) { 
-       readSCP1000(); 
-       filteredSCP = smooth(pressureSCP, filteredSCP, smoothFactorSCP);
-       //Serial.println(filteredSCP);
-     }
- #endif
- #if defined(ExternalAHRS)
-   if (currentTime > (externalAHRStime + EXTERNALAHRSLOOPTIME)) { // 100Hz, 5ms offset
-     readCHR6DM(); // defined in DataAcquisition.h
+ #if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM)
+   if (currentTime > (compassTime + COMPASSLOOPTIME)) { // 10Hz
+     compass.measure(); // defined in compass.h
+     compassTime = currentTime;
    }
  #endif
- 
- 
- if (currentTime > (batMonTime + BATMONLOOPTIME)) { // 2Hz
- checkBattery(); // defined in BatteryBuzzer.h
-     if(batMonVoltage < BATLOWLEVEL) { 
-       ledsOFF();
-      }
-     else { ledsON(); }
-     
- batMonTime = currentTime;
- } 
+ #if defined(AltitudeHold)
+   if (currentTime > (altitudeTime + ALTITUDELOOPTIME)) { // 37Hz
+     altitude.measure(); // defined in altitude.h
+     altitudeTime = currentTime;
+   }
+ #endif
   
  // ****************** Calculate Absolute Angle *****************
  flightAngle.calculate(); // defined in FlightAngle.h
@@ -90,7 +67,7 @@ float arctan2(float y, float x) {
 
 // Used for sensor calibration
 // The mode of a set of numbers returns the value that occurs most frequently
-int findMode(int *data, int arraySize) {
+float findMode(float *data, int arraySize) {
   boolean done = 0;
   byte i;
   int temp, maxData, frequency, maxFrequency;

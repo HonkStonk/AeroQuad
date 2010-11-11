@@ -138,7 +138,7 @@ public:
 /******************************************************/
 class Motors_PWM : public Motors {
 private:
-  #if defined(AeroQuadMega_v2) || defined(AeroQuadMega_Wii)
+  #if defined(AeroQuadMega_v2) || defined(AeroQuadMega_Wii) || defined (AeroQuadMega_CHR6DM)
     #define FRONTMOTORPIN 9 //=FRONT_LEFT //HONK
     #define REARMOTORPIN 10 //=REAR_RIGHT
     #define RIGHTMOTORPIN 8 //=FRONT_RIGHT

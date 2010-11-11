@@ -25,8 +25,8 @@ public:
   float smoothFactor;
   int gyroChannel[3];
   int gyroData[3];
-  int gyroZero[3];
-  int gyroADC[3];
+  float gyroZero[3];
+  float gyroADC[3];
   byte rollChannel, pitchChannel, yawChannel;
   int sign[3];
   float rawHeading, gyroHeading;
@@ -150,7 +150,7 @@ private:
 public:
   Gyro_AeroQuad_v1() : Gyro() {
     gyroFullScaleOutput = 500.0;   // IDG/IXZ500 full scale output = +/- 500 deg/sec
-    gyroScaleFactor = aref / 0.002;       // IDG/IXZ500 sensitivity = 2mV/(deg/sec)
+    gyroScaleFactor = 0.002;       // IDG/IXZ500 sensitivity = 2mV/(deg/sec)
   }
   
   void initialize(void) {
@@ -244,10 +244,7 @@ public:
     // Thanks to SwiftingSpeed for updates on these settings
     // http://aeroquad.com/showthread.php?991-AeroQuad-Flight-Software-v2.0&p=11207&viewfull=1#post11207
     updateRegisterI2C(gyroAddress, 0x3E, 0x80); // send a reset to the device
-    //updateRegisterI2C(gyroAddress, 0x15, 0x00); // 1kHz sample rate
     updateRegisterI2C(gyroAddress, 0x16, 0x1D); // 10Hz low pass filter
-    //updateRegisterI2C(gyroAddress, 0x17, 0x05); // enable send raw values
-    //updateRegisterI2C(gyroAddress, 0x3E, 0x00); // use internal oscillator
     updateRegisterI2C(gyroAddress, 0x3E, 0x01); // use internal oscillator 
   }
   
@@ -263,15 +260,12 @@ public:
     //if ((gyroData[YAW] < 5) && (gyroData[YAW] > -5)) gyroData[YAW] = 0;
     if (select == YAW) {
       calculateHeading();
-      //Serial.print(rawData[YAW]); comma(); Serial.print(gyroADC[YAW]); comma(); Serial.print(gyroData[YAW]); comma(); Serial.println(G_Dt,4);
     }
     if (++select == LASTAXIS) select = ROLL; // go to next axis, reset to ROLL if past ZAXIS
     
     // ************ Correct for gyro drift by FabQuad **************  
     // ************ http://aeroquad.com/entry.php?4-  **************
     // Modified FabQuad's approach to use yaw transmitter command instead of checking accelerometer
-    //Serial.print(lastReceiverYaw);comma();Serial.print(receiverYaw);comma();Serial.print(yawAge);comma();Serial.print(negativeGyroYawCount);comma();Serial.print(positiveGyroYawCount);comma();Serial.print(zeroGyroYawCount);comma();
-    //Serial.print(rawData[YAW]);comma();Serial.print(gyroZero[YAW]);comma();Serial.print(gyroADC[YAW]);comma();Serial.println(gyroData[YAW]);
     if (abs(lastReceiverYaw - receiverYaw) < 15) {
       yawAge++;
       if (yawAge >= 4) {  // if gyro was the same long enough, we can assume that there is no (fast) rotation
@@ -435,6 +429,63 @@ public:
       }
       gyroZero[calAxis] = findMode(findZero, FINDZERO);
     }
+    writeFloat(gyroZero[ROLL], GYRO_ROLL_ZERO_ADR);
+    writeFloat(gyroZero[PITCH], GYRO_PITCH_ZERO_ADR);
+    writeFloat(gyroZero[YAW], GYRO_YAW_ZERO_ADR);
+  }
+};
+
+/******************************************************/
+/********************** CHR6DM Gyro **********************/
+/******************************************************/
+class Gyro_CHR6DM : public Gyro {
+
+public:
+  Gyro_CHR6DM() : Gyro() {
+    gyroFullScaleOutput = 0;
+    gyroScaleFactor = 0;
+  }
+
+  void initialize(void) {
+    smoothFactor = readFloat(GYROSMOOTH_ADR);
+    gyroZero[ROLL] = readFloat(GYRO_ROLL_ZERO_ADR);
+    gyroZero[PITCH] = readFloat(GYRO_PITCH_ZERO_ADR);
+    gyroZero[ZAXIS] = readFloat(GYRO_YAW_ZERO_ADR);
+    initCHR6DM();
+  }
+
+  void measure(void) {
+    readCHR6DM();
+    gyroADC[ROLL] = chr6dm.data.rollRate - gyroZero[ROLL]; //gx yawRate
+    gyroADC[PITCH] = chr6dm.data.pitchRate - gyroZero[PITCH]; //gy pitchRate
+    gyroADC[YAW] = chr6dm.data.yawRate - gyroZero[ZAXIS]; //gz rollRate
+
+    //gyroData[ROLL] = smooth(gyroADC[ROLL], gyroData[ROLL], smoothFactor);
+    //gyroData[PITCH] = smooth(gyroADC[PITCH], gyroData[PITCH], smoothFactor);
+    //gyroData[YAW] = smooth(gyroADC[YAW], gyroData[YAW], smoothFactor);
+  }
+
+  const int getFlightData(byte axis) {
+    return getRaw(axis);
+  }
+
+  void calibrate() {
+
+    float zeroXreads[FINDZERO];
+    float zeroYreads[FINDZERO];
+    float zeroZreads[FINDZERO];
+
+    for (int i=0; i<FINDZERO; i++) {
+        readCHR6DM();
+        zeroXreads[i] = chr6dm.data.rollRate;
+        zeroYreads[i] = chr6dm.data.pitchRate;
+        zeroZreads[i] = chr6dm.data.yawRate;
+    }
+
+    gyroZero[XAXIS] = findMode(zeroXreads, FINDZERO);
+    gyroZero[YAXIS] = findMode(zeroYreads, FINDZERO);
+    gyroZero[ZAXIS] = findMode(zeroZreads, FINDZERO);
+
     writeFloat(gyroZero[ROLL], GYRO_ROLL_ZERO_ADR);
     writeFloat(gyroZero[PITCH], GYRO_PITCH_ZERO_ADR);
     writeFloat(gyroZero[YAW], GYRO_YAW_ZERO_ADR);

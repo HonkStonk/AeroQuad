@@ -415,10 +415,14 @@ public:
       Ki_ROLLPITCH = 0.00000015;
     #endif
     #ifdef AeroQuadMega_Wii
-      Kp_ROLLPITCH = 0.11; //HONK men dubbling då? 0.22 och 0.001503
+      Kp_ROLLPITCH = 0.11; //HONK men dubbling d�? 0.22 och 0.001503
       Ki_ROLLPITCH = 0.0007515; //0.0000005; Kp/Kp factor = 146.2821
     #endif
-    #if !defined(ArduCopter) & !defined(AeroQuadMega_Wii)
+    #ifdef AeroQuadMega_v1
+       Kp_ROLLPITCH = 0.3423;
+       Ki_ROLLPITCH = 0.00234;
+    #endif
+    #if !defined(ArduCopter) & !defined(AeroQuadMega_Wii) & !defined(AeroQuadMega_v1)
       Kp_ROLLPITCH = 0.010;
       Ki_ROLLPITCH = 0.0000005;
     #endif
@@ -630,3 +634,39 @@ public:
   }
 };
 
+
+
+// ***********************************************************************
+// ********************* CHR6DM "null" Filter ***************************
+// ***********************************************************************
+
+class FlightAngle_CHR6DM : public FlightAngle {
+private:
+
+float zeroRoll;
+float zeroPitch;
+
+public:
+  FlightAngle_CHR6DM() : FlightAngle() {
+  }
+
+  // ***********************************************************
+  // Define all the virtual functions declared in the main class
+  // ***********************************************************
+  void initialize(void) {}
+
+  void calculate(void) {
+   
+    angle[ROLL]  =  chr6dm.data.roll - zeroRoll;
+    angle[PITCH] =  chr6dm.data.pitch - zeroPitch;
+  }
+  
+   void calibrate(void) {
+    zeroRoll = chr6dm.data.roll;
+    zeroPitch = chr6dm.data.pitch;
+  }
+
+  float getGyroAngle(byte axis) {
+    //gyroAngle[axis] += gyro.rateDegPerSec(axis) * G_Dt;
+  }
+};
