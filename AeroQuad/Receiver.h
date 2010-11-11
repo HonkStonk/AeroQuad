@@ -420,20 +420,20 @@ private:
       receiverPin[THROTTLE] = 4;
       receiverPin[MODE] = 1;
       receiverPin[AUX] = 0;
-     #else //HONK
-      receiverChannel[ROLL] = 67; 
-      receiverChannel[PITCH] = 63; 
-      receiverChannel[YAW] = 66; 
-      receiverChannel[THROTTLE] = 65; 
-      receiverChannel[MODE] = 64; 
-      receiverChannel[AUX] = 62; 
-    // defines ATmega328P pins (Arduino pins converted to ATmega328P pinouts)
-      receiverPin[ROLL] = 0; //was 5
-      receiverPin[PITCH] = 1; //was 3
-      receiverPin[YAW] = 3; //was 2
-      receiverPin[THROTTLE] = 2; //was 4
-      receiverPin[MODE] = 5; //was 1
-      receiverPin[AUX] = 4; //was 0
+    #else
+      receiverChannel[ROLL] = 63;
+      receiverChannel[PITCH] = 64;
+      receiverChannel[YAW] = 65;
+      receiverChannel[THROTTLE] = 62;
+      receiverChannel[MODE] = 66;
+       receiverChannel[AUX] = 67;
+   // defines ATmega328P pins (Arduino pins converted to ATmega328P pinouts)
+      receiverPin[ROLL] = 1;
+      receiverPin[PITCH] = 2;
+      receiverPin[YAW] = 3;
+      receiverPin[THROTTLE] = 0;
+      receiverPin[MODE] = 4;
+      receiverPin[AUX] = 5;
     #endif
 
     for (channel = ROLL; channel < LASTCHANNEL; channel++)
