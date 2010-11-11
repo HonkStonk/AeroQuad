@@ -37,6 +37,7 @@ void readPilotCommands() {
     if ((receiver.getRaw(YAW) < MINCHECK) && (receiver.getRaw(ROLL) > MAXCHECK) && (receiver.getRaw(PITCH) < MINCHECK)) {
       gyro.calibrate(); // defined in Gyro.h
       accel.calibrate(); // defined in Accel.h
+      accel.setOneG(accel.getFlightData(ZAXIS));
       flightAngle.calibrate();
       zeroIntegralError();
       motors.pulseMotors(3);
@@ -100,10 +101,10 @@ void readPilotCommands() {
   
   #ifdef AltitudeHold
     // Check if altitude hold is enabled
-    if (receiver.getRaw(AUX) < 1400) {
+    //if (receiver.getRaw(AUX) < 1400) {
       // return to preset altitude or land?
-    }
-    else if (receiver.getRaw(AUX) < 1700) {
+    //}
+   if (receiver.getRaw(AUX) < 1500) {
       if (storeAltitude == ON) {
         holdAltitude = altitude.getData();
         holdThrottle = receiver.getData(THROTTLE);

@@ -65,7 +65,7 @@ public:
     gyroZero[PITCH] = readFloat(GYRO_PITCH_ZERO_ADR);
     gyroZero[ZAXIS] = readFloat(GYRO_YAW_ZERO_ADR);
     
-    previousTime = millis();
+    previousTime = micros(); //was millis();
   }
     
   const int getRaw(byte axis) {

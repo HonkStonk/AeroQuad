@@ -43,12 +43,12 @@ void writeFloat(float value, int address) {
 
 // contains all default values when re-writing EEPROM
 void initializeEEPROM(void) {
-  PID[ROLL].P = 1.2;
+  PID[ROLL].P = 3.00; //Honk
   PID[ROLL].I = 0.0;
-  PID[ROLL].D = -7.0;
-  PID[PITCH].P = 1.2;
+  PID[ROLL].D = -0.05; //Honk
+  PID[PITCH].P = 3.00; //Honk
   PID[PITCH].I = 0.0;
-  PID[PITCH].D = -7.0;
+  PID[PITCH].D = -0.05; //Honk
   PID[YAW].P = 3.0;
   PID[YAW].I = 0.0;
   PID[YAW].D = 0.0;
@@ -88,7 +88,7 @@ void initializeEEPROM(void) {
     compass.setOffset(ZAXIS, 0);
   #endif
   windupGuard = 1000.0;
-  receiver.setXmitFactor(0.60);  
+  receiver.setXmitFactor(0.20);  //Honk
   levelLimit = 500.0;
   levelOff = 150.0;
   gyro.setSmoothFactor(1.0);

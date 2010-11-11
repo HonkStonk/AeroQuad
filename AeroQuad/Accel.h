@@ -28,7 +28,7 @@ public:
   int accelData[3];
   float accelADC[3];
   int sign[3];
-  int accelOneG, zAxis;
+  float accelOneG, zAxis;
   byte rollChannel, pitchChannel, zAxisChannel;
   unsigned long currentTime, previousTime;
   Accel(void) {
@@ -114,14 +114,14 @@ public:
   }
   
   const int getZaxis() {
-    zAxis = smooth(getFlightData(ZAXIS) - accelOneG, zAxis, 0.25);
+    zAxis = smooth(getFlightData(ZAXIS), zAxis, 0.25);
     return zAxis;
   }
   
   void calculateAltitude() {
-    currentTime = millis();
-    if ((abs(getData(ROLL)) < 1800) || (abs(getData(PITCH)) < 1800))
-      rawAltitude += (getData(ZAXIS) - accelOneG) * accelScaleFactor * ((currentTime - previousTime) / 1000.0);
+    currentTime = micros();
+    if ((abs(CHR_RollAngle) < 5) && (abs(CHR_PitchAngle) < 5)) 
+      rawAltitude += (getZaxis()) * ((currentTime - previousTime) / 1000000.0);
     previousTime = currentTime;
   } 
   
@@ -414,7 +414,7 @@ public:
 };
 
 /******************************************************/
-/****************** CH6DM Accelerometer *****************/
+/****************** CHR6DM Accelerometer **************/
 /******************************************************/
 class Accel_CHR6DM : public Accel {
 private:
@@ -431,12 +431,13 @@ public:
     accelZero[PITCH] = readFloat(LEVELPITCHCAL_ADR);
     accelZero[ZAXIS] = readFloat(LEVELZCAL_ADR);
     accelOneG = readFloat(ACCEL1G_ADR);
+    calibrate();
   }
 
   void measure(void) {
       accelADC[XAXIS] = chr6dm.data.ax - accelZero[XAXIS];
       accelADC[YAXIS] = chr6dm.data.ay - accelZero[YAXIS];
-      accelADC[ZAXIS] = chr6dm.data.az - accelZero[ZAXIS];
+      accelADC[ZAXIS] = chr6dm.data.az - accelOneG;
 
       accelData[XAXIS] = smooth(accelADC[XAXIS], accelData[XAXIS], smoothFactor);
       accelData[YAXIS] = smooth(accelADC[YAXIS], accelData[YAXIS], smoothFactor);
@@ -466,11 +467,11 @@ public:
     accelZero[XAXIS] = findMode(zeroXreads, FINDZERO);
     accelZero[YAXIS] = findMode(zeroYreads, FINDZERO);
     accelZero[ZAXIS] = findMode(zeroZreads, FINDZERO);
-
+   
     // store accel value that represents 1g
     accelOneG = accelZero[ZAXIS];
     // replace with estimated Z axis 0g value
-    accelZero[ZAXIS] = (accelZero[ROLL] + accelZero[PITCH]) / 2;
+    //accelZero[ZAXIS] = (accelZero[ROLL] + accelZero[PITCH]) / 2;
 
     writeFloat(accelOneG, ACCEL1G_ADR);
     writeFloat(accelZero[XAXIS], LEVELROLLCAL_ADR);

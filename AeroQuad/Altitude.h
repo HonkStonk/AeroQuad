@@ -23,23 +23,6 @@
 // ***********************************************************************
 // ************************** Altitude Class *****************************
 // ***********************************************************************
-// Altitude Adjust Globals
-#define EOCPIN 30
-#define TEMPERATURE 0
-#define PRESSURE 1
-int throttleAdjust = 0;
-int minThrottleAdjust = -60;
-int maxThrottleAdjust = 60;
-float holdAltitude;
-byte storeAltitude = OFF;
-byte altitudeHold = OFF;
-long pressureBMP = 100000;
-long filteredBMP = 100000;
-long pressureSCP = 3500;
-long filteredSCP = 3500;
-float smoothFactorBMP = 0.05; //perfekt kombo!
-float smoothFactorSCP = 0.7; //perfekt kombo!
-float mergedBAROalt;
 
 class Altitude {
 public:
@@ -51,7 +34,7 @@ public:
   
   Altitude (void) { 
     altitude = 0;
-    smoothFactor = 0.03;
+    smoothFactor = 0.02;
   }
 
   // **********************************************************************
@@ -260,134 +243,7 @@ public:
     pressure = (p + ((x1 + x2 + 3791) >> 4));
     
     rawAltitude = 44330 * (1 - pow(pressure/101325.0, pressureFactor)); // returns absolute altitude in meters
+    accel.calculateAltitude(); //cumulates onto rawAltitude from fast filtered accel Z reads
     altitude = smooth(rawAltitude, altitude, smoothFactor); // smoothFactor defined in main class
-    pressureBMP = pressure;
   }
 };
-
-/**********SCP1000*******************/
-//Sensor's memory register addresses:
-const int PRESSURESCP = 0x1F;      //3 most significant bits of pressure
-const int PRESSURE_LSB = 0x20;  //16 least significant bits of pressure
-const int TEMPERATURESCP = 0x21;   //16 bit temperature reading
-const byte READ = 0b11111100;     // SCP1000's read command
-const byte WRITE = 0b00000010;   // SCP1000's write command
-
-#define DRDY 46
-#define CS 44
-
-//Read from or write to register from the SCP1000:
-unsigned int readRegister(byte thisRegister, int bytesToRead ) {
-  byte inByte = 0;           // incoming byte from the SPI
-  unsigned int result = 0;   // result to return
-  //Serial.print(thisRegister, BIN);
-  //Serial.print("\t");
-  // SCP1000 expects the register name in the upper 6 bits
-  // of the byte. So shift the bits left by two bits:
-  thisRegister = thisRegister << 2;
-  // now combine the address and the command into one byte
-  byte dataToSend = thisRegister & READ;
-  //Serial.println(thisRegister, BIN);
-  // take the chip select low to select the device:
-  digitalWrite(CS, LOW);
-  // send the device the register you want to read:
-  SPI.transfer(dataToSend);
-  // send a value of 0 to read the first byte returned:
-  result = SPI.transfer(0x00);
-  // decrement the number of bytes left to read:
-  bytesToRead--;
-  // if you still have another byte to read:
-  if (bytesToRead > 0) {
-    // shift the first byte left, then get the second byte:
-    result = result << 8;
-    inByte = SPI.transfer(0x00);
-    // combine the byte you just got with the previous one:
-    result = result | inByte;
-    // decrement the number of bytes left to read:
-    bytesToRead--;
-  }
-  // take the chip select high to de-select:
-  digitalWrite(CS, HIGH);
-  // return the result:
-  return(result);
-}
-
-
-//Sends a write command to SCP1000
-
-void writeRegister(byte thisRegister, byte thisValue) {
-
-  // SCP1000 expects the register address in the upper 6 bits
-  // of the byte. So shift the bits left by two bits:
-  thisRegister = thisRegister << 2;
-  // now combine the register address and the command into one byte:
-  byte dataToSend = thisRegister | WRITE;
-
-  // take the chip select low to select the device:
-  digitalWrite(CS, LOW);
-
-  SPI.transfer(dataToSend); //Send register location
-  SPI.transfer(thisValue);  //Send value to record into register
-
-  // take the chip select high to de-select:
-  digitalWrite(CS, HIGH);
-}
-
-
-void initializeSCP1000(void) {
-SPI.begin();
-pinMode(DRDY, INPUT);
-pinMode(CS, OUTPUT);
- //Configure SCP1000 for low noise configuration:
-  writeRegister(0x02, 0x2D);
-  writeRegister(0x01, 0x03);
-  writeRegister(0x03, 0x02);
-  // give the sensor time to set up:
-  delay(100);
-  //Select High Resolution Mode
-  writeRegister(0x03, 0x0A);
-  delay(100);
-};
-
-void readSCP1000(void) {
-  writeRegister(0x03, 0x0A);
-//Read the temperature data
-    int tempData = readRegister(0x21, 2);
-
-    // convert the temperature to celsius and display it:
-    float realTemp = (float)tempData / 20.0;
-    //Serial.print("Temp[C]=");
-    //Serial.print(realTemp);
-
-
-    //Read the pressure data highest 3 bits:
-    byte  pressure_data_high = readRegister(0x1F, 1);
-    pressure_data_high &= 0b00000111; //you only needs bits 2 to 0
-
-    //Read the pressure data lower 16 bits:
-    unsigned int pressure_data_low = readRegister(0x20, 2);
-    //combine the two parts into one 19-bit number:
-    long pressure = ((pressure_data_high << 16) | pressure_data_low)/4;
-
-    // display the temperature:
-    //Serial.println("\tPressure [Pa]=" + String(pressure));
-    pressureSCP = pressure; //98000
-};
-
-
-
-float mergeBMPandSCP(void) {
-//pressureBMP on table                = 101456
-//pressureSCP on table                  = 3321
-//pressureSCP with addition of 100000 = 103322
-//pressureSCP with addition of  98000 = 
-//filteredBMP
-//filteredSCP
-float tmp_float;
-    tmp_float = (((filteredBMP*0.7)+((filteredSCP+98000)*0.3) )/101325.0);
-    tmp_float = pow(tmp_float,0.190295);
-    mergedBAROalt = (44330*(1.0-tmp_float))+80;
-    
-    return(mergedBAROalt);
-};
-

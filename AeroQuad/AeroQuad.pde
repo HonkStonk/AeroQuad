@@ -254,6 +254,7 @@ void setup() {
   // insert it into the gyro class because it executes first
   gyro.initialize(); // defined in Gyro.h
   accel.initialize(); // defined in Accel.h
+  accel.setOneG(accel.getFlightData(ZAXIS));
   flightAngle.calibrate(); //defined in FlightAngle.pde
   // Calibrate sensors
   gyro.autoZero(); // defined in Gyro.h
@@ -324,7 +325,7 @@ void setup() {
     pitchCamera.attach(PITCHCAMERAPIN);
   #endif
   
-  previousTime = millis();
+  previousTime = micros(); //was millis();
   digitalWrite(LEDPIN, HIGH);
   safetyCheck = 0;
 }
@@ -334,9 +335,9 @@ void setup() {
 // ************************************************************
 void loop () {
   // Measure loop rate
-  currentTime = millis();
+  currentTime = micros(); //was millis(); , remember to scale all times from now on
   deltaTime = currentTime - previousTime;
-  G_Dt = deltaTime / 1000.0;
+  G_Dt = deltaTime / 1000000.0;
   previousTime = currentTime;
   #ifdef DEBUG
     if (testSignal == LOW) testSignal = HIGH;

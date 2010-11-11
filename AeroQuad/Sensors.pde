@@ -25,16 +25,18 @@ void readSensors(void) {
   // Apply low pass filter to sensor values and center around zero
   gyro.measure(); // defined in Gyro.h
   accel.measure(); // defined in Accel.h
- 
+ #if defined(AeroQuadMega_CHR6DM)
+  compass.measure();
+ #endif
  // ********************* Read Slower Sensors *******************
- #if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM)
+ #if defined(HeadingMagHold)
    if (currentTime > (compassTime + COMPASSLOOPTIME)) { // 10Hz
      compass.measure(); // defined in compass.h
      compassTime = currentTime;
    }
  #endif
  #if defined(AltitudeHold)
-   if (currentTime > (altitudeTime + ALTITUDELOOPTIME)) { // 37Hz
+   if (currentTime > (altitudeTime + ALTITUDELOOPTIME)) { // 38Hz
      altitude.measure(); // defined in altitude.h
      altitudeTime = currentTime;
    }

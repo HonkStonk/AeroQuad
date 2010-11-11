@@ -659,6 +659,8 @@ public:
    
     angle[ROLL]  =  chr6dm.data.roll - zeroRoll;
     angle[PITCH] =  chr6dm.data.pitch - zeroPitch;
+    CHR_RollAngle = angle[ROLL]; //ugly since gotta access through accel class
+    CHR_PitchAngle = angle[PITCH];
   }
   
    void calibrate(void) {

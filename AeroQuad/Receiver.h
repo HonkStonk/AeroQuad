@@ -420,7 +420,7 @@ private:
       receiverPin[THROTTLE] = 4;
       receiverPin[MODE] = 1;
       receiverPin[AUX] = 0;
-    #else //HONK
+     #else //HONK
       receiverChannel[ROLL] = 67; 
       receiverChannel[PITCH] = 63; 
       receiverChannel[YAW] = 66; 

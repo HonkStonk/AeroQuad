@@ -105,21 +105,21 @@
 
 
     // Scale factors
-     const double SCALE_YAW        = 0.0109863; // °/LSB
-     const double SCALE_PITCH      = 0.0109863;
-     const double SCALE_ROLL       = 0.0109863;
-     const double SCALE_YAW_RATE   = 0.0137329; // °/s/LSB
-     const double SCALE_PITCH_RATE = 0.0137329;
-     const double SCALE_ROLL_RATE  = 0.0137329;
-     const double SCALE_MAG_X      = 0.0610350; // mGauss/LSB
-     const double SCALE_MAG_Y      = 0.0610350;
-     const double SCALE_MAG_Z      = 0.0610350;
-     const double SCALE_GYRO_X     = 0.0181200; // °/s/LSB
-     const double SCALE_GYRO_Y     = 0.0181200;
-     const double SCALE_GYRO_Z     = 0.0181200;
-     const double SCALE_ACCEL_X    = 0.1068120; // mg/LSB
-     const double SCALE_ACCEL_Y    = 0.1068120;
-     const double SCALE_ACCEL_Z    = 0.1068120;
+     const double SCALE_YAW        = 0.01099; // ï¿½/LSB
+     const double SCALE_PITCH      = 0.01099;
+     const double SCALE_ROLL       = 0.01099;
+     const double SCALE_YAW_RATE   = 0.01373; // ï¿½/s/LSB
+     const double SCALE_PITCH_RATE = 0.01373;
+     const double SCALE_ROLL_RATE  = 0.01373;
+     const double SCALE_MAG_X      = 0.06104; // mGauss/LSB
+     const double SCALE_MAG_Y      = 0.06104;
+     const double SCALE_MAG_Z      = 0.06104;
+     const double SCALE_GYRO_X     = 0.01812; // ï¿½/s/LSB
+     const double SCALE_GYRO_Y     = 0.01812;
+     const double SCALE_GYRO_Z     = 0.01812;
+     const double SCALE_ACCEL_X    = 0.10681; // mg/LSB
+     const double SCALE_ACCEL_Y    = 0.10681;
+     const double SCALE_ACCEL_Z    = 0.10681;
 
     const char PACKET_HEADER[] = {'s','n','p'};
     const int HEADER_CHECKSUM = 's'+'n'+'p';
