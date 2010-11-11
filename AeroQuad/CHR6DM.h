@@ -2,7 +2,7 @@
 // Usage: define a global var such as  "CHR6DM chr6 ;" in Aeroquad.pde
 // Values can then be read such as chr6.data.pitch and so on
 
-#define DEFAULT_TIMEOUT 10
+#define DEFAULT_TIMEOUT 1000
 
 
 
@@ -11,8 +11,9 @@
      const int  NO_DATA                   = 0x00;
      const int  FAILED_CHECKSUM           = 0x01;
 
-     int NO_DATA_PACKET[]          = {NO_DATA};
-     int FAILED_CHECKSUM_PACKET[]  = {FAILED_CHECKSUM};
+
+     int packet[100];
+     int packet_length = 0;
 
     // Client command packets
      const int  SET_ACTIVE_CHANNELS       =  0x80;
@@ -167,18 +168,7 @@ public:
         };
 
 
-class Packet{
 
-public:
-    int* buffer;
-    int lenght;
-
-    Packet(int* buffer,int lenght){
-        this->buffer = buffer;
-        this->lenght = lenght;
-    }
-
-};
 
 class CHR6DM {
 
@@ -204,11 +194,13 @@ public:
   }
 
 
-    Packet readPacket()  {
+    int readPacket()  {
 
         if (!syncToHeader()){
             //Serial.println("Not synced to header");
-            return Packet(NO_DATA_PACKET,1);
+            packet[0]= NO_DATA;
+            packet_length=1;
+            return NO_DATA;
         }
 
 
@@ -218,12 +210,11 @@ public:
         int calculatedChecksum = HEADER_CHECKSUM + packetType + dataBytes;
 
         int  length = dataBytes+1;
-        int buffer[length]; 
-        buffer[0] = packetType;
+        packet[0] = packetType;
 
         for (int i = 1; i <= dataBytes ;i++ ){
-            buffer[i] = blockingRead() ;
-            calculatedChecksum+=buffer[i];
+            packet[i] = blockingRead() ;
+            calculatedChecksum+=packet[i];
         }
 
         int high =  blockingRead();
@@ -233,10 +224,13 @@ public:
 
         if (calculatedChecksum!=packetChecksum) {
             //Serial.print("Bad checksum ");Serial.print(" calculated="); Serial.print(calculatedChecksum);Serial.print(" actual="); Serial.println(packetChecksum);
-            return Packet(FAILED_CHECKSUM_PACKET,1);
+            packet[0] = FAILED_CHECKSUM;
+            packet_length=1;
+            return FAILED_CHECKSUM;
         }
 
-        return Packet(buffer,length);
+        packet_length=length;
+        return packet[0];
 
     }
     
@@ -246,7 +240,6 @@ public:
          long starttime = millis();
          while(read==-1 && (millis()-starttime)<100){
             read = Serial1.read();
-            //Serial.println(read);
          }
 
          return read;
@@ -318,12 +311,12 @@ public:
 
        long startTime = millis();
         while((millis()-startTime)<timeout){
-            Packet packet  = readPacket();
+            int packetType  = readPacket();
 
-            if (packet.buffer[0]>1){
-                bool result = decodePacket(packet);
+            if (packetType>1){
+                bool result = decodePacket();
 
-                if (packet.buffer[0]==command){
+                if (packetType==command){
                     return result;
                 } /*else {
                     Serial.println("Didnt get the expected.. looping");
@@ -337,12 +330,12 @@ public:
         return false;
     }
 
-     bool decodePacket(Packet packet) {
+     bool decodePacket() {
         int index = 0;
-        switch (packet.buffer[index++]) {
+        switch (packet[index++]) {
             case SENSOR_DATA: {
 
-                int flags = bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]);
+                int flags = bytesToSignedShort(packet[index++],packet[index++]);
 
                 data.yawEnabled          = (flags & CHANNEL_YAW_MASK            ) == CHANNEL_YAW_MASK;
                 data.pitchEnabled        = (flags & CHANNEL_PITCH_MASK          ) == CHANNEL_PITCH_MASK;
@@ -361,29 +354,30 @@ public:
                 data.azEnabled           = (flags & CHANNEL_AZ_MASK             ) == CHANNEL_AZ_MASK;
 
 
-                if (data.yawEnabled          ){ data.yaw          = SCALE_YAW           * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.pitchEnabled        ){ data.pitch        = SCALE_PITCH         * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.rollEnabled         ){ data.roll         = SCALE_ROLL          * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.yawRateEnabled      ){ data.yawRate      = SCALE_YAW_RATE      * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.pitchRateEnabled    ){ data.pitchRate    = SCALE_PITCH_RATE    * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.rollRateEnabled     ){ data.rollRate     = SCALE_ROLL_RATE     * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.mxEnabled           ){ data.mx           = SCALE_MAG_X         * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.myEnabled           ){ data.my           = SCALE_MAG_Y         * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.mzEnabled           ){ data.mz           = SCALE_MAG_Z         * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.gxEnabled           ){ data.gx           = SCALE_GYRO_X        * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.gyEnabled           ){ data.gy           = SCALE_GYRO_Y        * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.gzEnabled           ){ data.gz           = SCALE_GYRO_Z        * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.axEnabled           ){ data.ax           = SCALE_ACCEL_X       * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.ayEnabled           ){ data.ay           = SCALE_ACCEL_Y       * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
-                if (data.azEnabled           ){ data.az           = SCALE_ACCEL_Z       * bytesToSignedShort(packet.buffer[index++],packet.buffer[index++]); }
+                if (data.yawEnabled          ){ data.yaw          = SCALE_YAW           * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.pitchEnabled        ){ data.pitch        = SCALE_PITCH         * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.rollEnabled         ){ data.roll         = SCALE_ROLL          * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.yawRateEnabled      ){ data.yawRate      = SCALE_YAW_RATE      * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.pitchRateEnabled    ){ data.pitchRate    = SCALE_PITCH_RATE    * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.rollRateEnabled     ){ data.rollRate     = SCALE_ROLL_RATE     * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.mxEnabled           ){ data.mx           = SCALE_MAG_X         * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.myEnabled           ){ data.my           = SCALE_MAG_Y         * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.mzEnabled           ){ data.mz           = SCALE_MAG_Z         * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.gxEnabled           ){ data.gx           = SCALE_GYRO_X        * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.gyEnabled           ){ data.gy           = SCALE_GYRO_Y        * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.gzEnabled           ){ data.gz           = SCALE_GYRO_Z        * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.axEnabled           ){ data.ax           = SCALE_ACCEL_X       * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.ayEnabled           ){ data.ay           = SCALE_ACCEL_Y       * bytesToSignedShort(packet[index++],packet[index++]); }
+                if (data.azEnabled           ){ data.az           = SCALE_ACCEL_Z       * bytesToSignedShort(packet[index++],packet[index++]); }
 
                 if (index!=packet.lenght){
-                    //TODO - Raise error
-                    Serial.println("Recevied pad length packet!");
+                    //Serial.println("Recevied bad length packet!");
+                    return false;
                 }
 
 
-                return true;}
+                return true;
+                }
             case STATUS_REPORT:
                  Serial.println("Received status report");
                  return true;
@@ -391,7 +385,10 @@ public:
                  Serial.println("CHR6DM reported bad checksum!");
                  return true;
             case NO_DATA:
+                 //Serial.println("CHR6DM No data!");
+                 return false;
             case FAILED_CHECKSUM:
+                 //Serial.println("CHR6DM reported failed checksum!");
                  return false;
             case COMMAND_COMPLETE:
                 Serial.println("COMMAND_COMPLETE");
@@ -401,7 +398,7 @@ public:
                 return false;
             default:
                 Serial.print("Received unknown packet ");
-                Serial.println(packet.buffer[0]);
+                Serial.println(packet[0]);
                 return false;
 
         }
@@ -426,7 +423,8 @@ public:
 
         long startTime = millis();
         while(millis()-startTime<timeout){
-        int command=readPacket().buffer[0];
+        readPacket();
+        int command=packet[0];
             switch(command){
                 case COMMAND_COMPLETE :
                     return true;
@@ -440,7 +438,7 @@ public:
             }
         }
 
-        //Serial.println("Timed out!");
+        Serial.println("Timed out! 2");
         return false;
     }
 
