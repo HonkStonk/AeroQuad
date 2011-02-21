@@ -122,10 +122,10 @@ public:
   
   const int getZaxis() {
     //currentAccelTime = micros();
-    //zAxis = filterSmoothWithTime(getFlightData(ZAXIS), zAxis, 0.25, ((currentTime - previousTime) / 5000.0)); //expect 5ms = 5000Ã‚Âµs = (current-previous) / 5000.0 to get around 1
+    zAxis = filterSmooth(getFlightData(ZAXIS), zAxis, 0.05); //expect 5ms = 5000Ã‚Âµs = (current-previous) / 5000.0 to get around 1
     //previousAccelTime = currentAccelTime;
     //return zAxis;
-    return accelOneG - getData(ZAXIS);
+    return zAxis;
   }
   
   const float getAltitude(void) {

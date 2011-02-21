@@ -144,13 +144,8 @@ void processCalibrateESC(void)
 void processHeading(void)
 {
   if (headingHoldConfig == ON) {
-    //gyro.calculateHeading();
 
-#if defined(HeadingMagHold) || defined(AeroQuadMega_CHR6DM) || defined(APM_OP_CHR6DM)
-    heading = compass.getHeading();
-#else
-    heading = gyro.getHeading();
-#endif
+    heading = gyro.getRawHeading(); // corrected by compass when available (within 2 deg abs tilt both axes)
 
     // Always center relative heading around absolute heading chosen during yaw command
     // This assumes that an incorrect yaw can't be forced on the AeroQuad >180 or <-180 degrees
@@ -186,7 +181,7 @@ void processHeading(void)
 //////////////////////////////////////////////////////////////////////////////
 /////////////////////////// processAltitudeHold //////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-void processAltitudeHold(void)
+void processAltitudeHold(void) // 20Hz
 {
   // ****************************** Altitude Adjust *************************
   // Thanks to Honk for his work with altitude hold
@@ -196,29 +191,32 @@ void processAltitudeHold(void)
 #ifdef AltitudeHold
   if (altitudeHold == ON) {
     throttleAdjust = updatePID(holdAltitude, altitude.getData(), &PID[ALTITUDE]);
-    zDampening = updatePID(0, accel.getZaxis(), &PID[ZDAMPENING]); // This is stil under development - do not use (set PID=0)
-    if((abs(_flightAngle->getData(ROLL)) > 5) || (abs(_flightAngle->getData(PITCH)) > 5)) { 
+    zDampening = updatePID(430, accel.getZaxis(), &PID[ZDAMPENING]);
+    if((abs(_flightAngle->getData(ROLL)) > 3) || (abs(_flightAngle->getData(PITCH)) > 3)) { 
       PID[ZDAMPENING].integratedError = 0;
     }
     throttleAdjust = constrain((holdAltitude - altitude.getData()) * PID[ALTITUDE].P, minThrottleAdjust, maxThrottleAdjust);
-    //throttleAdjust = constrain(throttleAdjust, minThrottleAdjust, maxThrottleAdjust);
-    if (receiver.getData(THROTTLE) > MAXCHECK) //above 1900
-      holdAltitude += 0.001;
-    if (receiver.getData(THROTTLE) <= MINCHECK) //below 1100
-      holdAltitude -= 0.001;
+    zDampening = constrain(zDampening, minThrottleAdjust, maxThrottleAdjust);
+ 
+    if (receiver.getData(THROTTLE) > (holdThrottle+70))
+      holdAltitude += 0.01;
+    if (receiver.getData(THROTTLE) < (holdThrottle-70))
+      holdAltitude -= 0.01;
   }
   else {
     // Altitude hold is off, get throttle from receiver
     holdThrottle = receiver.getData(THROTTLE);
-    throttleAdjust = autoDescent; // autoDescent is lowered from BatteryMonitor.h during battery alarm
+    //throttleAdjust = autoDescent; // autoDescent is lowered from BatteryMonitor.h during battery alarm
+    throttleAdjust = 0;
+    zDampening = 0;
   }
   // holdThrottle set in FlightCommand.pde if altitude hold is on
-  throttle = holdThrottle + throttleAdjust; // holdThrottle is also adjust by BatteryMonitor.h during battery alarm
+  throttle = holdThrottle + throttleAdjust + zDampening; // holdThrottle is also adjust by BatteryMonitor.h during battery alarm
 #else
   //zDampening = updatePID(0, accel.getZaxis(), &PID[ZDAMPENING]); // This is stil under development - do not use (set PID=0)
   //throttle = receiver.getData(THROTTLE) - zDampening + autoDescent; 
   // If altitude hold not enabled in AeroQuad.pde, get throttle from receiver
-  throttle = receiver.getData(THROTTLE) + autoDescent; //autoDescent is lowered from BatteryMonitor.h while battery critical, otherwise kept 0
+  throttle = receiver.getData(THROTTLE); //+ autoDescent; //autoDescent is lowered from BatteryMonitor.h while battery critical, otherwise kept 0
 #endif
 }
 
@@ -306,7 +304,7 @@ void processFlightControlXMode(void) {
   processHeading();
 
   // ********************** Altitude Adjust **********************************
-  processAltitudeHold();
+  //processAltitudeHold();
 
   // ********************** Calculate Motor Commands *************************
   if (armed && safetyCheck) {

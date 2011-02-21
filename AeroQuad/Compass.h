@@ -26,7 +26,7 @@
 class Compass {
 public: 
   int compassAddress;
-  float heading, absoluteHeading, gyroStartHeading;
+  float absoluteHeading, gyroStartHeading;
   float compass;
   float magMax[3];
   float magMin[3];
@@ -97,6 +97,7 @@ private:
   float filter1, filter2; // coefficients for complementary filter
   float adjustedGyroHeading, previousHead;
   int gyroZero;
+  float heading;
   
 public: 
   Compass_AeroQuad_v2() : Compass() {
@@ -198,3 +199,54 @@ public:
   }
 };
 #endif
+
+// ***********************************************************************
+// ************************ HMC6352 Subclass *****************************
+// ***********************************************************************
+class Compass_HMC6352 : public Compass {
+// This sets up the HMC6352 from Sparkfun
+private:
+  float adjustedGyroHeading, previousHead;
+  int gyroZero;
+  int headingData[2];
+  float heading;
+  
+public: 
+  Compass_HMC6352() : Compass() {
+    compassAddress = 0x21;
+    //gyroZero = gyro.getZero(YAW);
+  }
+
+  // ***********************************************************
+  // Define all the virtual functions declared in the main class
+  // ***********************************************************
+  void initialize(void) {
+    sendByteI2C(compassAddress, 0x41);
+    measure();
+    gyro.setStartHeading(heading);
+  }
+  
+  const int getRawData(byte axis) {
+    return heading;
+  }
+  
+  void measure(void) {
+    Wire.requestFrom(compassAddress, 2);
+	byte i = 0;
+	  while(Wire.available() && i < 2)
+	    {
+	      headingData[i] = Wire.receive();
+	      i++;
+	    }
+
+	  heading = (float)(headingData[0]*256 + headingData[1])*0.1;
+          absoluteHeading = heading;
+          
+          sendByteI2C(compassAddress, 0x41);
+   
+    if((abs(_flightAngle->getData(ROLL)) < 2) && (abs(_flightAngle->getData(PITCH)) < 2)) { // mag can be trusted to correct gyro at 10Hz intervals
+      gyro.setStartHeading(heading);
+      }
+  //else { Serial.println("hmc tilted, gyro not corrected"); }
+  }
+};

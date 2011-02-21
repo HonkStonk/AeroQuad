@@ -528,8 +528,11 @@ public:
     // Reduce transmitter commands using xmitFactor and center around 1500
     for (byte channel = ROLL; channel < THROTTLE; channel++)
       transmitterCommand[channel] = ((transmitterCommandSmooth[channel] - transmitterZero[channel]) * xmitFactor) + transmitterZero[channel];
-    // No xmitFactor reduction applied for throttle, mode and
-    for (byte channel = THROTTLE; channel < LASTCHANNEL; channel++)
+      
+      transmitterCommand[THROTTLE] = (transmitterCommandSmooth[THROTTLE]*0.6)+400; // Honk really likes this resloping of throttle! 0-60% from stick
+    
+    // No xmitFactor reduction applied for mode and aux
+    for (byte channel = MODE; channel < LASTCHANNEL; channel++)
       transmitterCommand[channel] = transmitterCommandSmooth[channel];
   }
 };

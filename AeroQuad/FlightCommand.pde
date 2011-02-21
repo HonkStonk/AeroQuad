@@ -119,22 +119,22 @@ void readPilotCommands() {
    #if defined(APM_OP_CHR6DM) || defined(ArduCopter) 
       if (flightMode == ACRO) {
         digitalWrite(LED_Yellow, HIGH);
-        digitalWrite(LED_Green, LOW);
+        //digitalWrite(LED_Green, LOW);
        }
      else if (flightMode == STABLE) {
-        digitalWrite(LED_Green, HIGH);
+        //digitalWrite(LED_Green, HIGH);
         digitalWrite(LED_Yellow, LOW); 
      }
    #endif
   
   #ifdef AltitudeHold
     
-   if (receiver.getRaw(AUX) < 1750) {
+   if (receiver.getRaw(AUX) < 1500) {
       if (storeAltitude == ON) {
         holdAltitude = altitude.getData();
         holdThrottle = receiver.getData(THROTTLE);
         PID[ALTITUDE].integratedError = 0;
-        accel.setOneG(accel.getFlightData(ZAXIS));
+        //accel.setOneG(accel.getFlightData(ZAXIS));
         storeAltitude = OFF;
       }
       altitudeHold = ON;

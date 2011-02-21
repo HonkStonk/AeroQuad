@@ -168,6 +168,10 @@ void readEEPROM(void) {
   #endif
 
   windupGuard = readFloat(WINDUPGUARD_ADR);
+  for (byte i = 0; i <= LEVELGYROPITCH; i++ ) {
+    if (i != ALTITUDE)
+      PID[i].windupGuard = windupGuard;
+  }
   levelLimit = readFloat(LEVELLIMIT_ADR);
   levelOff = readFloat(LEVELOFF_ADR);
   timeConstant = readFloat(FILTERTERM_ADR);

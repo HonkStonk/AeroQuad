@@ -331,6 +331,7 @@ public:
 class Gyro_ArduCopter : public Gyro {
 private:
   int rawADC;
+  long int previousGyroTime;
 
 public:
   Gyro_ArduCopter() : Gyro() {
@@ -344,6 +345,7 @@ public:
     //#define Gyro_Scaled_Z(x) x*ToRad(Gyro_Gain_Z) //Return the scaled ADC raw data of the gyro in radians for second
     gyroFullScaleOutput = 500.0;   // IDG/IXZ500 full scale output = +/- 500 deg/sec
     gyroScaleFactor = 0.4;       // IDG/IXZ500 sensitivity = 2mV/(deg/sec) 0.002
+    previousGyroTime = micros();
   }
   
   void initialize(void) {
@@ -361,6 +363,9 @@ public:
         gyroADC[axis] =  rawADC - gyroZero[axis];
       gyroData[axis] = gyroADC[axis]; // no smoothing needed
     }
+    long int currentGyroTime = micros();
+    rawHeading += -gyroADC[YAW] * gyroScaleFactor * ((currentGyroTime - previousGyroTime) / 1000000.0);
+    previousGyroTime = currentGyroTime;
    }
 
   const int getFlightData(byte axis) {

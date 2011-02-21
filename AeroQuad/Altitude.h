@@ -108,7 +108,7 @@ public:
   // ***********************************************************
   void initialize(void) {
     measureGround();
-                        //setStartAltitude(getGroundAltitude());
+    setStartAltitude(getGroundAltitude());
   }
   
   void measure(void) {

@@ -37,12 +37,12 @@
 #define ADC_DATAOUT 51        // MOSI
 #define ADC_DATAIN  50        // MISO 
 #define ADC_SPICLOCK  52      // SCK
-#define ADC_CHIP_SELECT 33    // PC4   9 // PH6  Puerto:0x08 Bit mask : 0x40
+#define ADC_CHIP_SELECT 33    // PC4   9 // PH6  Port:0x08 Bit mask : 0x40
 
 // Commands for reading ADC channels on ADS7844
 const unsigned char adc_cmd[9]=  { 0x87, 0xC7, 0x97, 0xD7, 0xA7, 0xE7, 0xB7, 0xF7, 0x00 };
 volatile long adc_value[8];
-volatile unsigned char adc_counter[8];
+volatile unsigned int adc_counter[8]; // important change by Ala42 (was char)
 
 unsigned char ADC_SPI_transfer(unsigned char data) {
   /* Wait for empty transmit buffer */
@@ -62,7 +62,7 @@ ISR (TIMER2_OVF_vect) {
   //bit_set(PORTL,6); // To test performance
   bit_clear(PORTC,4);             // Enable Chip Select (PIN PC4)
   ADC_SPI_transfer(adc_cmd[0]);       // Command to read the first channel
-  for (ch=0;ch<8;ch++) {
+  for (ch=0;ch<8;ch++) { // was 7, caused bug!
     adc_tmp = ADC_SPI_transfer(0)<<8;    // Read first byte
     adc_tmp |= ADC_SPI_transfer(adc_cmd[ch+1]);  // Read second byte and send next command
     adc_value[ch] += adc_tmp>>3;     // Shift to 12 bits
